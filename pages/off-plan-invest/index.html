@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <script>(function(){var t=localStorage.getItem('imali-theme')||'light';document.documentElement.setAttribute('data-theme',t);})();</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Off-Plan Investor View — Earn Returns on New Developments | Imali.biz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/animations.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <style>
+    /* Investor stats strip */
+    .invest-stats {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-bottom: 2.5rem;
+    }
+    .invest-stat {
+      flex: 1;
+      padding: 1.75rem 1.25rem;
+      text-align: center;
+      border-right: 1px solid var(--border);
+    }
+    .invest-stat:last-child { border-right: none; }
+    .invest-stat-val {
+      font-family: var(--font-head);
+      font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+      font-weight: 800;
+      color: var(--green);
+      line-height: 1;
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+    .invest-stat-label { font-size: 0.8rem; color: var(--text-dim); }
+
+    /* Investor callout */
+    .investor-callout {
+      background: rgba(34, 197, 94, 0.06);
+      border: 1px solid rgba(34, 197, 94, 0.18);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+    .investor-callout-icon { font-size: 1.5rem; flex-shrink: 0; }
+    .investor-callout p { margin: 0; font-size: 0.875rem; color: var(--text-dim); line-height: 1.6; }
+    .investor-callout strong { color: var(--text); }
+    .investor-callout a { color: var(--green); text-decoration: none; }
+    .investor-callout a:hover { text-decoration: underline; }
+
+    /* Fraction availability bar */
+    .fraction-bar-wrap { margin-bottom: 0.85rem; }
+    .fraction-bar-top  { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-dim); margin-bottom: 0.35rem; }
+    .fraction-bar-bg   { height: 6px; background: var(--surface); border-radius: 3px; overflow: hidden; }
+    .fraction-bar-fill { height: 100%; background: var(--orange); border-radius: 3px; }
+
+    @media (max-width: 600px) {
+      .invest-stats { flex-wrap: wrap; }
+      .invest-stat  { flex: 1 0 50%; border-right: none; border-bottom: 1px solid var(--border); }
+      .invest-stat:nth-child(odd)  { border-right: 1px solid var(--border); }
+      .invest-stat:nth-last-child(-n+2) { border-bottom: none; }
+    }
+  </style>
+</head>
+<body>
+<div class="cursor" aria-hidden="true"></div>
+<div class="cursor-ring" aria-hidden="true"></div>
+
+<div id="site-nav"></div>
+
+<!-- ── Page header ───────────────────────────────────────── -->
+<section class="page-header">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="../../index.html">Home</a>
+      <span aria-hidden="true">›</span>
+      <a href="../../pages/invest/index.html">Invest</a>
+      <span aria-hidden="true">›</span>
+      <span aria-current="page">Off-Plan (Investor)</span>
+    </nav>
+    <h1 class="page-header-title">Off-Plan Investor View</h1>
+    <p class="page-header-sub">Lock in pre-launch pricing on verified new developments. Earn projected returns of 14–22% p.a.</p>
+  </div>
+</section>
+
+<!-- ── Stats strip ──────────────────────────────────────── -->
+<section class="section-pad" style="padding-bottom:0">
+  <div class="container">
+    <div class="invest-stats reveal">
+      <div class="invest-stat">
+        <span class="invest-stat-val">14–22%</span>
+        <span class="invest-stat-label">Projected return p.a.</span>
+      </div>
+      <div class="invest-stat">
+        <span class="invest-stat-val">RWF 75K</span>
+        <span class="invest-stat-label">Fractional min. (~$51)</span>
+      </div>
+      <div class="invest-stat">
+        <span class="invest-stat-val">4</span>
+        <span class="invest-stat-label">Active projects</span>
+      </div>
+      <div class="invest-stat">
+        <span class="invest-stat-val">596</span>
+        <span class="invest-stat-label">Fraction slots available</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Filter bar ─────────────────────────────────────────── -->
+<section class="filter-section">
+  <div class="container">
+    <div class="filter-bar">
+      <select class="filter-select" id="filter-location" data-filter="location">
+        <option value="">All locations</option>
+        <option value="kiyovu">Kiyovu</option>
+        <option value="remera">Remera</option>
+        <option value="kicukiro">Kicukiro</option>
+        <option value="musanze">Musanze</option>
+      </select>
+      <select class="filter-select" id="filter-roi" data-filter="roi">
+        <option value="">All ROI ranges</option>
+        <option value="low">14–16% p.a.</option>
+        <option value="mid">16–18% p.a.</option>
+        <option value="high">18–22% p.a.</option>
+      </select>
+      <select class="filter-select" id="filter-min" data-filter="min">
+        <option value="">All entry points</option>
+        <option value="75k">From RWF 75,000</option>
+        <option value="150k">From RWF 150,000+</option>
+        <option value="200k">From RWF 200,000+</option>
+      </select>
+      <select class="filter-select" id="filter-sort" data-filter="sort">
+        <option value="">Sort: Featured</option>
+        <option value="roi-high">ROI: Highest first</option>
+        <option value="min-low">Min. investment: Lowest first</option>
+        <option value="slots">Slots: Most available</option>
+      </select>
+    </div>
+  </div>
+</section>
+
+<!-- ── Project cards ──────────────────────────────────────── -->
+<section class="section-pad" style="padding-top:2rem">
+  <div class="container">
+    <div class="investor-callout reveal">
+      <span class="investor-callout-icon">📈</span>
+      <p><strong>Each project accepts two types of investor.</strong> <strong>Fractional investors</strong> co-own a verified percentage of the development — earning proportional returns from RWF 75,000 (~$51). <strong>Full asset investors</strong> purchase a complete unit as an investment and earn 100% of rental income and capital appreciation. Projected returns are not guaranteed. <a href="../../pages/off-plan-buy/index.html">Looking to buy a unit to live in? →</a></p>
+    </div>
+
+    <div class="listings-grid" id="projects-grid">
+
+      <!-- ── Card 1: Kiyovu Gardens ── -->
+      <a href="../../pages/off-plan-invest/kiyovu-gardens.html"
+         class="project-card reveal"
+         data-location="kiyovu"
+         data-roi="low"
+         data-min="75k">
+        <div class="project-card-photo">
+          <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&auto=format&q=80" alt="Kiyovu Gardens" loading="lazy">
+          <div class="project-card-badges">
+            <span class="badge badge-green">14% p.a.</span>
+            <span class="badge badge-blue">Apartments</span>
+          </div>
+        </div>
+        <div class="project-card-body">
+          <div class="project-card-name">Kiyovu Gardens</div>
+          <div class="project-card-location">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Kiyovu, Nyarugenge, Kigali
+          </div>
+
+          <!-- ROI highlight -->
+          <div style="text-align:center;padding:1rem 0 0.75rem;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:0.9rem">
+            <div class="project-roi-val">14%</div>
+            <div style="font-size:0.75rem;color:var(--text-dim);margin-top:0.2rem">Projected annual return</div>
+          </div>
+
+          <div class="project-meta">
+            <div>
+              <div class="project-meta-label">Fractional from</div>
+              <div class="project-meta-val">RWF 75,000 <span style="font-size:0.72em;color:var(--text-dim);font-weight:400">~$51</span></div>
+            </div>
+            <div>
+              <div class="project-meta-label">Full unit from</div>
+              <div class="project-meta-val">RWF 95,000,000 <span style="font-size:0.72em;color:var(--text-dim);font-weight:400">~$64,494</span></div>
+            </div>
+            <div>
+              <div class="project-meta-label">Project stage</div>
+              <div class="project-meta-val">65% complete</div>
+            </div>
+            <div>
+              <div class="project-meta-label">Exit timeline</div>
+              <div class="project-meta-val">Q2 2026</div>
+            </div>
+          </div>
+
+          <div class="fraction-bar-wrap">
+            <div class="fraction-bar-top">
+              <span>Fractions taken</span>
+              <span>156 / 240</span>
+            </div>
+            <div class="fraction-bar-bg">
+              <div class="fraction-bar-fill" style="width:65%"></div>
+            </div>
+          </div>
+
+          <div class="project-fractions">
+            <strong>84 slots for fractional investors</strong> — from RWF 75,000 (~$51)
+          </div>
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.85rem">
+            <span class="trust-pill" data-score="high">Developer Trust Score: High</span>
+            <span class="trust-pill" data-score="high">Project Trust Score: High</span>
+          </div>
+          <span class="btn btn-primary btn-sm" style="width:100%;justify-content:center">View investment details</span>
+        </div>
+      </a>
+
+      <!-- ── Card 2: Remera Heights ── -->
+      <a href="../../pages/off-plan-invest/remera-heights.html"
+         class="project-card reveal reveal-delay-1"
+         data-location="remera"
+         data-roi="mid"
+         data-min="75k">
+        <div class="project-card-photo">
+          <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&auto=format&q=80" alt="Remera Heights" loading="lazy">
+          <div class="project-card-badges">
+            <span class="badge badge-green">18% p.a.</span>
+            <span class="badge badge-blue">Mixed-use</span>
+          </div>
+        </div>
+        <div class="project-card-body">
+          <div class="project-card-name">Remera Heights</div>
+          <div class="project-card-location">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Remera, Gasabo, Kigali
+          </div>
+
+          <div style="text-align:center;padding:1rem 0 0.75rem;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:0.9rem">
+            <div class="project-roi-val">18%</div>
+            <div style="font-size:0.75rem;color:var(--text-dim);margin-top:0.2rem">Projected annual return</div>
+          </div>
+
+          <div class="project-meta">
+            <div>
+              <div class="project-meta-label">Fractional from</div>
+              <div class="project-meta-val">RWF 75,000 <span style="font-size:0.72em;color:var(--text-dim);font-weight:400">~$51</span></div>
+            </div>
+            <div>
+              <div class="project-meta-label">Full unit from</div>
+              <div class="project-meta-val">RWF 65,000,000 <span style="font-size:0.72em;color:var(--text-dim);font-weight:400">~$44,127</span></div>
+            </div>
+            <div>
+              <div class="project-meta-label">Project stage</div>
+              <div class="project-meta-val">30% complete</div>
+            </div>
+            <div>
+              <div class="project-meta-label">Exit timeline</div>
+              <div class="project-meta-val">Q4 2026</div>
+            </div>
+          </div>
+
+          <div class="fraction-bar-wrap">
+            <div class="fraction-bar-top">
+              <span>Fractions taken</span>
+              <span>312 / 360</span>
+            </div>
+            <div class="fraction-bar-bg">
+              <div class="fraction-bar-fill" style="width:87%"></div>
+            </div>
+          </div>
+
+          <div class="project-fractions">
+            <strong>48 slots for fractional investors</strong> — filling fast, from RWF 75,000 (~$51)
+          </div>
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.85rem">
+            <span class="trust-pill" data-score="mid">Developer Trust Score: Mid</span>
+            <span class="trust-pill" data-score="high">Project Trust Score: High</span>
+          </div>
+          <span class="btn btn-primary btn-sm" style="width:100%;justify-content:center">View investment details</span>
+        </div>
+      </a>
+
+      <!-- ── Card 3: Kicukiro Retail Park ── -->
+      <a href="../../pages/off-plan-invest/kicukiro-retail-park.html"
+         class="project-card reveal reveal-delay-2"
+         data-location="kicukiro"
+         data-roi="high"
+         data-min="150k">
+        <div class="project-card-photo">
+          <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=800&auto=format&q=80" alt="Kicukiro Retail Park" loading="lazy">
+          <div class="project-card-badges">
+            <span class="badge badge-green">22% p.a.</span>
+            <span class="badge badge-purple">Commercial</span>
+          </div>
+        </div>
+        <div class="project-card-body">
+          <div class="project-card-name">Kicukiro Retail Park</div>
+          <div class="project-card-location">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Kicukiro, Kicukiro District, Kigali
+          </div>
+
+          <div style="text-align:center;padding:1rem 0 0.75rem;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:0.9rem">
+            <div class="project-roi-val">22%</div>
+            <div style="font-size:0.75rem;color:var(--text-dim);margin-top:0.2rem">Projected annual return</div>
+          </div>
+
+          <div class="project-meta">
+            <div>
+              <div class="project-meta-label">Fractional from</div>
+              <div class="project-meta-val">RWF 150,000 <span style="font-size:0.72em;color:var(--text-dim);font-weight:400">~$102</span></div>
+            </div>
+            <div>
+              <div class="project-meta-label">Full unit from</div>
+              <div class="project-meta-val">RWF 180,000,000 <span style="font-size:0.72em;color:var(--text-dim);font-weight:400">~$122,199</span></div>
+            </div>
+            <div>
+              <div class="project-meta-label">Project stage</div>
+              <div class="project-meta-val">45% complete</div>
+            </div>
+            <div>
+              <div class="project-meta-label">Exit timeline</div>
+              <div class="project-meta-val">Q3 2026</div>
+            </div>
+          </div>
+
+          <div class="fraction-bar-wrap">
+            <div class="fraction-bar-top">
+              <span>Fractions taken</span>
+              <span>48 / 120</span>
+            </div>
+            <div class="fraction-bar-bg">
+              <div class="fraction-bar-fill" style="width:40%"></div>
+            </div>
+          </div>
+
+          <div class="project-fractions">
+            <strong>72 slots for fractional investors</strong> — highest projected return on platform
+          </div>
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.85rem">
+            <span class="trust-pill" data-score="high">Developer Trust Score: High</span>
+            <span class="trust-pill" data-score="mid">Project Trust Score: Mid</span>
+          </div>
+          <span class="btn btn-primary btn-sm" style="width:100%;justify-content:center">View investment details</span>
+        </div>
+      </a>
+
+      <!-- ── Card 4: Musanze Eco Villas ── -->
+      <a href="../../pages/off-plan-invest/musanze-eco-villas.html"
+         class="project-card reveal reveal-delay-3"
+         data-location="musanze"
+         data-roi="low"
+         data-min="200k">
+        <div class="project-card-photo">
+          <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&auto=format&q=80" alt="Musanze Eco Villas" loading="lazy">
+          <div class="project-card-badges">
+            <span class="badge badge-green">16% p.a.</span>
+            <span class="badge badge-blue">Villas</span>
+          </div>
+        </div>
+        <div class="project-card-body">
+          <div class="project-card-name">Musanze Eco Villas</div>
+          <div class="project-card-location">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Musanze District, Northern Province
+          </div>
+
+          <div style="text-align:center;padding:1rem 0 0.75rem;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:0.9rem">
+            <div class="project-roi-val">16%</div>
+            <div style="font-size:0.75rem;color:var(--text-dim);margin-top:0.2rem">Projected annual return</div>
+          </div>
+
+          <div class="project-meta">
+            <div>
+              <div class="project-meta-label">Fractional from</div>
+              <div class="project-meta-val">RWF 200,000 <span style="font-size:0.72em;color:var(--text-dim);font-weight:400">~$136</span></div>
+            </div>
+            <div>
+              <div class="project-meta-label">Full unit from</div>
+              <div class="project-meta-val">RWF 220,000,000 <span style="font-size:0.72em;color:var(--text-dim);font-weight:400">~$149,354</span></div>
+            </div>
+            <div>
+              <div class="project-meta-label">Project stage</div>
+              <div class="project-meta-val">15% complete</div>
+            </div>
+            <div>
+              <div class="project-meta-label">Exit timeline</div>
+              <div class="project-meta-val">Q1 2027</div>
+            </div>
+          </div>
+
+          <div class="fraction-bar-wrap">
+            <div class="fraction-bar-top">
+              <span>Fractions taken</span>
+              <span>76 / 80</span>
+            </div>
+            <div class="fraction-bar-bg">
+              <div class="fraction-bar-fill" style="width:95%"></div>
+            </div>
+          </div>
+
+          <div class="project-fractions">
+            <strong>4 slots for fractional investors</strong> — almost fully subscribed
+          </div>
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.85rem">
+            <span class="trust-pill" data-score="mid">Developer Trust Score: Mid</span>
+            <span class="trust-pill" data-score="mid">Project Trust Score: Mid</span>
+          </div>
+          <span class="btn btn-primary btn-sm" style="width:100%;justify-content:center">View investment details</span>
+        </div>
+      </a>
+
+    </div><!-- /projects-grid -->
+
+    <!-- Empty state -->
+    <div id="empty-state" style="display:none;text-align:center;padding:4rem 1rem">
+      <div style="font-size:3rem;margin-bottom:1rem">📊</div>
+      <h3 style="margin-bottom:0.5rem">No matching projects</h3>
+      <p style="color:var(--text-dim)">Try adjusting your filters to see more results.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA strip ─────────────────────────────────────────── -->
+<section class="sell-cta-section reveal" style="margin-top:0">
+  <div class="container">
+    <p class="eyebrow" style="color:rgba(248,245,240,0.50);justify-content:center">NOT SURE WHERE TO START</p>
+    <h2>Model your returns<br><span>before you commit.</span></h2>
+    <p>Use the Imali Returns Calculator to project income based on investment size, project, and hold period. Free, no sign-up needed.</p>
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+      <a href="../../pages/invest/calculator.html" class="btn btn-primary" style="font-size:1rem;padding:0.85rem 2rem">Open Returns Calculator</a>
+      <a href="../../pages/invest/index.html" class="btn-ghost-light">All investment options</a>
+    </div>
+  </div>
+</section>
+
+<div id="site-footer"></div>
+<script src="../../assets/js/core.js" data-root="../../"></script>
+<script>
+(function () {
+  function applyFilters() {
+    var location = document.getElementById('filter-location').value;
+    var roi      = document.getElementById('filter-roi').value;
+    var min      = document.getElementById('filter-min').value;
+    var cards    = document.querySelectorAll('#projects-grid .project-card');
+    var visible  = 0;
+    cards.forEach(function (card) {
+      var locMatch = !location || card.dataset.location === location;
+      var roiMatch = !roi      || card.dataset.roi      === roi;
+      var minMatch = !min      || card.dataset.min      === min;
+      var show = locMatch && roiMatch && minMatch;
+      card.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    document.getElementById('empty-state').style.display = visible ? 'none' : 'block';
+  }
+  document.querySelectorAll('.filter-select').forEach(function (sel) {
+    sel.addEventListener('change', applyFilters);
+  });
+})();
+</script>
+</body>
+</html>

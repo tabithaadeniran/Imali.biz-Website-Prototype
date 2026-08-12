@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <script>(function(){var t=localStorage.getItem('imali-theme')||'light';document.documentElement.setAttribute('data-theme',t);})();</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Browse Property in Rwanda — Imali.biz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/animations.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <style>
+    .buy-hero {
+      position: relative;
+      height: 500px;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+    .buy-hero-bg {
+      position: absolute; inset: 0;
+      background: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&auto=format&q=80') center/cover no-repeat;
+    }
+    .buy-hero-bg::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(90deg, rgba(13,13,18,0.80) 0%, rgba(13,13,18,0.44) 60%, rgba(13,13,18,0.18) 100%);
+    }
+    .buy-hero-content {
+      position: relative; z-index: 1;
+      color: var(--cream);
+      padding-top: 4.5rem;
+      max-width: 540px;
+    }
+    .buy-hero-content .eyebrow { color: rgba(248,245,240,0.55); letter-spacing: 0.15em; }
+    .buy-hero-content .eyebrow::before { background: var(--orange); }
+    .buy-hero-content h1 {
+      font-family: var(--font-head);
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 800;
+      line-height: 1.08;
+      margin: 0.6rem 0 1rem;
+    }
+    .buy-hero-content h1 span { color: var(--orange); }
+    .buy-hero-content p {
+      font-size: 1rem;
+      opacity: 0.70;
+      margin-bottom: 2rem;
+      line-height: 1.65;
+    }
+    .buy-hero-btns { display: flex; gap: 0.85rem; flex-wrap: wrap; }
+    .btn-ghost-light {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.7rem 1.4rem;
+      border: 1.5px solid rgba(248,245,240,0.35);
+      border-radius: var(--radius-pill);
+      color: var(--cream);
+      text-decoration: none;
+      font-size: 0.9rem; font-weight: 500;
+      transition: border-color 0.18s, background 0.18s;
+    }
+    .btn-ghost-light:hover { border-color: var(--cream); background: rgba(248,245,240,0.08); }
+
+    .preview-section { padding: 3.5rem 0 0; }
+    .preview-header {
+      display: flex; align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 1.75rem;
+      gap: 1rem;
+    }
+    .preview-header h2 { font-family: var(--font-head); font-size: 1.4rem; font-weight: 700; }
+    .preview-header a  { font-size: 0.85rem; font-weight: 600; color: var(--orange); text-decoration: none; white-space: nowrap; }
+    .preview-header a:hover { color: var(--orange-dark); }
+    .cat-section { padding: 3.5rem 0 0; }
+  </style>
+</head>
+<body>
+<div class="cursor" aria-hidden="true"></div>
+<div class="cursor-ring" aria-hidden="true"></div>
+
+<div id="site-nav"></div>
+
+<!-- ── Hero ────────────────────────────────────────────── -->
+<section class="buy-hero" aria-label="Browse property">
+  <div class="buy-hero-bg" aria-hidden="true"></div>
+  <div class="container">
+    <div class="buy-hero-content anim-fade-up-1">
+      <p class="eyebrow">BROWSE PROPERTY</p>
+      <h1>Your next property<br>is <span>right here.</span></h1>
+      <p>Land, homes, and apartments across Rwanda — every listing comes with a Seller Trust Score and a Property Trust Score.</p>
+      <div class="buy-hero-btns">
+        <a href="land.html" class="btn btn-primary">Browse Land</a>
+        <a href="homes.html" class="btn-ghost-light">Homes &amp; Apartments</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Category cards ──────────────────────────────────── -->
+<section class="cat-section">
+  <div class="container">
+    <div class="cat-grid">
+      <a href="land.html" class="cat-card reveal">
+        <div class="cat-icon">🌿</div>
+        <div class="cat-name">Land Plots</div>
+        <p class="cat-desc">Residential, commercial, and agricultural plots in Kigali and beyond. Title deed status shown on every listing.</p>
+        <div class="cat-cta">Browse land <span aria-hidden="true">→</span></div>
+      </a>
+      <a href="homes.html" class="cat-card reveal reveal-delay-1">
+        <div class="cat-icon">🏠</div>
+        <div class="cat-name">Homes &amp; Apartments</div>
+        <p class="cat-desc">Houses, apartments, and villas from individual sellers and agencies. Move-in ready options across Kigali.</p>
+        <div class="cat-cta">Browse homes <span aria-hidden="true">→</span></div>
+      </a>
+      <a href="../off-plan-buy/index.html" class="cat-card reveal reveal-delay-2">
+        <div class="cat-icon">🏗️</div>
+        <div class="cat-name">Off-Plan Projects</div>
+        <p class="cat-desc">Reserve your unit before construction completes. See payment plans, floor types, and available units.</p>
+        <div class="cat-cta">Browse off-plan <span aria-hidden="true">→</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Latest Land ──────────────────────────────────────── -->
+<section class="preview-section">
+  <div class="container">
+    <div class="preview-header">
+      <h2>Latest Land Plots</h2>
+      <a href="land.html">See all land →</a>
+    </div>
+    <div class="listings-grid">
+
+      <a href="land.html" class="prop-card reveal" data-price="45000000" data-type="land" data-location="gasabo">
+        <div class="prop-card-photo">
+          <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&auto=format&q=75" alt="600sqm land plot in Kibagabaga, Gasabo">
+          <div class="prop-card-badges"><span class="badge badge-green">Land</span><span class="badge badge-dark">Title Deed</span></div>
+          <button class="prop-card-save" aria-label="Save listing" onclick="event.preventDefault();imaliAuth.requireLogin(window.location.href)">♡</button>
+        </div>
+        <div class="prop-card-body">
+          <div class="prop-card-price">RWF 45,000,000</div>
+          <div class="prop-card-title">600 sqm Plot — Gasabo, Kibagabaga</div>
+          <div class="prop-card-location"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1a3.5 3.5 0 0 1 3.5 3.5C9.5 8 6 11 6 11S2.5 8 2.5 4.5A3.5 3.5 0 0 1 6 1z" stroke="currentColor" stroke-width="1.2" fill="none"/><circle cx="6" cy="4.5" r="1" fill="currentColor"/></svg> Gasabo District, Kigali</div>
+          <div class="prop-card-specs">
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="1" y="1" width="12" height="12" rx="1" stroke="currentColor" stroke-width="1.2"/></svg> 600 m²</span>
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 13V5l6-4 6 4v8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg> Title Deed</span>
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.2"/><path d="M7 4v3l2 2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg> For Sale</span>
+          </div>
+          <div class="trust-row">
+            <span class="trust-pill" data-score="high" title="Seller Trust Score — verified ID, 12 completed deals"><span class="trust-pill-icon">👤</span><span class="trust-pill-label">Seller Trust Score</span><span class="trust-pill-val">87/100</span></span>
+            <span class="trust-pill" data-score="high" title="Property Trust Score — title deed present, survey complete"><span class="trust-pill-icon">📄</span><span class="trust-pill-label">Property Trust Score</span><span class="trust-pill-val">95/100</span></span>
+          </div>
+        </div>
+      </a>
+
+      <a href="land.html" class="prop-card reveal reveal-delay-1" data-price="120000000" data-type="land" data-location="kicukiro">
+        <div class="prop-card-photo">
+          <img src="https://images.unsplash.com/photo-1501854140801-50d01698950b?w=600&auto=format&q=75" alt="1500sqm residential land plot in Kicukiro">
+          <div class="prop-card-badges"><span class="badge badge-green">Land</span><span class="badge badge-dark">Residential</span></div>
+          <button class="prop-card-save" aria-label="Save listing" onclick="event.preventDefault();imaliAuth.requireLogin(window.location.href)">♡</button>
+        </div>
+        <div class="prop-card-body">
+          <div class="prop-card-price">RWF 120,000,000</div>
+          <div class="prop-card-title">1,500 sqm Plot — Kicukiro, Niboye</div>
+          <div class="prop-card-location"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1a3.5 3.5 0 0 1 3.5 3.5C9.5 8 6 11 6 11S2.5 8 2.5 4.5A3.5 3.5 0 0 1 6 1z" stroke="currentColor" stroke-width="1.2" fill="none"/><circle cx="6" cy="4.5" r="1" fill="currentColor"/></svg> Kicukiro District, Kigali</div>
+          <div class="prop-card-specs">
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="1" y="1" width="12" height="12" rx="1" stroke="currentColor" stroke-width="1.2"/></svg> 1,500 m²</span>
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 13V5l6-4 6 4v8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg> Title Deed</span>
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.2"/><path d="M7 4v3l2 2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg> For Sale</span>
+          </div>
+          <div class="trust-row">
+            <span class="trust-pill" data-score="mid" title="Seller Trust Score — ID verified, limited platform history"><span class="trust-pill-icon">👤</span><span class="trust-pill-label">Seller Trust Score</span><span class="trust-pill-val">72/100</span></span>
+            <span class="trust-pill" data-score="high" title="Property Trust Score — title deed present, survey complete"><span class="trust-pill-icon">📄</span><span class="trust-pill-label">Property Trust Score</span><span class="trust-pill-val">88/100</span></span>
+          </div>
+        </div>
+      </a>
+
+      <a href="land.html" class="prop-card reveal reveal-delay-2" data-price="80000000" data-type="land" data-location="rubavu">
+        <div class="prop-card-photo">
+          <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&auto=format&q=75" alt="2 hectare agricultural plot in Rubavu">
+          <div class="prop-card-badges"><span class="badge badge-green">Land</span><span class="badge badge-dark">Title Deed</span></div>
+          <button class="prop-card-save" aria-label="Save listing" onclick="event.preventDefault();imaliAuth.requireLogin(window.location.href)">♡</button>
+        </div>
+        <div class="prop-card-body">
+          <div class="prop-card-price">RWF 80,000,000</div>
+          <div class="prop-card-title">2 Hectare Plot — Rubavu District</div>
+          <div class="prop-card-location"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1a3.5 3.5 0 0 1 3.5 3.5C9.5 8 6 11 6 11S2.5 8 2.5 4.5A3.5 3.5 0 0 1 6 1z" stroke="currentColor" stroke-width="1.2" fill="none"/><circle cx="6" cy="4.5" r="1" fill="currentColor"/></svg> Rubavu District</div>
+          <div class="prop-card-specs">
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="1" y="1" width="12" height="12" rx="1" stroke="currentColor" stroke-width="1.2"/></svg> 2 ha</span>
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 13V5l6-4 6 4v8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg> Title Deed</span>
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.2"/><path d="M7 4v3l2 2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg> For Sale</span>
+          </div>
+          <div class="trust-row">
+            <span class="trust-pill" data-score="high" title="Seller Trust Score — agency-verified, 30+ transactions"><span class="trust-pill-icon">👤</span><span class="trust-pill-label">Seller Trust Score</span><span class="trust-pill-val">91/100</span></span>
+            <span class="trust-pill" data-score="high" title="Property Trust Score — all documents complete"><span class="trust-pill-icon">📄</span><span class="trust-pill-label">Property Trust Score</span><span class="trust-pill-val">97/100</span></span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Latest Homes ──────────────────────────────────────── -->
+<section class="preview-section" style="padding-bottom:5rem">
+  <div class="container">
+    <div class="preview-header">
+      <h2>Homes &amp; Apartments</h2>
+      <a href="homes.html">See all homes →</a>
+    </div>
+    <div class="listings-grid">
+
+      <a href="homes.html" class="prop-card reveal" data-price="180000000" data-type="house" data-location="kicukiro">
+        <div class="prop-card-photo">
+          <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&auto=format&q=75" alt="4-bedroom house in Kicukiro">
+          <div class="prop-card-badges"><span class="badge badge-orange">House</span></div>
+          <button class="prop-card-save" aria-label="Save listing" onclick="event.preventDefault();imaliAuth.requireLogin(window.location.href)">♡</button>
+        </div>
+        <div class="prop-card-body">
+          <div class="prop-card-price">RWF 180,000,000</div>
+          <div class="prop-card-title">4-Bedroom Family Home — Kicukiro</div>
+          <div class="prop-card-location"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1a3.5 3.5 0 0 1 3.5 3.5C9.5 8 6 11 6 11S2.5 8 2.5 4.5A3.5 3.5 0 0 1 6 1z" stroke="currentColor" stroke-width="1.2" fill="none"/><circle cx="6" cy="4.5" r="1" fill="currentColor"/></svg> Kicukiro District, Kigali</div>
+          <div class="prop-card-specs">
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 8h12M3 8V5h8v3M1 8v3h12V8" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg> 4 Beds</span>
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="2" y="4" width="10" height="7" rx="1" stroke="currentColor" stroke-width="1.1"/><path d="M5 4V3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1" stroke="currentColor" stroke-width="1.1"/></svg> 3 Baths</span>
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="1" y="1" width="12" height="12" rx="1" stroke="currentColor" stroke-width="1.2"/></svg> 240 m²</span>
+          </div>
+          <div class="trust-row">
+            <span class="trust-pill" data-score="mid" title="Seller Trust Score — ID verified, limited platform history"><span class="trust-pill-icon">👤</span><span class="trust-pill-label">Seller Trust Score</span><span class="trust-pill-val">71/100</span></span>
+            <span class="trust-pill" data-score="high" title="Property Trust Score — title deed and building plans uploaded"><span class="trust-pill-icon">📄</span><span class="trust-pill-label">Property Trust Score</span><span class="trust-pill-val">92/100</span></span>
+          </div>
+        </div>
+      </a>
+
+      <a href="homes.html" class="prop-card reveal reveal-delay-1" data-price="150000000" data-type="house" data-location="gasabo">
+        <div class="prop-card-photo">
+          <img src="https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=600&auto=format&q=75" alt="3-bedroom house in Gasabo Remera">
+          <div class="prop-card-badges"><span class="badge badge-orange">House</span></div>
+          <button class="prop-card-save" aria-label="Save listing" onclick="event.preventDefault();imaliAuth.requireLogin(window.location.href)">♡</button>
+        </div>
+        <div class="prop-card-body">
+          <div class="prop-card-price">RWF 150,000,000</div>
+          <div class="prop-card-title">3-Bedroom Home — Gasabo, Remera</div>
+          <div class="prop-card-location"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1a3.5 3.5 0 0 1 3.5 3.5C9.5 8 6 11 6 11S2.5 8 2.5 4.5A3.5 3.5 0 0 1 6 1z" stroke="currentColor" stroke-width="1.2" fill="none"/><circle cx="6" cy="4.5" r="1" fill="currentColor"/></svg> Gasabo District, Kigali</div>
+          <div class="prop-card-specs">
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 8h12M3 8V5h8v3M1 8v3h12V8" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg> 3 Beds</span>
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="2" y="4" width="10" height="7" rx="1" stroke="currentColor" stroke-width="1.1"/><path d="M5 4V3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1" stroke="currentColor" stroke-width="1.1"/></svg> 2 Baths</span>
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="1" y="1" width="12" height="12" rx="1" stroke="currentColor" stroke-width="1.2"/></svg> 185 m²</span>
+          </div>
+          <div class="trust-row">
+            <span class="trust-pill" data-score="high" title="Seller Trust Score — 8 completed deals, high response rate"><span class="trust-pill-icon">👤</span><span class="trust-pill-label">Seller Trust Score</span><span class="trust-pill-val">89/100</span></span>
+            <span class="trust-pill" data-score="high" title="Property Trust Score — full documentation, photos verified"><span class="trust-pill-icon">📄</span><span class="trust-pill-label">Property Trust Score</span><span class="trust-pill-val">94/100</span></span>
+          </div>
+        </div>
+      </a>
+
+      <a href="homes.html" class="prop-card reveal reveal-delay-2" data-price="95000000" data-type="apartment" data-location="nyarugenge">
+        <div class="prop-card-photo">
+          <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&auto=format&q=75" alt="2-bedroom apartment in Nyarugenge">
+          <div class="prop-card-badges"><span class="badge badge-muted">Apartment</span><span class="badge badge-dark">New</span></div>
+          <button class="prop-card-save" aria-label="Save listing" onclick="event.preventDefault();imaliAuth.requireLogin(window.location.href)">♡</button>
+        </div>
+        <div class="prop-card-body">
+          <div class="prop-card-price">RWF 95,000,000</div>
+          <div class="prop-card-title">2-Bed Apartment — CBD View, Nyarugenge</div>
+          <div class="prop-card-location"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1a3.5 3.5 0 0 1 3.5 3.5C9.5 8 6 11 6 11S2.5 8 2.5 4.5A3.5 3.5 0 0 1 6 1z" stroke="currentColor" stroke-width="1.2" fill="none"/><circle cx="6" cy="4.5" r="1" fill="currentColor"/></svg> Nyarugenge District, Kigali</div>
+          <div class="prop-card-specs">
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 8h12M3 8V5h8v3M1 8v3h12V8" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg> 2 Beds</span>
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="2" y="4" width="10" height="7" rx="1" stroke="currentColor" stroke-width="1.1"/></svg> 2 Baths</span>
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="1" y="1" width="12" height="12" rx="1" stroke="currentColor" stroke-width="1.2"/></svg> 120 m²</span>
+          </div>
+          <div class="trust-row">
+            <span class="trust-pill" data-score="high" title="Seller Trust Score — agency-verified, 30+ transactions"><span class="trust-pill-icon">👤</span><span class="trust-pill-label">Seller Trust Score</span><span class="trust-pill-val">82/100</span></span>
+            <span class="trust-pill" data-score="mid" title="Property Trust Score — title deed present, some documents pending"><span class="trust-pill-icon">📄</span><span class="trust-pill-label">Property Trust Score</span><span class="trust-pill-val">68/100</span></span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Off-plan ────────────────────────────────────────────── -->
+<section class="section-pad" style="background:var(--bg-alt)">
+  <div class="container">
+    <div class="section-header reveal" style="margin-bottom:2rem">
+      <div>
+        <p class="eyebrow">OFF-PLAN DEVELOPMENTS</p>
+        <h2 class="section-title">Reserve a unit or invest<br>before completion.</h2>
+      </div>
+      <p style="max-width:38ch;color:var(--text-dim);line-height:1.6">Four active projects currently available. Lock in pre-launch pricing as a buyer, or earn projected returns of 14–22% p.a. as a fractional or full-asset investor.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem">
+      <a href="../off-plan-buy/index.html" class="invest-path reveal">
+        <div class="invest-path-icon">🏗️</div>
+        <span class="invest-path-entry">Buyer</span>
+        <h3>Buy Off-Plan</h3>
+        <p>Reserve your unit at today's price and start saving towards your new home — full payment is only due on handover.</p>
+        <span class="invest-path-cta">Browse available units →</span>
+      </a>
+      <a href="../off-plan-invest/index.html" class="invest-path reveal reveal-delay-1">
+        <div class="invest-path-icon">📈</div>
+        <span class="invest-path-entry">Investor — from RWF 75,000 <span style="font-size:0.83em;opacity:0.6;font-weight:400">~$51</span></span>
+        <h3>Invest in Off-Plan</h3>
+        <p>Fractional stakes from RWF 75,000 or buy a full unit as an investment. Earn projected returns of 14–22% p.a. on verified new developments.</p>
+        <span class="invest-path-cta">View investor projects →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<div id="site-footer"></div>
+<script src="../../assets/js/core.js" data-root="../../"></script>
+</body>
+</html>

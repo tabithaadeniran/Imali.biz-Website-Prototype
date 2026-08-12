@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <script>(function(){var t=localStorage.getItem('imali-theme')||'light';document.documentElement.setAttribute('data-theme',t);})();</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sell Your Land or Property — Imali.biz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/animations.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <style>
+    /* Sell stats strip */
+    .sell-stats {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .sell-stat {
+      flex: 1;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      border-right: 1px solid var(--border);
+    }
+    .sell-stat:last-child { border-right: none; }
+    .sell-stat-val {
+      font-family: var(--font-head);
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 800;
+      color: var(--orange);
+      line-height: 1;
+      display: block;
+      margin-bottom: 0.35rem;
+    }
+    .sell-stat-label { font-size: 0.82rem; color: var(--text-dim); }
+
+    @media (max-width: 600px) {
+      .sell-stats { flex-wrap: wrap; }
+      .sell-stat { flex: 1 0 50%; border-right: none; border-bottom: 1px solid var(--border); }
+      .sell-stat:nth-child(odd) { border-right: 1px solid var(--border); }
+      .sell-stat:nth-last-child(-n+2) { border-bottom: none; }
+    }
+  </style>
+</head>
+<body>
+<div class="cursor" aria-hidden="true"></div>
+<div class="cursor-ring" aria-hidden="true"></div>
+
+<div id="site-nav"></div>
+
+<!-- ── Hero ─────────────────────────────────────────────── -->
+<section class="sell-hero">
+  <div class="sell-hero-bg" style="background-image:url('https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=1920&auto=format&q=80')" aria-hidden="true"></div>
+  <div class="container">
+    <div class="sell-hero-content anim-fade-up-1">
+      <p class="eyebrow" style="color:rgba(248,245,240,0.55)">SELL WITH IMALI.BIZ</p>
+      <h1>Your property,<br><span>serious buyers.</span></h1>
+      <p>List for free and reach thousands of buyers across Rwanda. You keep 100% of your sale price — we earn nothing until you close.</p>
+      <div class="sell-hero-btns">
+        <a href="../../auth/register.html" class="btn btn-primary">List your property free</a>
+        <a href="#how-it-works" class="btn-ghost-light">See how it works</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Stats strip ──────────────────────────────────────── -->
+<section class="section-pad" style="padding-bottom:0">
+  <div class="container">
+    <div class="sell-stats reveal">
+      <div class="sell-stat">
+        <span class="sell-stat-val">RWF 0</span>
+        <span class="sell-stat-label">Listing fee</span>
+      </div>
+      <div class="sell-stat">
+        <span class="sell-stat-val">1,200+</span>
+        <span class="sell-stat-label">Active buyers on platform</span>
+      </div>
+      <div class="sell-stat">
+        <span class="sell-stat-val">&lt;5 min</span>
+        <span class="sell-stat-label">Average time to list</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── How it works ─────────────────────────────────────── -->
+<section class="section-pad" id="how-it-works">
+  <div class="container">
+    <div class="section-header reveal">
+      <div>
+        <p class="eyebrow">HOW IT WORKS</p>
+        <h2 class="section-title">List in minutes.<br>Close with confidence.</h2>
+      </div>
+    </div>
+    <div class="sell-steps">
+      <div class="sell-step reveal">
+        <div class="sell-step-num">1</div>
+        <h3>Add your listing</h3>
+        <p>Upload photos, set your price, and add your property details. It takes under five minutes and your listing goes live the same day.</p>
+      </div>
+      <div class="sell-step reveal reveal-delay-1">
+        <div class="sell-step-num">2</div>
+        <h3>Receive matched enquiries</h3>
+        <p>Serious buyers find you through search and notifications. You see their trust scores before you respond — so you know who you're dealing with.</p>
+      </div>
+      <div class="sell-step reveal reveal-delay-2">
+        <div class="sell-step-num">3</div>
+        <h3>Close the deal</h3>
+        <p>Communicate, negotiate, and finalise securely through Imali.biz. Every document exchange is tracked. Every step is yours to control.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Why sell with Imali ──────────────────────────────── -->
+<section class="section-pad" style="background:var(--bg-alt)">
+  <div class="container">
+    <div class="section-header reveal" style="margin-bottom:2rem">
+      <div>
+        <p class="eyebrow">WHY IMALI.BIZ</p>
+        <h2 class="section-title">Built for sellers<br>who want results.</h2>
+      </div>
+    </div>
+    <div class="sell-pillars">
+      <div class="sell-pillar reveal">
+        <div class="sell-pillar-icon">🎯</div>
+        <h4>Reach the right buyers</h4>
+        <p>Your listing appears in front of buyers who match your property type, location, and price range — not random browsers.</p>
+      </div>
+      <div class="sell-pillar reveal reveal-delay-1">
+        <div class="sell-pillar-icon">💰</div>
+        <h4>Zero listing fees, always</h4>
+        <p>Free to list, free to update, free to message buyers. We only earn when a deal closes — and even then, nothing is taken from your sale price.</p>
+      </div>
+      <div class="sell-pillar reveal reveal-delay-1">
+        <div class="sell-pillar-icon">📊</div>
+        <h4>Transparent pricing data</h4>
+        <p>See what similar properties have sold for in your area. Price confidently, backed by real market data from across Rwanda.</p>
+      </div>
+      <div class="sell-pillar reveal reveal-delay-2">
+        <div class="sell-pillar-icon">🔒</div>
+        <h4>Your documents, secured</h4>
+        <p>Upload your title deed and ownership documents once. Share them securely with interested buyers. Your data stays in your control.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Who can list ─────────────────────────────────────── -->
+<section class="section-pad">
+  <div class="container">
+    <div class="section-header reveal" style="margin-bottom:2rem">
+      <div>
+        <p class="eyebrow">WHO CAN LIST</p>
+        <h2 class="section-title">Individual owner or agent —<br>you're both welcome.</h2>
+      </div>
+    </div>
+    <div class="path-cards">
+      <a href="../../auth/register.html?role=seller" class="path-card path-sell reveal">
+        <div class="path-icon">🏡</div>
+        <h3>Landowner</h3>
+        <p>Own land or a property and want to sell directly? Create a free account, list your property, and manage your own enquiries.</p>
+        <div class="path-links">
+          <span>Land or plot</span>
+          <span>Residential property</span>
+          <span>Commercial property</span>
+        </div>
+      </a>
+      <a href="../../auth/register.html?role=agent" class="path-card path-buy reveal reveal-delay-1">
+        <div class="path-icon">🤝</div>
+        <h3>Agent or Agency</h3>
+        <p>Managing listings for multiple clients? The Agent Portal lets you list on behalf of sellers, track enquiries, and build your brand.</p>
+        <div class="path-links">
+          <span>Multiple listings</span>
+          <span>Client management</span>
+          <span>Agency branding</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ──────────────────────────────────────────────── -->
+<section class="sell-cta-section reveal">
+  <div class="container">
+    <p class="eyebrow" style="color:rgba(248,245,240,0.50);justify-content:center">GET STARTED</p>
+    <h2>List your first property<br><span>in under 5 minutes.</span></h2>
+    <p>Free forever. No subscription required. Just create an account and start listing.</p>
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+      <a href="../../auth/register.html" class="btn btn-primary" style="font-size:1rem;padding:0.85rem 2rem">Create Free Account</a>
+      <a href="../../auth/login.html" class="btn-ghost-light">I already have an account</a>
+    </div>
+  </div>
+</section>
+
+<div id="site-footer"></div>
+<script src="../../assets/js/core.js" data-root="../../"></script>
+</body>
+</html>

@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <script>(function(){var t=localStorage.getItem('imali-theme')||'light';document.documentElement.setAttribute('data-theme',t);})();</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Off-Plan Projects — Buy Before Completion | Imali.biz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/animations.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <style>
+    .buyer-callout {
+      background: rgba(240,90,34,0.07);
+      border: 1px solid rgba(240,90,34,0.18);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+    .buyer-callout-icon { font-size: 1.5rem; flex-shrink: 0; }
+    .buyer-callout p { margin: 0; font-size: 0.875rem; color: var(--text-dim); line-height: 1.6; }
+    .buyer-callout strong { color: var(--text); }
+    .buyer-callout a { color: var(--orange); text-decoration: none; }
+    .buyer-callout a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+<div class="cursor" aria-hidden="true"></div>
+<div class="cursor-ring" aria-hidden="true"></div>
+
+<div id="site-nav"></div>
+
+<!-- ── Page header ───────────────────────────────────────── -->
+<section class="page-header">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="../../index.html">Home</a>
+      <span aria-hidden="true">›</span>
+      <a href="../../pages/buy/index.html">Buy</a>
+      <span aria-hidden="true">›</span>
+      <span aria-current="page">Off-Plan Projects</span>
+    </nav>
+    <h1 class="page-header-title">Off-Plan Projects</h1>
+    <p class="page-header-sub">Reserve a unit before completion — lock in today's price and move in on handover.</p>
+  </div>
+</section>
+
+<!-- ── Filter bar ─────────────────────────────────────────── -->
+<section class="filter-section">
+  <div class="container">
+    <div class="filter-bar">
+      <select class="filter-select" id="filter-location" data-filter="location">
+        <option value="">All locations</option>
+        <option value="kiyovu">Kiyovu</option>
+        <option value="remera">Remera</option>
+        <option value="kicukiro">Kicukiro</option>
+        <option value="musanze">Musanze</option>
+      </select>
+      <select class="filter-select" id="filter-type" data-filter="type">
+        <option value="">All types</option>
+        <option value="apartments">Apartments</option>
+        <option value="mixed">Mixed-use</option>
+        <option value="commercial">Commercial</option>
+        <option value="villas">Villas</option>
+      </select>
+      <select class="filter-select" id="filter-stage" data-filter="stage">
+        <option value="">All stages</option>
+        <option value="early">Early stage (&lt;30%)</option>
+        <option value="mid">Mid stage (30–60%)</option>
+        <option value="late">Late stage (&gt;60%)</option>
+      </select>
+      <select class="filter-select" id="filter-sort" data-filter="sort">
+        <option value="">Sort: Featured</option>
+        <option value="price-low">Price: Low to high</option>
+        <option value="price-high">Price: High to low</option>
+        <option value="completion">Completion: Soonest first</option>
+        <option value="progress">Progress: Most complete</option>
+      </select>
+    </div>
+  </div>
+</section>
+
+<!-- ── Listings ───────────────────────────────────────────── -->
+<section class="section-pad" style="padding-top:2rem">
+  <div class="container">
+    <div class="buyer-callout reveal">
+      <span class="buyer-callout-icon">🏗️</span>
+      <p><strong>Reserve your unit today and start saving towards your new home.</strong> Lock in today's price while construction completes — full payment is only due on handover. All projects are independently verified before listing: developer credentials, planning approvals, and title status confirmed. Want to invest in a project instead? <a href="../../pages/off-plan-invest/index.html">See the investor view →</a></p>
+    </div>
+
+    <div class="listings-grid" id="projects-grid">
+
+      <!-- ── Card 1: Kiyovu Gardens ── -->
+      <a href="../../pages/off-plan-buy/kiyovu-gardens.html"
+         class="project-card reveal"
+         data-location="kiyovu"
+         data-type="apartments"
+         data-stage="late"
+         data-price="95000000">
+        <div class="project-card-photo">
+          <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&auto=format&q=80" alt="Kiyovu Gardens development render" loading="lazy">
+          <div class="project-card-badges">
+            <span class="badge badge-green">65% Complete</span>
+            <span class="badge badge-blue">Apartments</span>
+          </div>
+        </div>
+        <div class="project-card-body">
+          <div class="project-card-name">Kiyovu Gardens</div>
+          <div class="project-card-location">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Kiyovu, Nyarugenge, Kigali
+          </div>
+          <div class="project-progress-wrap">
+            <div class="project-progress-top">
+              <span>Construction progress</span>
+              <span>65%</span>
+            </div>
+            <div class="project-progress-bg">
+              <div class="project-progress-fill" style="width:65%"></div>
+            </div>
+          </div>
+          <div class="project-meta">
+            <div>
+              <div class="project-meta-label">Starting from</div>
+              <div class="project-meta-val">RWF 95,000,000</div>
+            </div>
+            <div>
+              <div class="project-meta-label">Handover</div>
+              <div class="project-meta-val">Q2 2026</div>
+            </div>
+            <div>
+              <div class="project-meta-label">Units available</div>
+              <div class="project-meta-val">24 of 48</div>
+            </div>
+            <div>
+              <div class="project-meta-label">Developer</div>
+              <div class="project-meta-val">Kigali Prime Devs</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.85rem">
+            <span class="trust-pill" data-score="high">Developer Trust Score: High</span>
+            <span class="trust-pill" data-score="high">Project Trust Score: High</span>
+          </div>
+          <span class="btn btn-primary btn-sm" style="width:100%;justify-content:center">View project details</span>
+        </div>
+      </a>
+
+      <!-- ── Card 2: Remera Heights ── -->
+      <a href="../../pages/off-plan-buy/remera-heights.html"
+         class="project-card reveal reveal-delay-1"
+         data-location="remera"
+         data-type="mixed"
+         data-stage="early"
+         data-price="65000000">
+        <div class="project-card-photo">
+          <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&auto=format&q=80" alt="Remera Heights construction" loading="lazy">
+          <div class="project-card-badges">
+            <span class="badge badge-orange">30% Complete</span>
+            <span class="badge badge-blue">Mixed-use</span>
+          </div>
+        </div>
+        <div class="project-card-body">
+          <div class="project-card-name">Remera Heights</div>
+          <div class="project-card-location">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Remera, Gasabo, Kigali
+          </div>
+          <div class="project-progress-wrap">
+            <div class="project-progress-top">
+              <span>Construction progress</span>
+              <span>30%</span>
+            </div>
+            <div class="project-progress-bg">
+              <div class="project-progress-fill" style="width:30%"></div>
+            </div>
+          </div>
+          <div class="project-meta">
+            <div>
+              <div class="project-meta-label">Starting from</div>
+              <div class="project-meta-val">RWF 65,000,000</div>
+            </div>
+            <div>
+              <div class="project-meta-label">Handover</div>
+              <div class="project-meta-val">Q4 2026</div>
+            </div>
+            <div>
+              <div class="project-meta-label">Units available</div>
+              <div class="project-meta-val">60 of 72</div>
+            </div>
+            <div>
+              <div class="project-meta-label">Developer</div>
+              <div class="project-meta-val">Gasabo Build Co.</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.85rem">
+            <span class="trust-pill" data-score="mid">Developer Trust Score: Mid</span>
+            <span class="trust-pill" data-score="high">Project Trust Score: High</span>
+          </div>
+          <span class="btn btn-primary btn-sm" style="width:100%;justify-content:center">View project details</span>
+        </div>
+      </a>
+
+      <!-- ── Card 3: Kicukiro Retail Park ── -->
+      <a href="../../pages/off-plan-buy/kicukiro-retail-park.html"
+         class="project-card reveal reveal-delay-2"
+         data-location="kicukiro"
+         data-type="commercial"
+         data-stage="mid"
+         data-price="180000000">
+        <div class="project-card-photo">
+          <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=800&auto=format&q=80" alt="Kicukiro Retail Park" loading="lazy">
+          <div class="project-card-badges">
+            <span class="badge badge-orange">45% Complete</span>
+            <span class="badge badge-purple">Commercial</span>
+          </div>
+        </div>
+        <div class="project-card-body">
+          <div class="project-card-name">Kicukiro Retail Park</div>
+          <div class="project-card-location">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Kicukiro, Kicukiro District, Kigali
+          </div>
+          <div class="project-progress-wrap">
+            <div class="project-progress-top">
+              <span>Construction progress</span>
+              <span>45%</span>
+            </div>
+            <div class="project-progress-bg">
+              <div class="project-progress-fill" style="width:45%"></div>
+            </div>
+          </div>
+          <div class="project-meta">
+            <div>
+              <div class="project-meta-label">Starting from</div>
+              <div class="project-meta-val">RWF 180,000,000</div>
+            </div>
+            <div>
+              <div class="project-meta-label">Handover</div>
+              <div class="project-meta-val">Q3 2026</div>
+            </div>
+            <div>
+              <div class="project-meta-label">Units available</div>
+              <div class="project-meta-val">18 of 36</div>
+            </div>
+            <div>
+              <div class="project-meta-label">Developer</div>
+              <div class="project-meta-val">Kicukiro Develop.</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.85rem">
+            <span class="trust-pill" data-score="high">Developer Trust Score: High</span>
+            <span class="trust-pill" data-score="mid">Project Trust Score: Mid</span>
+          </div>
+          <span class="btn btn-primary btn-sm" style="width:100%;justify-content:center">View project details</span>
+        </div>
+      </a>
+
+      <!-- ── Card 4: Musanze Eco Villas ── -->
+      <a href="../../pages/off-plan-buy/musanze-eco-villas.html"
+         class="project-card reveal reveal-delay-3"
+         data-location="musanze"
+         data-type="villas"
+         data-stage="early"
+         data-price="220000000">
+        <div class="project-card-photo">
+          <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&auto=format&q=80" alt="Musanze Eco Villas render" loading="lazy">
+          <div class="project-card-badges">
+            <span class="badge">15% Complete</span>
+            <span class="badge badge-blue">Villas</span>
+          </div>
+        </div>
+        <div class="project-card-body">
+          <div class="project-card-name">Musanze Eco Villas</div>
+          <div class="project-card-location">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Musanze District, Northern Province
+          </div>
+          <div class="project-progress-wrap">
+            <div class="project-progress-top">
+              <span>Construction progress</span>
+              <span>15%</span>
+            </div>
+            <div class="project-progress-bg">
+              <div class="project-progress-fill" style="width:15%"></div>
+            </div>
+          </div>
+          <div class="project-meta">
+            <div>
+              <div class="project-meta-label">Starting from</div>
+              <div class="project-meta-val">RWF 220,000,000</div>
+            </div>
+            <div>
+              <div class="project-meta-label">Handover</div>
+              <div class="project-meta-val">Q1 2027</div>
+            </div>
+            <div>
+              <div class="project-meta-label">Units available</div>
+              <div class="project-meta-val">20 of 20</div>
+            </div>
+            <div>
+              <div class="project-meta-label">Developer</div>
+              <div class="project-meta-val">Northern Eco Dev</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.85rem">
+            <span class="trust-pill" data-score="mid">Developer Trust Score: Mid</span>
+            <span class="trust-pill" data-score="mid">Project Trust Score: Mid</span>
+          </div>
+          <span class="btn btn-primary btn-sm" style="width:100%;justify-content:center">View project details</span>
+        </div>
+      </a>
+
+    </div><!-- /projects-grid -->
+
+    <!-- Empty state -->
+    <div id="empty-state" style="display:none;text-align:center;padding:4rem 1rem">
+      <div style="font-size:3rem;margin-bottom:1rem">🏗️</div>
+      <h3 style="margin-bottom:0.5rem">No matching projects</h3>
+      <p style="color:var(--text-dim)">Try adjusting your filters to see more results.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA strip ─────────────────────────────────────────── -->
+<section class="sell-cta-section reveal" style="margin-top:0">
+  <div class="container">
+    <p class="eyebrow" style="color:rgba(248,245,240,0.50);justify-content:center">INVEST INSTEAD</p>
+    <h2>Interested in returns,<br><span>not a unit?</span></h2>
+    <p>All four projects are open to co-investors. Earn projected returns of 14–22% p.a. without buying a unit outright.</p>
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+      <a href="../../pages/off-plan-invest/index.html" class="btn btn-primary" style="font-size:1rem;padding:0.85rem 2rem">See investor view</a>
+      <a href="../../pages/invest/index.html" class="btn-ghost-light">About investing on Imali</a>
+    </div>
+  </div>
+</section>
+
+<div id="site-footer"></div>
+<script src="../../assets/js/core.js" data-root="../../"></script>
+<script>
+(function () {
+  function applyFilters() {
+    var location = document.getElementById('filter-location').value;
+    var type     = document.getElementById('filter-type').value;
+    var stage    = document.getElementById('filter-stage').value;
+    var cards    = document.querySelectorAll('#projects-grid .project-card');
+    var visible  = 0;
+    cards.forEach(function (card) {
+      var locMatch   = !location || card.dataset.location  === location;
+      var typeMatch  = !type     || card.dataset.type      === type;
+      var stageMatch = !stage    || card.dataset.stage     === stage;
+      var show = locMatch && typeMatch && stageMatch;
+      card.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    document.getElementById('empty-state').style.display = visible ? 'none' : 'block';
+  }
+  document.querySelectorAll('.filter-select').forEach(function (sel) {
+    sel.addEventListener('change', applyFilters);
+  });
+})();
+</script>
+</body>
+</html>

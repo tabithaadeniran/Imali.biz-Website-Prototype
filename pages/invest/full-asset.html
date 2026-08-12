@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <script>(function(){var t=localStorage.getItem('imali-theme')||'light';document.documentElement.setAttribute('data-theme',t);})();</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Full Asset Deals — Invest in Rwanda | Imali.biz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/animations.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <style>
+    .invest-price-main {
+      font-family: var(--font-head);
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 0.15rem;
+    }
+    .invest-price-usd {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      margin-bottom: 0.75rem;
+    }
+    .invest-yield-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.6rem 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      margin: 0.75rem 0;
+    }
+    .invest-yield-label { font-size: 0.8rem; color: var(--text-dim); }
+    .invest-yield-val {
+      font-family: var(--font-head);
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--green);
+    }
+    .invest-explainer {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+    .invest-explainer-icon { font-size: 1.4rem; flex-shrink: 0; }
+    .invest-explainer p { margin: 0; font-size: 0.875rem; color: var(--text-dim); line-height: 1.6; }
+    .invest-explainer strong { color: var(--text); }
+    .invest-explainer a { color: var(--green); text-decoration: none; }
+    .invest-explainer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+<div class="cursor" aria-hidden="true"></div>
+<div class="cursor-ring" aria-hidden="true"></div>
+
+<div id="site-nav"></div>
+
+<!-- ── Page header ───────────────────────────────────────── -->
+<section class="page-header">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="../../index.html">Home</a>
+      <span aria-hidden="true">›</span>
+      <a href="../../pages/invest/index.html">Invest</a>
+      <span aria-hidden="true">›</span>
+      <span aria-current="page">Full Asset Deals</span>
+    </nav>
+    <h1 class="page-header-title">Full Asset Deals</h1>
+    <p class="page-header-sub">Complete ownership from day one — title deed in your name, 100% of income yours.</p>
+  </div>
+</section>
+
+<!-- ── Filter bar ─────────────────────────────────────────── -->
+<section class="filter-section">
+  <div class="container">
+    <div class="filter-bar">
+      <select class="filter-select" id="filter-location" data-filter="location">
+        <option value="">All locations</option>
+        <option value="nyarugenge">Nyarugenge</option>
+        <option value="gasabo">Gasabo</option>
+        <option value="kicukiro">Kicukiro</option>
+        <option value="kiyovu">Kiyovu</option>
+      </select>
+      <select class="filter-select" id="filter-type" data-filter="type">
+        <option value="">All types</option>
+        <option value="apartment">Apartment</option>
+        <option value="house">House</option>
+        <option value="commercial">Commercial</option>
+        <option value="villa">Villa</option>
+      </select>
+      <select class="filter-select" id="filter-price" data-filter="price">
+        <option value="">All prices</option>
+        <option value="low">Under RWF 50M</option>
+        <option value="mid">RWF 50M – 120M</option>
+        <option value="high">Above RWF 120M</option>
+      </select>
+      <select class="filter-select" id="filter-sort">
+        <option value="">Sort: Featured</option>
+        <option value="price-low">Price: Low to high</option>
+        <option value="price-high">Price: High to low</option>
+        <option value="yield">Yield: Highest first</option>
+      </select>
+    </div>
+  </div>
+</section>
+
+<!-- ── Listings ───────────────────────────────────────────── -->
+<section class="section-pad" style="padding-top:2rem">
+  <div class="container">
+
+    <div class="invest-explainer reveal">
+      <span class="invest-explainer-icon">🏦</span>
+      <p><strong>Full asset deals mean you own the property outright.</strong> Title deed transfers to your name on completion. You earn 100% of rental income and keep all capital appreciation. Minimum entry from RWF 20,000,000 (~$13,578). <a href="../../pages/invest/fractional.html">Prefer a lower entry point? See fractional deals →</a></p>
+    </div>
+
+    <div class="listings-grid" id="listings-grid">
+
+      <!-- Card 1: Studio Apartment, Kicukiro -->
+      <a href="#" class="prop-card reveal"
+         data-location="kicukiro" data-type="apartment" data-price="22000000">
+        <div class="prop-card-photo">
+          <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600&auto=format&q=75"
+               alt="Studio apartment in Kicukiro" loading="lazy">
+          <div class="prop-card-badges">
+            <span class="badge badge-muted">Apartment</span>
+            <span class="badge badge-dark">Title Deed</span>
+          </div>
+          <button class="prop-card-save" aria-label="Save listing"
+                  onclick="event.preventDefault();imaliAuth.requireLogin(window.location.href)">♡</button>
+        </div>
+        <div class="prop-card-body">
+          <div class="invest-price-main">RWF 22,000,000</div>
+          <div class="invest-price-usd">~$14,936 USD</div>
+          <div class="prop-card-title">Studio Apartment — Kicukiro, Niboye</div>
+          <div class="prop-card-location">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1a3.5 3.5 0 0 1 3.5 3.5C9.5 8 6 11 6 11S2.5 8 2.5 4.5A3.5 3.5 0 0 1 6 1z" stroke="currentColor" stroke-width="1.2" fill="none"/><circle cx="6" cy="4.5" r="1" fill="currentColor"/></svg>
+            Kicukiro District, Kigali
+          </div>
+          <div class="prop-card-specs">
+            <span class="prop-spec">1 Bed</span>
+            <span class="prop-spec">1 Bath</span>
+            <span class="prop-spec">48 m²</span>
+          </div>
+          <div class="invest-yield-row">
+            <span class="invest-yield-label">Estimated rental yield</span>
+            <span class="invest-yield-val">10% p.a.</span>
+          </div>
+          <div class="trust-row">
+            <span class="trust-pill" data-score="high"><span class="trust-pill-icon">👤</span><span class="trust-pill-label">Seller Trust Score</span><span class="trust-pill-val">85/100</span></span>
+            <span class="trust-pill" data-score="high"><span class="trust-pill-icon">📄</span><span class="trust-pill-label">Property Trust Score</span><span class="trust-pill-val">92/100</span></span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Card 2: Home, Gasabo -->
+      <a href="#" class="prop-card reveal reveal-delay-1"
+         data-location="gasabo" data-type="house" data-price="48000000">
+        <div class="prop-card-photo">
+          <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&auto=format&q=75"
+               alt="3-bedroom home in Gasabo" loading="lazy">
+          <div class="prop-card-badges">
+            <span class="badge badge-orange">House</span>
+            <span class="badge badge-dark">Title Deed</span>
+          </div>
+          <button class="prop-card-save" aria-label="Save listing"
+                  onclick="event.preventDefault();imaliAuth.requireLogin(window.location.href)">♡</button>
+        </div>
+        <div class="prop-card-body">
+          <div class="invest-price-main">RWF 48,000,000</div>
+          <div class="invest-price-usd">~$32,587 USD</div>
+          <div class="prop-card-title">3-Bedroom Home — Gasabo, Remera</div>
+          <div class="prop-card-location">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1a3.5 3.5 0 0 1 3.5 3.5C9.5 8 6 11 6 11S2.5 8 2.5 4.5A3.5 3.5 0 0 1 6 1z" stroke="currentColor" stroke-width="1.2" fill="none"/><circle cx="6" cy="4.5" r="1" fill="currentColor"/></svg>
+            Gasabo District, Kigali
+          </div>
+          <div class="prop-card-specs">
+            <span class="prop-spec">3 Beds</span>
+            <span class="prop-spec">2 Baths</span>
+            <span class="prop-spec">160 m²</span>
+          </div>
+          <div class="invest-yield-row">
+            <span class="invest-yield-label">Estimated rental yield</span>
+            <span class="invest-yield-val">9% p.a.</span>
+          </div>
+          <div class="trust-row">
+            <span class="trust-pill" data-score="mid"><span class="trust-pill-icon">👤</span><span class="trust-pill-label">Seller Trust Score</span><span class="trust-pill-val">74/100</span></span>
+            <span class="trust-pill" data-score="high"><span class="trust-pill-icon">📄</span><span class="trust-pill-label">Property Trust Score</span><span class="trust-pill-val">90/100</span></span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Card 3: Commercial, Nyarugenge -->
+      <a href="#" class="prop-card reveal"
+         data-location="nyarugenge" data-type="commercial" data-price="85000000">
+        <div class="prop-card-photo">
+          <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&auto=format&q=75"
+               alt="Commercial unit in Nyarugenge CBD" loading="lazy">
+          <div class="prop-card-badges">
+            <span class="badge badge-purple">Commercial</span>
+            <span class="badge badge-dark">Title Deed</span>
+          </div>
+          <button class="prop-card-save" aria-label="Save listing"
+                  onclick="event.preventDefault();imaliAuth.requireLogin(window.location.href)">♡</button>
+        </div>
+        <div class="prop-card-body">
+          <div class="invest-price-main">RWF 85,000,000</div>
+          <div class="invest-price-usd">~$57,706 USD</div>
+          <div class="prop-card-title">Commercial Unit — Nyarugenge CBD</div>
+          <div class="prop-card-location">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1a3.5 3.5 0 0 1 3.5 3.5C9.5 8 6 11 6 11S2.5 8 2.5 4.5A3.5 3.5 0 0 1 6 1z" stroke="currentColor" stroke-width="1.2" fill="none"/><circle cx="6" cy="4.5" r="1" fill="currentColor"/></svg>
+            Nyarugenge District, Kigali
+          </div>
+          <div class="prop-card-specs">
+            <span class="prop-spec">Commercial</span>
+            <span class="prop-spec">220 m²</span>
+            <span class="prop-spec">Ground Floor</span>
+          </div>
+          <div class="invest-yield-row">
+            <span class="invest-yield-label">Estimated rental yield</span>
+            <span class="invest-yield-val">15% p.a.</span>
+          </div>
+          <div class="trust-row">
+            <span class="trust-pill" data-score="high"><span class="trust-pill-icon">👤</span><span class="trust-pill-label">Seller Trust Score</span><span class="trust-pill-val">91/100</span></span>
+            <span class="trust-pill" data-score="high"><span class="trust-pill-icon">📄</span><span class="trust-pill-label">Property Trust Score</span><span class="trust-pill-val">96/100</span></span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Card 4: Villa, Kiyovu -->
+      <a href="#" class="prop-card reveal reveal-delay-1"
+         data-location="kiyovu" data-type="villa" data-price="140000000">
+        <div class="prop-card-photo">
+          <img src="https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=600&auto=format&q=75"
+               alt="4-bedroom villa in Kiyovu" loading="lazy">
+          <div class="prop-card-badges">
+            <span class="badge badge-blue">Villa</span>
+            <span class="badge badge-dark">Title Deed</span>
+          </div>
+          <button class="prop-card-save" aria-label="Save listing"
+                  onclick="event.preventDefault();imaliAuth.requireLogin(window.location.href)">♡</button>
+        </div>
+        <div class="prop-card-body">
+          <div class="invest-price-main">RWF 140,000,000</div>
+          <div class="invest-price-usd">~$95,043 USD</div>
+          <div class="prop-card-title">4-Bedroom Villa — Kiyovu, Nyarugenge</div>
+          <div class="prop-card-location">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1a3.5 3.5 0 0 1 3.5 3.5C9.5 8 6 11 6 11S2.5 8 2.5 4.5A3.5 3.5 0 0 1 6 1z" stroke="currentColor" stroke-width="1.2" fill="none"/><circle cx="6" cy="4.5" r="1" fill="currentColor"/></svg>
+            Nyarugenge District, Kigali
+          </div>
+          <div class="prop-card-specs">
+            <span class="prop-spec">4 Beds</span>
+            <span class="prop-spec">3 Baths</span>
+            <span class="prop-spec">320 m²</span>
+          </div>
+          <div class="invest-yield-row">
+            <span class="invest-yield-label">Estimated rental yield</span>
+            <span class="invest-yield-val">11% p.a.</span>
+          </div>
+          <div class="trust-row">
+            <span class="trust-pill" data-score="high"><span class="trust-pill-icon">👤</span><span class="trust-pill-label">Seller Trust Score</span><span class="trust-pill-val">88/100</span></span>
+            <span class="trust-pill" data-score="high"><span class="trust-pill-icon">📄</span><span class="trust-pill-label">Property Trust Score</span><span class="trust-pill-val">94/100</span></span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+
+    <div id="empty-state" style="display:none;text-align:center;padding:4rem 1rem">
+      <div style="font-size:3rem;margin-bottom:1rem">🏦</div>
+      <h3 style="margin-bottom:0.5rem">No matching listings</h3>
+      <p style="color:var(--text-dim)">Try adjusting your filters to see more results.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ──────────────────────────────────────────────── -->
+<section class="sell-cta-section reveal">
+  <div class="container">
+    <p class="eyebrow" style="color:rgba(248,245,240,0.50);justify-content:center">MODEL YOUR RETURNS</p>
+    <h2>See what your investment<br><span>could actually earn.</span></h2>
+    <p>Use the Returns Calculator to project rental income and capital appreciation — before committing a franc.</p>
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+      <a href="../../pages/invest/calculator.html" class="btn btn-primary" style="font-size:1rem;padding:0.85rem 2rem">Open Returns Calculator</a>
+      <a href="../../pages/invest/fractional.html" class="btn-ghost-light">Browse fractional deals</a>
+    </div>
+  </div>
+</section>
+
+<div id="site-footer"></div>
+<script src="../../assets/js/core.js" data-root="../../"></script>
+<script>
+(function () {
+  function applyFilters() {
+    var location = document.getElementById('filter-location').value;
+    var type     = document.getElementById('filter-type').value;
+    var price    = document.getElementById('filter-price').value;
+    var cards    = document.querySelectorAll('#listings-grid .prop-card');
+    var visible  = 0;
+    cards.forEach(function (card) {
+      var locMatch  = !location || card.dataset.location === location;
+      var typeMatch = !type     || card.dataset.type     === type;
+      var p         = parseInt(card.dataset.price) || 0;
+      var priceMatch = !price
+        || (price === 'low'  && p < 50000000)
+        || (price === 'mid'  && p >= 50000000 && p <= 120000000)
+        || (price === 'high' && p > 120000000);
+      var show = locMatch && typeMatch && priceMatch;
+      card.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    document.getElementById('empty-state').style.display = visible ? 'none' : 'block';
+  }
+  document.querySelectorAll('.filter-select').forEach(function (s) {
+    s.addEventListener('change', applyFilters);
+  });
+})();
+</script>
+</body>
+</html>

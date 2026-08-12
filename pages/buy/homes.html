@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <script>(function(){var t=localStorage.getItem('imali-theme')||'light';document.documentElement.setAttribute('data-theme',t);})();</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Homes &amp; Apartments in Rwanda — Imali.biz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/animations.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <style>
+    .breadcrumb { font-size: 0.8rem; color: var(--text-faint); display: flex; align-items: center; gap: 0.4rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
+    .breadcrumb a { color: var(--text-faint); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--orange); }
+    .breadcrumb span { opacity: 0.45; }
+  </style>
+</head>
+<body>
+<div class="cursor" aria-hidden="true"></div>
+<div class="cursor-ring" aria-hidden="true"></div>
+
+<div id="site-nav"></div>
+
+<!-- ── Page header ──────────────────────────────────────── -->
+<header class="page-header">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="../../index.html">Home</a>
+      <span aria-hidden="true">/</span>
+      <a href="index.html">Buy</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">Homes &amp; Apartments</span>
+    </nav>
+    <div class="page-header-row">
+      <div>
+        <p class="eyebrow">BUY A HOME</p>
+        <h1>Homes &amp; apartments across Rwanda</h1>
+        <p class="sub-text">Houses, apartments, and villas — filter by type, size, and location. Trust scores on every listing.</p>
+      </div>
+      <a href="../../auth/register.html" class="btn btn-primary">Save a search</a>
+    </div>
+  </div>
+</header>
+
+<!-- ── Listings ─────────────────────────────────────────── -->
+<main>
+  <div class="container" style="padding-top:0">
+
+    <!-- Filter bar -->
+    <div class="filter-bar" role="search" aria-label="Filter home listings">
+      <select class="filter-select" data-filter="type" aria-label="Filter by property type">
+        <option value="">All types</option>
+        <option value="house">Houses</option>
+        <option value="apartment">Apartments</option>
+      </select>
+      <select class="filter-select" data-filter="location" aria-label="Filter by district">
+        <option value="">All Districts</option>
+        <option value="gasabo">Gasabo</option>
+        <option value="kicukiro">Kicukiro</option>
+        <option value="nyarugenge">Nyarugenge</option>
+        <option value="musanze">Musanze</option>
+        <option value="rubavu">Rubavu</option>
+      </select>
+      <select class="filter-select" data-filter="price" aria-label="Filter by maximum price">
+        <option value="">Any price</option>
+        <option value="50m">Under RWF 50M</option>
+        <option value="100m">Under RWF 100M</option>
+        <option value="250m">Under RWF 250M</option>
+        <option value="500m">Under RWF 500M</option>
+      </select>
+      <div class="filter-divider" aria-hidden="true"></div>
+      <span class="sort-label" id="sort-label">Sort:</span>
+      <select class="filter-select" id="sort-select" aria-labelledby="sort-label">
+        <option value="">Newest first</option>
+        <option value="price-asc">Price: Low → High</option>
+        <option value="price-desc">Price: High → Low</option>
+      </select>
+      <span id="result-count" aria-live="polite" aria-atomic="true">6 listings found</span>
+    </div>
+
+    <!-- Cards -->
+    <div class="listings-grid">
+
+      <!-- Card 1 — 4-bed house, Kicukiro -->
+      <a href="#" class="prop-card reveal" data-price="180000000" data-type="house" data-location="kicukiro">
+        <div class="prop-card-photo">
+          <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&auto=format&q=75" alt="4-bedroom house in Kicukiro">
+          <div class="prop-card-badges"><span class="badge badge-orange">House</span></div>
+          <button class="prop-card-save" aria-label="Save listing" onclick="event.preventDefault();imaliAuth.requireLogin(window.location.href)">♡</button>
+        </div>
+        <div class="prop-card-body">
+          <div class="prop-card-price">RWF 180,000,000</div>
+          <div class="prop-card-title">4-Bedroom Family Home — Kicukiro</div>
+          <div class="prop-card-location"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1a3.5 3.5 0 0 1 3.5 3.5C9.5 8 6 11 6 11S2.5 8 2.5 4.5A3.5 3.5 0 0 1 6 1z" stroke="currentColor" stroke-width="1.2" fill="none"/><circle cx="6" cy="4.5" r="1" fill="currentColor"/></svg> Kicukiro District, Kigali</div>
+          <div class="prop-card-specs">
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 8h12M3 8V5h8v3M1 8v3h12V8" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg> 4 Beds</span>
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="2" y="4" width="10" height="7" rx="1" stroke="currentColor" stroke-width="1.1"/><path d="M5 4V3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1" stroke="currentColor" stroke-width="1.1"/></svg> 3 Baths</span>
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="1" y="1" width="12" height="12" rx="1" stroke="currentColor" stroke-width="1.2"/></svg> 240 m²</span>
+          </div>
+          <div class="trust-row">
+            <span class="trust-pill" data-score="mid" title="Seller Trust Score — ID verified, limited platform history"><span class="trust-pill-icon">👤</span><span class="trust-pill-label">Seller Trust Score</span><span class="trust-pill-val">71/100</span></span>
+            <span class="trust-pill" data-score="high" title="Property Trust Score — title deed and building plans uploaded"><span class="trust-pill-icon">📄</span><span class="trust-pill-label">Property Trust Score</span><span class="trust-pill-val">92/100</span></span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Card 2 — 2-bed apartment, Nyarugenge -->
+      <a href="#" class="prop-card reveal reveal-delay-1" data-price="95000000" data-type="apartment" data-location="nyarugenge">
+        <div class="prop-card-photo">
+          <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&auto=format&q=75" alt="2-bedroom apartment in Nyarugenge">
+          <div class="prop-card-badges"><span class="badge badge-muted">Apartment</span><span class="badge badge-dark">New</span></div>
+          <button class="prop-card-save" aria-label="Save listing" onclick="event.preventDefault();imaliAuth.requireLogin(window.location.href)">♡</button>
+        </div>
+        <div class="prop-card-body">
+          <div class="prop-card-price">RWF 95,000,000</div>
+          <div class="prop-card-title">2-Bed Apartment — CBD View, Nyarugenge</div>
+          <div class="prop-card-location"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1a3.5 3.5 0 0 1 3.5 3.5C9.5 8 6 11 6 11S2.5 8 2.5 4.5A3.5 3.5 0 0 1 6 1z" stroke="currentColor" stroke-width="1.2" fill="none"/><circle cx="6" cy="4.5" r="1" fill="currentColor"/></svg> Nyarugenge District, Kigali</div>
+          <div class="prop-card-specs">
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 8h12M3 8V5h8v3M1 8v3h12V8" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg> 2 Beds</span>
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="2" y="4" width="10" height="7" rx="1" stroke="currentColor" stroke-width="1.1"/></svg> 2 Baths</span>
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="1" y="1" width="12" height="12" rx="1" stroke="currentColor" stroke-width="1.2"/></svg> 120 m²</span>
+          </div>
+          <div class="trust-row">
+            <span class="trust-pill" data-score="high" title="Seller Trust Score — agency-verified, 30+ transactions"><span class="trust-pill-icon">👤</span><span class="trust-pill-label">Seller Trust Score</span><span class="trust-pill-val">82/100</span></span>
+            <span class="trust-pill" data-score="mid" title="Property Trust Score — title deed present, some documents pending"><span class="trust-pill-icon">📄</span><span class="trust-pill-label">Property Trust Score</span><span class="trust-pill-val">68/100</span></span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Card 3 — 3-bed house, Gasabo Remera -->
+      <a href="#" class="prop-card reveal reveal-delay-2" data-price="150000000" data-type="house" data-location="gasabo">
+        <div class="prop-card-photo">
+          <img src="https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=600&auto=format&q=75" alt="3-bedroom house in Gasabo Remera">
+          <div class="prop-card-badges"><span class="badge badge-orange">House</span></div>
+          <button class="prop-card-save" aria-label="Save listing" onclick="event.preventDefault();imaliAuth.requireLogin(window.location.href)">♡</button>
+        </div>
+        <div class="prop-card-body">
+          <div class="prop-card-price">RWF 150,000,000</div>
+          <div class="prop-card-title">3-Bedroom Home — Gasabo, Remera</div>
+          <div class="prop-card-location"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1a3.5 3.5 0 0 1 3.5 3.5C9.5 8 6 11 6 11S2.5 8 2.5 4.5A3.5 3.5 0 0 1 6 1z" stroke="currentColor" stroke-width="1.2" fill="none"/><circle cx="6" cy="4.5" r="1" fill="currentColor"/></svg> Gasabo District, Kigali</div>
+          <div class="prop-card-specs">
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 8h12M3 8V5h8v3M1 8v3h12V8" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg> 3 Beds</span>
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="2" y="4" width="10" height="7" rx="1" stroke="currentColor" stroke-width="1.1"/><path d="M5 4V3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1" stroke="currentColor" stroke-width="1.1"/></svg> 2 Baths</span>
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="1" y="1" width="12" height="12" rx="1" stroke="currentColor" stroke-width="1.2"/></svg> 185 m²</span>
+          </div>
+          <div class="trust-row">
+            <span class="trust-pill" data-score="high" title="Seller Trust Score — 8 completed deals, high response rate"><span class="trust-pill-icon">👤</span><span class="trust-pill-label">Seller Trust Score</span><span class="trust-pill-val">89/100</span></span>
+            <span class="trust-pill" data-score="high" title="Property Trust Score — full documentation, photos verified"><span class="trust-pill-icon">📄</span><span class="trust-pill-label">Property Trust Score</span><span class="trust-pill-val">94/100</span></span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Card 4 — Studio apartment, Nyarugenge CBD -->
+      <a href="#" class="prop-card reveal" data-price="42000000" data-type="apartment" data-location="nyarugenge">
+        <div class="prop-card-photo">
+          <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600&auto=format&q=75" alt="Studio apartment in Nyarugenge CBD">
+          <div class="prop-card-badges"><span class="badge badge-muted">Apartment</span><span class="badge badge-dark">New</span></div>
+          <button class="prop-card-save" aria-label="Save listing" onclick="event.preventDefault();imaliAuth.requireLogin(window.location.href)">♡</button>
+        </div>
+        <div class="prop-card-body">
+          <div class="prop-card-price">RWF 42,000,000</div>
+          <div class="prop-card-title">Studio Apartment — CBD, Nyarugenge</div>
+          <div class="prop-card-location"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1a3.5 3.5 0 0 1 3.5 3.5C9.5 8 6 11 6 11S2.5 8 2.5 4.5A3.5 3.5 0 0 1 6 1z" stroke="currentColor" stroke-width="1.2" fill="none"/><circle cx="6" cy="4.5" r="1" fill="currentColor"/></svg> Nyarugenge District, Kigali</div>
+          <div class="prop-card-specs">
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 8h12M3 8V5h8v3M1 8v3h12V8" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg> Studio</span>
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="2" y="4" width="10" height="7" rx="1" stroke="currentColor" stroke-width="1.1"/></svg> 1 Bath</span>
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="1" y="1" width="12" height="12" rx="1" stroke="currentColor" stroke-width="1.2"/></svg> 52 m²</span>
+          </div>
+          <div class="trust-row">
+            <span class="trust-pill" data-score="mid" title="Seller Trust Score — developer account, 5 listings"><span class="trust-pill-icon">👤</span><span class="trust-pill-label">Seller Trust Score</span><span class="trust-pill-val">76/100</span></span>
+            <span class="trust-pill" data-score="high" title="Property Trust Score — new build, full documentation"><span class="trust-pill-icon">📄</span><span class="trust-pill-label">Property Trust Score</span><span class="trust-pill-val">88/100</span></span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Card 5 — 5-bed villa, Kiyovu -->
+      <a href="#" class="prop-card reveal reveal-delay-1" data-price="350000000" data-type="house" data-location="nyarugenge">
+        <div class="prop-card-photo">
+          <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&auto=format&q=75" alt="5-bedroom villa in Kiyovu Kigali">
+          <div class="prop-card-badges"><span class="badge badge-orange">Villa</span><span class="badge badge-dark">Premium</span></div>
+          <button class="prop-card-save" aria-label="Save listing" onclick="event.preventDefault();imaliAuth.requireLogin(window.location.href)">♡</button>
+        </div>
+        <div class="prop-card-body">
+          <div class="prop-card-price">RWF 350,000,000</div>
+          <div class="prop-card-title">5-Bedroom Villa — Kiyovu, Kigali</div>
+          <div class="prop-card-location"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1a3.5 3.5 0 0 1 3.5 3.5C9.5 8 6 11 6 11S2.5 8 2.5 4.5A3.5 3.5 0 0 1 6 1z" stroke="currentColor" stroke-width="1.2" fill="none"/><circle cx="6" cy="4.5" r="1" fill="currentColor"/></svg> Nyarugenge District, Kigali</div>
+          <div class="prop-card-specs">
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 8h12M3 8V5h8v3M1 8v3h12V8" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg> 5 Beds</span>
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="2" y="4" width="10" height="7" rx="1" stroke="currentColor" stroke-width="1.1"/><path d="M5 4V3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1" stroke="currentColor" stroke-width="1.1"/></svg> 4 Baths</span>
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="1" y="1" width="12" height="12" rx="1" stroke="currentColor" stroke-width="1.2"/></svg> 480 m²</span>
+          </div>
+          <div class="trust-row">
+            <span class="trust-pill" data-score="high" title="Seller Trust Score — verified agency, 50+ transactions"><span class="trust-pill-icon">👤</span><span class="trust-pill-label">Seller Trust Score</span><span class="trust-pill-val">94/100</span></span>
+            <span class="trust-pill" data-score="high" title="Property Trust Score — full documentation, independently verified"><span class="trust-pill-icon">📄</span><span class="trust-pill-label">Property Trust Score</span><span class="trust-pill-val">98/100</span></span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Card 6 — 2-bed apartment, Gasabo -->
+      <a href="#" class="prop-card reveal reveal-delay-2" data-price="75000000" data-type="apartment" data-location="gasabo">
+        <div class="prop-card-photo">
+          <img src="https://images.unsplash.com/photo-1449844908441-8829872d2607?w=600&auto=format&q=75" alt="2-bedroom apartment in Gasabo">
+          <div class="prop-card-badges"><span class="badge badge-muted">Apartment</span></div>
+          <button class="prop-card-save" aria-label="Save listing" onclick="event.preventDefault();imaliAuth.requireLogin(window.location.href)">♡</button>
+        </div>
+        <div class="prop-card-body">
+          <div class="prop-card-price">RWF 75,000,000</div>
+          <div class="prop-card-title">2-Bed Apartment — Gasabo, Kacyiru</div>
+          <div class="prop-card-location"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1a3.5 3.5 0 0 1 3.5 3.5C9.5 8 6 11 6 11S2.5 8 2.5 4.5A3.5 3.5 0 0 1 6 1z" stroke="currentColor" stroke-width="1.2" fill="none"/><circle cx="6" cy="4.5" r="1" fill="currentColor"/></svg> Gasabo District, Kigali</div>
+          <div class="prop-card-specs">
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 8h12M3 8V5h8v3M1 8v3h12V8" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg> 2 Beds</span>
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="2" y="4" width="10" height="7" rx="1" stroke="currentColor" stroke-width="1.1"/></svg> 1 Bath</span>
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="1" y="1" width="12" height="12" rx="1" stroke="currentColor" stroke-width="1.2"/></svg> 90 m²</span>
+          </div>
+          <div class="trust-row">
+            <span class="trust-pill" data-score="mid" title="Seller Trust Score — 2 transactions, ID verified"><span class="trust-pill-icon">👤</span><span class="trust-pill-label">Seller Trust Score</span><span class="trust-pill-val">63/100</span></span>
+            <span class="trust-pill" data-score="mid" title="Property Trust Score — title deed present, photos needed"><span class="trust-pill-icon">📄</span><span class="trust-pill-label">Property Trust Score</span><span class="trust-pill-val">79/100</span></span>
+          </div>
+        </div>
+      </a>
+
+    </div><!-- end listings-grid -->
+
+    <!-- Load more -->
+    <div class="load-more-wrap">
+      <button class="btn btn-outline" onclick="imaliAuth.requireLogin()">Load more homes</button>
+    </div>
+
+  </div>
+</main>
+
+<div id="site-footer"></div>
+<script src="../../assets/js/core.js" data-root="../../"></script>
+<script src="../../assets/js/listings.js"></script>
+</body>
+</html>

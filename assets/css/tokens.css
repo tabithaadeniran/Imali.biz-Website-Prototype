@@ -1,0 +1,89 @@
+/*
+ * tokens.css — Imali.biz Design System
+ * All CSS custom properties live here and ONLY here.
+ * Every page imports this first. Never redeclare these elsewhere.
+ */
+
+:root {
+  /* ── Brand constants (never change with theme) ── */
+  --orange:        #F05A22;
+  --orange-dark:   #C44818;
+  --orange-light:  #FF7A4A;
+  --green:         #2EA048;
+  --green-dark:    #1D6E31;
+  --green-light:   #4DC470;
+  --ink:           #0D0D12;
+  --cream:         #F8F5F0;
+  --mist:          #EDE8DF;
+  --white:         #FFFFFF;
+  --text-muted-static: #6B6560;
+
+  /* ── Typography ── */
+  --font-head: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+
+  /* ── Spacing scale ── */
+  --space-xs:  0.25rem;
+  --space-sm:  0.5rem;
+  --space-md:  1rem;
+  --space-lg:  1.5rem;
+  --space-xl:  2.5rem;
+  --space-2xl: 4rem;
+  --space-3xl: 7rem;
+
+  /* ── Radii ── */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-pill: 100px;
+
+  /* ── Shadows ── */
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+  --shadow-md: 0 6px 24px rgba(0,0,0,0.10);
+  --shadow-lg: 0 16px 48px rgba(0,0,0,0.14);
+  --shadow-orange: 0 8px 28px rgba(240,90,34,0.28);
+  --shadow-green:  0 8px 28px rgba(46,160,72,0.22);
+
+  /* ── Semantic tokens — LIGHT MODE (default) ── */
+  --bg:            #F8F5F0;
+  --bg-alt:        #EDE8DF;
+  --bg-card:       #FFFFFF;
+  --surface:       rgba(0,0,0,0.04);
+  --surface-hover: rgba(0,0,0,0.07);
+  --border:        rgba(0,0,0,0.09);
+  --border-strong: rgba(0,0,0,0.16);
+  --text:          #111111;
+  --text-dim:      rgba(17,17,17,0.60);
+  --text-faint:    rgba(17,17,17,0.38);
+  --nav-bg:        rgba(255,255,255,0.98);
+  --input-bg:      rgba(0,0,0,0.04);
+  --input-border:  rgba(0,0,0,0.14);
+  --scrollbar-thumb: rgba(240,90,34,0.25);
+
+  /* ── Accent shortcuts ── */
+  --accent:         var(--orange);
+  --accent-hover:   var(--orange-dark);
+  --accent-2:       var(--green);
+  --accent-2-hover: var(--green-dark);
+
+  /* ── Dark section background (why-us, footer) ── */
+  --bg-dark-section: #0F2418;
+}
+
+[data-theme="dark"] {
+  --bg-dark-section: #060d08;
+  --bg:            #0D0D12;
+  --bg-alt:        #131318;
+  --bg-card:       rgba(248,245,240,0.05);
+  --surface:       rgba(248,245,240,0.05);
+  --surface-hover: rgba(248,245,240,0.09);
+  --border:        rgba(248,245,240,0.09);
+  --border-strong: rgba(248,245,240,0.16);
+  --text:          #F8F5F0;
+  --text-dim:      rgba(248,245,240,0.55);
+  --text-faint:    rgba(248,245,240,0.30);
+  --nav-bg:        rgba(13,13,18,0.98);
+  --input-bg:      rgba(248,245,240,0.06);
+  --input-border:  rgba(248,245,240,0.14);
+  --scrollbar-thumb: rgba(46,160,72,0.30);
+}

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <script>(function(){var t=localStorage.getItem('imali-theme')||'light';document.documentElement.setAttribute('data-theme',t);})();</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invest in Rwandan Property — Imali.biz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/animations.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <style>
+    /* Invest stats strip */
+    .invest-stats {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .invest-stat {
+      flex: 1;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      border-right: 1px solid var(--border);
+    }
+    .invest-stat:last-child { border-right: none; }
+    .invest-stat-val {
+      font-family: var(--font-head);
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 800;
+      color: var(--green);
+      line-height: 1;
+      display: block;
+      margin-bottom: 0.35rem;
+    }
+    .invest-stat-label { font-size: 0.82rem; color: var(--text-dim); }
+
+    /* How returns work section */
+    .returns-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+    .returns-step { padding: 1.75rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); }
+    .returns-step-num {
+      width: 2.25rem; height: 2.25rem;
+      border-radius: 50%;
+      background: var(--green);
+      color: #fff;
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 0.9rem;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1rem;
+    }
+
+    @media (max-width: 600px) {
+      .invest-stats { flex-wrap: wrap; }
+      .invest-stat  { flex: 1 0 50%; border-right: none; border-bottom: 1px solid var(--border); }
+      .invest-stat:nth-child(odd)  { border-right: 1px solid var(--border); }
+      .invest-stat:nth-last-child(-n+2) { border-bottom: none; }
+      .returns-steps { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 900px) {
+      .returns-steps { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="cursor" aria-hidden="true"></div>
+<div class="cursor-ring" aria-hidden="true"></div>
+
+<div id="site-nav"></div>
+
+<!-- ── Hero ─────────────────────────────────────────────── -->
+<section class="sell-hero">
+  <div class="sell-hero-bg" style="background-image:url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&auto=format&q=80')" aria-hidden="true"></div>
+  <div class="container">
+    <div class="sell-hero-content anim-fade-up-1">
+      <p class="eyebrow" style="color:rgba(248,245,240,0.55)">INVEST WITH IMALI.BIZ</p>
+      <h1>Your capital,<br><span>working harder.</span></h1>
+      <p>Access Rwandan real estate — from full ownership to co-investing from RWF 75,000. Every deal documented, verified, and transparent.</p>
+      <div class="sell-hero-btns">
+        <a href="#invest-paths" class="btn btn-primary">See investment options</a>
+        <a href="#how-returns-work" class="btn-ghost-light">How returns work</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Stats strip ──────────────────────────────────────── -->
+<section class="section-pad" style="padding-bottom:0">
+  <div class="container">
+    <div class="invest-stats reveal">
+      <div class="invest-stat">
+        <span class="invest-stat-val">RWF 2.4B</span>
+        <span class="invest-stat-label">Invested on platform</span>
+      </div>
+      <div class="invest-stat">
+        <span class="invest-stat-val">14–22%</span>
+        <span class="invest-stat-label">Projected annual returns</span>
+      </div>
+      <div class="invest-stat">
+        <span class="invest-stat-val">4</span>
+        <span class="invest-stat-label">Active funded projects</span>
+      </div>
+      <div class="invest-stat">
+        <span class="invest-stat-val">180+</span>
+        <span class="invest-stat-label">Registered investors</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Investment paths ──────────────────────────────────── -->
+<section class="section-pad" id="invest-paths">
+  <div class="container">
+    <div class="section-header reveal">
+      <div>
+        <p class="eyebrow">HOW YOU CAN INVEST</p>
+        <h2 class="section-title">Three ways in.<br>One transparent platform.</h2>
+      </div>
+    </div>
+    <div class="invest-paths" style="grid-template-columns: repeat(2, 1fr)">
+
+      <!-- Full Asset -->
+      <a href="../../pages/invest/full-asset.html" class="invest-path reveal">
+        <div class="invest-path-icon">🏦</div>
+        <span class="invest-path-entry">From RWF 20,000,000 <span style="font-size:0.83em;opacity:0.6;font-weight:400">~$13,578</span></span>
+        <h3>Full Asset Deals</h3>
+        <p>Buy a property outright. Title deed in your name from day one. You own the asset completely — rent it, sell it, or hold it as your investment grows.</p>
+        <span class="invest-path-cta">Browse full asset deals →</span>
+      </a>
+
+      <!-- Fractional Investment -->
+      <a href="../../pages/invest/fractional.html" class="invest-path reveal reveal-delay-1">
+        <div class="invest-path-icon">📊</div>
+        <span class="invest-path-entry">From RWF 75,000 <span style="font-size:0.83em;opacity:0.6;font-weight:400">~$51</span></span>
+        <h3>Fractional Investment</h3>
+        <p>Own a verified percentage of a property. Earn your share of rental income and capital appreciation — without needing to buy the whole asset.</p>
+        <span class="invest-path-cta">Explore fractional deals →</span>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Off-plan ────────────────────────────────────────────── -->
+<section class="section-pad" style="background:var(--bg-alt)">
+  <div class="container">
+    <div class="section-header reveal" style="margin-bottom:2rem">
+      <div>
+        <p class="eyebrow">OFF-PLAN DEVELOPMENTS</p>
+        <h2 class="section-title">Reserve a unit or invest<br>before completion.</h2>
+      </div>
+      <p style="max-width:38ch;color:var(--text-dim);line-height:1.6">Four active projects currently available. Lock in pre-launch pricing as a buyer, or earn projected returns of 14–22% p.a. as a fractional or full-asset investor.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem">
+      <a href="../../pages/off-plan-buy/index.html" class="invest-path reveal">
+        <div class="invest-path-icon">🏗️</div>
+        <span class="invest-path-entry">Buyer</span>
+        <h3>Buy Off-Plan</h3>
+        <p>Reserve your unit at today's price and start saving towards your new home — full payment is only due on handover.</p>
+        <span class="invest-path-cta">Browse available units →</span>
+      </a>
+      <a href="../../pages/off-plan-invest/index.html" class="invest-path reveal reveal-delay-1">
+        <div class="invest-path-icon">📈</div>
+        <span class="invest-path-entry">Investor — from RWF 75,000 <span style="font-size:0.83em;opacity:0.6;font-weight:400">~$51</span></span>
+        <h3>Invest in Off-Plan</h3>
+        <p>Fractional stakes from RWF 75,000 or buy a full unit as an investment. Earn projected returns of 14–22% p.a. on verified new developments.</p>
+        <span class="invest-path-cta">View investor projects →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── How returns work ──────────────────────────────────── -->
+<section class="section-pad" id="how-returns-work">
+  <div class="container">
+    <div class="section-header reveal" style="margin-bottom:2rem">
+      <div>
+        <p class="eyebrow">HOW RETURNS WORK</p>
+        <h2 class="section-title">Clear figures.<br>No hidden fees.</h2>
+      </div>
+    </div>
+    <div class="returns-steps">
+      <div class="returns-step reveal">
+        <div class="returns-step-num">1</div>
+        <h3>Choose your investment</h3>
+        <p>Browse verified deals — full asset, fractional, or off-plan. Each listing shows projected returns, entry price, and all relevant documents upfront.</p>
+      </div>
+      <div class="returns-step reveal reveal-delay-1">
+        <div class="returns-step-num">2</div>
+        <h3>Model your ROI</h3>
+        <p>Use the Returns Calculator to project your income based on rental yield and capital appreciation. See your returns before committing a single franc.</p>
+      </div>
+      <div class="returns-step reveal reveal-delay-2">
+        <div class="returns-step-num">3</div>
+        <h3>Earn transparently</h3>
+        <p>Once your investment is placed, your dashboard tracks performance in real time. Returns are distributed on agreed schedules — no guessing, no surprises.</p>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:2.5rem">
+      <a href="../../pages/invest/calculator.html" class="btn btn-primary">Open Returns Calculator</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Why Imali for investing ───────────────────────────── -->
+<section class="section-pad">
+  <div class="container">
+    <div class="section-header reveal" style="margin-bottom:2rem">
+      <div>
+        <p class="eyebrow">WHY IMALI.BIZ</p>
+        <h2 class="section-title">Built for investors<br>who want the facts.</h2>
+      </div>
+    </div>
+    <div class="sell-pillars">
+      <div class="sell-pillar reveal">
+        <div class="sell-pillar-icon">🔍</div>
+        <h4>Every deal independently verified</h4>
+        <p>Title deeds, ownership status, and project timelines are verified before a listing goes live. You see the real picture — not the sales pitch.</p>
+      </div>
+      <div class="sell-pillar reveal reveal-delay-1">
+        <div class="sell-pillar-icon">📊</div>
+        <h4>Transparent projected returns</h4>
+        <p>Real numbers based on comparable market data. Model your ROI before committing — rental yield, capital appreciation, and exit assumptions all shown.</p>
+      </div>
+      <div class="sell-pillar reveal reveal-delay-1">
+        <div class="sell-pillar-icon">🔒</div>
+        <h4>Secured document exchange</h4>
+        <p>All legal documents are uploaded, verified, and shared securely through the platform. No email attachments, no informal processes.</p>
+      </div>
+      <div class="sell-pillar reveal reveal-delay-2">
+        <div class="sell-pillar-icon">🚪</div>
+        <h4>Flexible entry points</h4>
+        <p>From RWF 75,000 (~$51) for fractional stakes to full asset acquisitions from RWF 20,000,000 (~$13,578). Choose the exposure that fits your portfolio and risk appetite.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ──────────────────────────────────────────────── -->
+<section class="sell-cta-section reveal">
+  <div class="container">
+    <p class="eyebrow" style="color:rgba(248,245,240,0.50);justify-content:center">GET STARTED</p>
+    <h2>Start investing<br><span>in under 5 minutes.</span></h2>
+    <p>Free to join. Browse all deals before committing. Create your account and explore what's available today.</p>
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+      <a href="../../auth/register.html" class="btn btn-primary" style="font-size:1rem;padding:0.85rem 2rem">Create Free Account</a>
+      <a href="../../pages/invest/calculator.html" class="btn-ghost-light">Returns Calculator</a>
+    </div>
+  </div>
+</section>
+
+<div id="site-footer"></div>
+<script src="../../assets/js/core.js" data-root="../../"></script>
+</body>
+</html>

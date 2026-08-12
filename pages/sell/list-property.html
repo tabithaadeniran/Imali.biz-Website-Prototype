@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <script>(function(){var t=localStorage.getItem('imali-theme')||'light';document.documentElement.setAttribute('data-theme',t);})();</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>List Your Property — Imali.biz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/animations.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <style>
+    .form-wrap {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    /* Step indicator */
+    .step-indicator {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-bottom: 2.5rem;
+    }
+    .step-dot {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.35rem;
+      flex: 1;
+      position: relative;
+    }
+    .step-dot::after {
+      content: '';
+      position: absolute;
+      top: 14px;
+      left: 50%;
+      width: 100%;
+      height: 2px;
+      background: var(--border);
+      z-index: 0;
+    }
+    .step-dot:last-child::after { display: none; }
+    .step-dot-circle {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      background: var(--surface);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-dim);
+      position: relative;
+      z-index: 1;
+      transition: border-color 0.2s, background 0.2s, color 0.2s;
+    }
+    .step-dot.active .step-dot-circle {
+      border-color: var(--orange);
+      background: var(--orange);
+      color: #fff;
+    }
+    .step-dot.done .step-dot-circle {
+      border-color: var(--green);
+      background: var(--green);
+      color: #fff;
+    }
+    .step-dot-label { font-size: 0.7rem; color: var(--text-dim); font-weight: 500; white-space: nowrap; }
+    .step-dot.active .step-dot-label { color: var(--orange); font-weight: 700; }
+    .step-dot.done .step-dot-label { color: var(--green); }
+
+    /* Form panels */
+    .form-panel { display: none; }
+    .form-panel.active { display: block; }
+    .form-panel-title {
+      font-family: var(--font-head);
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 0.4rem;
+    }
+    .form-panel-sub { font-size: 0.9rem; color: var(--text-dim); margin-bottom: 2rem; line-height: 1.55; }
+
+    /* Listing type cards */
+    .listing-type-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2rem; }
+    .listing-type-card {
+      padding: 1.5rem 1rem;
+      border: 2px solid var(--border);
+      border-radius: var(--radius-lg);
+      cursor: pointer;
+      text-align: center;
+      transition: border-color 0.18s, background 0.18s;
+      background: var(--surface);
+      user-select: none;
+    }
+    .listing-type-card:hover { border-color: var(--orange); }
+    .listing-type-card.selected { border-color: var(--orange); background: rgba(240,90,34,0.05); }
+    .listing-type-icon { font-size: 2rem; margin-bottom: 0.6rem; }
+    .listing-type-name { font-family: var(--font-head); font-size: 0.9rem; font-weight: 700; margin-bottom: 0.25rem; }
+    .listing-type-desc { font-size: 0.75rem; color: var(--text-dim); }
+
+    /* Form fields */
+    .field-group { margin-bottom: 1.5rem; }
+    .field-label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.5rem;
+    }
+    .field-required { color: var(--orange); margin-left: 0.15rem; }
+    .field-input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-md);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      color: var(--text);
+      box-sizing: border-box;
+      transition: border-color 0.18s;
+    }
+    .field-input:focus { outline: none; border-color: var(--orange); }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .field-select {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-md);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      color: var(--text);
+      box-sizing: border-box;
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M3 4.5l3 3 3-3' stroke='%23888' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      transition: border-color 0.18s;
+    }
+    .field-select:focus { outline: none; border-color: var(--orange); }
+    textarea.field-input {
+      resize: vertical;
+      min-height: 110px;
+      line-height: 1.55;
+    }
+    .field-hint { font-size: 0.75rem; color: var(--text-faint); margin-top: 0.4rem; }
+    .price-input-wrap { position: relative; }
+    .price-prefix {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-dim);
+      pointer-events: none;
+    }
+    .price-input-wrap .field-input { padding-left: 4.5rem; }
+
+    /* Upload area */
+    .upload-area {
+      border: 2px dashed var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.18s, background 0.18s;
+      margin-bottom: 1.5rem;
+    }
+    .upload-area:hover { border-color: var(--orange); background: rgba(240,90,34,0.03); }
+    .upload-area-icon { font-size: 2.2rem; margin-bottom: 0.6rem; }
+    .upload-area-label { font-weight: 600; margin-bottom: 0.3rem; }
+    .upload-area-sub { font-size: 0.8rem; color: var(--text-dim); }
+    .doc-list { display: flex; flex-direction: column; gap: 0.6rem; }
+    .doc-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      font-size: 0.85rem;
+    }
+    .doc-item-icon { font-size: 1.1rem; }
+    .doc-item-name { font-weight: 500; flex: 1; }
+    .doc-item-status { font-size: 0.75rem; color: var(--text-dim); }
+
+    /* Form nav */
+    .form-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      margin-top: 2rem;
+    }
+    .btn-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.7rem 1.4rem;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-pill);
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-dim);
+      background: transparent;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .btn-back:hover { border-color: var(--text-dim); color: var(--text); }
+
+    /* Success state */
+    .success-state {
+      text-align: center;
+      padding: 3rem 1.5rem 2rem;
+    }
+    .success-icon {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      background: rgba(46,160,72,0.12);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.2rem;
+      margin: 0 auto 1.5rem;
+    }
+    .success-title {
+      font-family: var(--font-head);
+      font-size: 1.75rem;
+      font-weight: 800;
+      margin-bottom: 0.6rem;
+    }
+    .success-sub {
+      font-size: 0.9rem;
+      color: var(--text-dim);
+      max-width: 38ch;
+      margin: 0 auto 2rem;
+      line-height: 1.65;
+    }
+    .success-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      text-align: left;
+      margin-bottom: 2rem;
+    }
+    .success-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.85rem;
+      padding: 0.85rem 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      font-size: 0.85rem;
+    }
+    .success-step-num {
+      width: 1.5rem; height: 1.5rem;
+      border-radius: 50%;
+      background: var(--green);
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      margin-top: 0.05rem;
+    }
+
+    @media (max-width: 600px) {
+      .listing-type-grid { grid-template-columns: 1fr; }
+      .field-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="cursor" aria-hidden="true"></div>
+<div class="cursor-ring" aria-hidden="true"></div>
+
+<div id="site-nav"></div>
+
+<!-- ── Page header ───────────────────────────────────────── -->
+<section class="page-header">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="../../index.html">Home</a>
+      <span aria-hidden="true">›</span>
+      <a href="../../pages/sell/index.html">Sell</a>
+      <span aria-hidden="true">›</span>
+      <span aria-current="page">List a Property</span>
+    </nav>
+    <h1 class="page-header-title">List a Property</h1>
+    <p class="page-header-sub">Free to list. Takes under 5 minutes. Go live the same day after verification.</p>
+  </div>
+</section>
+
+<!-- ── Form ───────────────────────────────────────────────── -->
+<section class="section-pad">
+  <div class="container">
+    <div class="form-wrap">
+
+      <!-- Step indicator -->
+      <div class="step-indicator" id="step-indicator" aria-label="Form progress">
+        <div class="step-dot active" data-step="1">
+          <div class="step-dot-circle">1</div>
+          <span class="step-dot-label">Type</span>
+        </div>
+        <div class="step-dot" data-step="2">
+          <div class="step-dot-circle">2</div>
+          <span class="step-dot-label">Details</span>
+        </div>
+        <div class="step-dot" data-step="3">
+          <div class="step-dot-circle">3</div>
+          <span class="step-dot-label">Pricing</span>
+        </div>
+        <div class="step-dot" data-step="4">
+          <div class="step-dot-circle">4</div>
+          <span class="step-dot-label">Documents</span>
+        </div>
+      </div>
+
+      <!-- ── Step 1: Type ── -->
+      <div class="form-panel active" id="panel-1">
+        <div class="form-panel-title">What are you listing?</div>
+        <div class="form-panel-sub">Choose the type of property you want to list. This sets the fields for the next steps.</div>
+
+        <div class="listing-type-grid">
+          <div class="listing-type-card selected" data-listing-type="land" role="radio" aria-checked="true" tabindex="0">
+            <div class="listing-type-icon">🌿</div>
+            <div class="listing-type-name">Land or Plot</div>
+            <div class="listing-type-desc">Residential, commercial, or agricultural</div>
+          </div>
+          <div class="listing-type-card" data-listing-type="residential" role="radio" aria-checked="false" tabindex="0">
+            <div class="listing-type-icon">🏠</div>
+            <div class="listing-type-name">Home or Apartment</div>
+            <div class="listing-type-desc">House, flat, villa, or bungalow</div>
+          </div>
+          <div class="listing-type-card" data-listing-type="commercial" role="radio" aria-checked="false" tabindex="0">
+            <div class="listing-type-icon">🏢</div>
+            <div class="listing-type-name">Commercial</div>
+            <div class="listing-type-desc">Office, retail, warehouse, or mixed-use</div>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="lister-role">You are listing as<span class="field-required">*</span></label>
+          <select class="field-select" id="lister-role">
+            <option value="owner">Landowner / Property owner (listing your own property)</option>
+            <option value="agent">Agent (listing on behalf of a seller)</option>
+          </select>
+        </div>
+
+        <div class="form-nav" style="border-top:none;padding-top:0;justify-content:flex-end">
+          <button class="btn btn-primary" id="next-1">Continue →</button>
+        </div>
+      </div>
+
+      <!-- ── Step 2: Details ── -->
+      <div class="form-panel" id="panel-2">
+        <div class="form-panel-title">Location &amp; details</div>
+        <div class="form-panel-sub">Tell buyers where the property is and what makes it worth their time.</div>
+
+        <div class="field-group">
+          <div class="field-row">
+            <div>
+              <label class="field-label" for="district">District<span class="field-required">*</span></label>
+              <select class="field-select" id="district">
+                <option value="">Select district</option>
+                <optgroup label="Kigali">
+                  <option>Gasabo</option>
+                  <option>Kicukiro</option>
+                  <option>Nyarugenge</option>
+                </optgroup>
+                <optgroup label="Northern Province">
+                  <option>Musanze</option>
+                  <option>Rulindo</option>
+                  <option>Gicumbi</option>
+                </optgroup>
+                <optgroup label="Eastern Province">
+                  <option>Bugesera</option>
+                  <option>Rwamagana</option>
+                  <option>Kayonza</option>
+                </optgroup>
+                <optgroup label="Western Province">
+                  <option>Rubavu</option>
+                  <option>Rusizi</option>
+                  <option>Karongi</option>
+                </optgroup>
+                <optgroup label="Southern Province">
+                  <option>Huye</option>
+                  <option>Muhanga</option>
+                  <option>Nyanza</option>
+                </optgroup>
+              </select>
+            </div>
+            <div>
+              <label class="field-label" for="sector">Sector / Neighbourhood</label>
+              <input class="field-input" type="text" id="sector" placeholder="e.g. Kimihurura">
+            </div>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <div class="field-row">
+            <div>
+              <label class="field-label" for="plot-size">Size (m²)<span class="field-required">*</span></label>
+              <input class="field-input" type="number" id="plot-size" placeholder="e.g. 500" min="1">
+            </div>
+            <div id="bedrooms-wrap">
+              <label class="field-label" for="bedrooms">Bedrooms</label>
+              <select class="field-select" id="bedrooms">
+                <option value="">Not applicable</option>
+                <option>1</option><option>2</option><option>3</option>
+                <option>4</option><option>5</option><option>6+</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="title-status">Title deed status<span class="field-required">*</span></label>
+          <select class="field-select" id="title-status">
+            <option value="yes">Title deed present and clean</option>
+            <option value="processing">Title deed in process</option>
+            <option value="no">No title deed yet</option>
+          </select>
+          <div class="field-hint">Listings with a title deed receive a higher Property Trust Score and more enquiries.</div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="description">Brief description</label>
+          <textarea class="field-input" id="description" placeholder="Describe the property — location highlights, access road, nearby landmarks, any recent development…" rows="4"></textarea>
+        </div>
+
+        <div class="form-nav">
+          <button class="btn-back" id="back-2">← Back</button>
+          <button class="btn btn-primary" id="next-2">Continue →</button>
+        </div>
+      </div>
+
+      <!-- ── Step 3: Pricing ── -->
+      <div class="form-panel" id="panel-3">
+        <div class="form-panel-title">Pricing &amp; photos</div>
+        <div class="form-panel-sub">Set your asking price and add at least one photo. Listings with photos receive 5× more enquiries.</div>
+
+        <div class="field-group">
+          <label class="field-label" for="price">Asking price (RWF)<span class="field-required">*</span></label>
+          <div class="price-input-wrap">
+            <span class="price-prefix">RWF</span>
+            <input class="field-input" type="number" id="price" placeholder="e.g. 45000000" min="0" step="500000">
+          </div>
+          <div class="field-hint" id="price-usd"></div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" style="display:flex;align-items:center;gap:0.6rem;cursor:pointer">
+            <input type="checkbox" id="negotiable" style="width:1rem;height:1rem;accent-color:var(--orange)">
+            Asking price is negotiable
+          </label>
+        </div>
+
+        <div class="field-group">
+          <div class="field-label">Photos <span class="field-required">*</span></div>
+          <div class="upload-area" role="button" tabindex="0" aria-label="Upload property photos">
+            <div class="upload-area-icon">📷</div>
+            <div class="upload-area-label">Drag photos here or click to upload</div>
+            <div class="upload-area-sub">JPG or PNG · Max 10MB each · Up to 12 photos</div>
+          </div>
+          <div class="field-hint">First photo becomes your listing thumbnail. Clear, well-lit photos significantly increase enquiries.</div>
+        </div>
+
+        <div class="form-nav">
+          <button class="btn-back" id="back-3">← Back</button>
+          <button class="btn btn-primary" id="next-3">Continue →</button>
+        </div>
+      </div>
+
+      <!-- ── Step 4: Documents ── -->
+      <div class="form-panel" id="panel-4">
+        <div class="form-panel-title">Documents</div>
+        <div class="form-panel-sub">Upload your title deed and any supporting documents. These are shared securely with serious buyers only — never publicly visible.</div>
+
+        <div class="upload-area" role="button" tabindex="0" aria-label="Upload documents" style="margin-bottom:1rem">
+          <div class="upload-area-icon">📄</div>
+          <div class="upload-area-label">Upload title deed and ownership documents</div>
+          <div class="upload-area-sub">PDF, JPG, or PNG · Max 20MB each</div>
+        </div>
+
+        <div class="doc-list" style="margin-bottom:1.5rem">
+          <div class="doc-item">
+            <span class="doc-item-icon">📋</span>
+            <span class="doc-item-name">Title Deed</span>
+            <span class="doc-item-status">Required</span>
+          </div>
+          <div class="doc-item">
+            <span class="doc-item-icon">🗺️</span>
+            <span class="doc-item-name">Site / Survey Plan</span>
+            <span class="doc-item-status">Recommended</span>
+          </div>
+          <div class="doc-item">
+            <span class="doc-item-icon">🪪</span>
+            <span class="doc-item-name">Owner ID (Indangamuntu)</span>
+            <span class="doc-item-status">Required for verification</span>
+          </div>
+        </div>
+
+        <div style="background:rgba(46,160,72,0.06);border:1px solid rgba(46,160,72,0.18);border-radius:var(--radius-md);padding:1rem 1.25rem;font-size:0.82rem;color:var(--text-dim);line-height:1.6;margin-bottom:1.5rem">
+          🔒 <strong style="color:var(--text)">Your documents are private.</strong> They are only shared with buyers after you approve the enquiry. Imali.biz verifies documents to generate your Property Trust Score — this is not the same as sharing them publicly.
+        </div>
+
+        <div class="form-nav">
+          <button class="btn-back" id="back-4">← Back</button>
+          <button class="btn btn-primary" id="submit-btn" style="min-width:160px">Submit listing →</button>
+        </div>
+      </div>
+
+      <!-- ── Success state ── -->
+      <div class="form-panel" id="panel-success">
+        <div class="success-state">
+          <div class="success-icon">✅</div>
+          <div class="success-title">Listing received</div>
+          <p class="success-sub">Your property has been submitted for review. We'll verify your documents and publish your listing within 24 hours.</p>
+
+          <div class="success-steps">
+            <div class="success-step">
+              <div class="success-step-num">1</div>
+              <div><strong>Document verification</strong> — our team reviews your title deed and ownership documents. Usually done within a few hours.</div>
+            </div>
+            <div class="success-step">
+              <div class="success-step-num">2</div>
+              <div><strong>Trust Score assigned</strong> — your Seller Trust Score and Property Trust Score are calculated and attached to the listing.</div>
+            </div>
+            <div class="success-step">
+              <div class="success-step-num">3</div>
+              <div><strong>Listing goes live</strong> — once approved, your property appears in search results and starts receiving matched enquiries.</div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+            <a href="../../auth/register.html" class="btn btn-primary" style="font-size:1rem;padding:0.85rem 2rem">Create your account</a>
+            <a href="../../pages/sell/index.html" class="btn btn-outline">Back to sell hub</a>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /form-wrap -->
+  </div>
+</section>
+
+<div id="site-footer"></div>
+<script src="../../assets/js/core.js" data-root="../../"></script>
+<script>
+(function () {
+  var currentStep = 1;
+  var totalSteps  = 4;
+
+  function goTo(step) {
+    document.querySelectorAll('.form-panel').forEach(function (p) { p.classList.remove('active'); });
+    var panel = document.getElementById(step === 'success' ? 'panel-success' : 'panel-' + step);
+    if (panel) panel.classList.add('active');
+
+    // Update step indicator
+    document.querySelectorAll('.step-dot').forEach(function (dot) {
+      var s = parseInt(dot.dataset.step);
+      dot.classList.remove('active', 'done');
+      if (s < step) dot.classList.add('done');
+      else if (s === step) dot.classList.add('active');
+    });
+
+    currentStep = step;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Listing type selection
+  document.querySelectorAll('.listing-type-card').forEach(function (card) {
+    card.addEventListener('click', function () {
+      document.querySelectorAll('.listing-type-card').forEach(function (c) {
+        c.classList.remove('selected');
+        c.setAttribute('aria-checked', 'false');
+      });
+      card.classList.add('selected');
+      card.setAttribute('aria-checked', 'true');
+    });
+    card.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.click(); }
+    });
+  });
+
+  // Price → USD hint
+  var priceInput = document.getElementById('price');
+  var priceUsd   = document.getElementById('price-usd');
+  if (priceInput && priceUsd) {
+    priceInput.addEventListener('input', function () {
+      var rwf = parseFloat(priceInput.value) || 0;
+      priceUsd.textContent = rwf > 0
+        ? '≈ $' + Math.round(rwf / 1473).toLocaleString('en-US') + ' USD (at 1 USD = RWF 1,473)'
+        : '';
+    });
+  }
+
+  // Nav buttons
+  document.getElementById('next-1').addEventListener('click', function () { goTo(2); });
+  document.getElementById('next-2').addEventListener('click', function () { goTo(3); });
+  document.getElementById('next-3').addEventListener('click', function () { goTo(4); });
+  document.getElementById('back-2').addEventListener('click', function () { goTo(1); });
+  document.getElementById('back-3').addEventListener('click', function () { goTo(2); });
+  document.getElementById('back-4').addEventListener('click', function () { goTo(3); });
+  document.getElementById('submit-btn').addEventListener('click', function () { goTo('success'); });
+})();
+</script>
+</body>
+</html>

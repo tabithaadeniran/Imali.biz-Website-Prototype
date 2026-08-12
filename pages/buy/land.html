@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <script>(function(){var t=localStorage.getItem('imali-theme')||'light';document.documentElement.setAttribute('data-theme',t);})();</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Browse Land in Rwanda — Imali.biz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/animations.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <style>
+    .breadcrumb { font-size: 0.8rem; color: var(--text-faint); display: flex; align-items: center; gap: 0.4rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
+    .breadcrumb a { color: var(--text-faint); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--orange); }
+    .breadcrumb span { opacity: 0.45; }
+  </style>
+</head>
+<body>
+<div class="cursor" aria-hidden="true"></div>
+<div class="cursor-ring" aria-hidden="true"></div>
+
+<div id="site-nav"></div>
+
+<!-- ── Page header ──────────────────────────────────────── -->
+<header class="page-header">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="../../index.html">Home</a>
+      <span aria-hidden="true">/</span>
+      <a href="index.html">Buy</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">Land</span>
+    </nav>
+    <div class="page-header-row">
+      <div>
+        <p class="eyebrow">BUY LAND</p>
+        <h1>Land plots across Rwanda</h1>
+        <p class="sub-text">Residential, commercial, and agricultural land — with title deed status and trust scores on every listing.</p>
+      </div>
+      <a href="../../auth/register.html" class="btn btn-primary">Save a search</a>
+    </div>
+  </div>
+</header>
+
+<!-- ── Listings ─────────────────────────────────────────── -->
+<main>
+  <div class="container" style="padding-top:0">
+
+    <!-- Filter bar -->
+    <div class="filter-bar" role="search" aria-label="Filter land listings">
+      <select class="filter-select" data-filter="location" aria-label="Filter by district">
+        <option value="">All Districts</option>
+        <option value="gasabo">Gasabo</option>
+        <option value="kicukiro">Kicukiro</option>
+        <option value="nyarugenge">Nyarugenge</option>
+        <option value="musanze">Musanze</option>
+        <option value="rubavu">Rubavu</option>
+        <option value="bugesera">Bugesera</option>
+      </select>
+      <select class="filter-select" data-filter="price" aria-label="Filter by maximum price">
+        <option value="">Any price</option>
+        <option value="20m">Under RWF 20M</option>
+        <option value="50m">Under RWF 50M</option>
+        <option value="100m">Under RWF 100M</option>
+        <option value="250m">Under RWF 250M</option>
+        <option value="500m">Under RWF 500M</option>
+      </select>
+      <div class="filter-divider" aria-hidden="true"></div>
+      <span class="sort-label" id="sort-label">Sort:</span>
+      <select class="filter-select" id="sort-select" aria-labelledby="sort-label">
+        <option value="">Newest first</option>
+        <option value="price-asc">Price: Low → High</option>
+        <option value="price-desc">Price: High → Low</option>
+      </select>
+      <span id="result-count" aria-live="polite" aria-atomic="true">6 listings found</span>
+    </div>
+
+    <!-- Cards -->
+    <div class="listings-grid">
+
+      <!-- Card 1 — Gasabo Kibagabaga -->
+      <a href="#" class="prop-card reveal" data-price="45000000" data-type="land" data-location="gasabo">
+        <div class="prop-card-photo">
+          <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&auto=format&q=75" alt="600sqm land plot in Kibagabaga, Gasabo">
+          <div class="prop-card-badges"><span class="badge badge-green">Land</span><span class="badge badge-dark">Title Deed</span></div>
+          <button class="prop-card-save" aria-label="Save listing" onclick="event.preventDefault();imaliAuth.requireLogin(window.location.href)">♡</button>
+        </div>
+        <div class="prop-card-body">
+          <div class="prop-card-price">RWF 45,000,000</div>
+          <div class="prop-card-title">600 sqm Plot — Gasabo, Kibagabaga</div>
+          <div class="prop-card-location"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1a3.5 3.5 0 0 1 3.5 3.5C9.5 8 6 11 6 11S2.5 8 2.5 4.5A3.5 3.5 0 0 1 6 1z" stroke="currentColor" stroke-width="1.2" fill="none"/><circle cx="6" cy="4.5" r="1" fill="currentColor"/></svg> Gasabo District, Kigali</div>
+          <div class="prop-card-specs">
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="1" y="1" width="12" height="12" rx="1" stroke="currentColor" stroke-width="1.2"/></svg> 600 m²</span>
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 13V5l6-4 6 4v8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg> Title Deed</span>
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.2"/><path d="M7 4v3l2 2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg> For Sale</span>
+          </div>
+          <div class="trust-row">
+            <span class="trust-pill" data-score="high" title="Seller Trust Score — verified ID, 12 completed deals"><span class="trust-pill-icon">👤</span><span class="trust-pill-label">Seller Trust Score</span><span class="trust-pill-val">87/100</span></span>
+            <span class="trust-pill" data-score="high" title="Property Trust Score — title deed present, survey complete"><span class="trust-pill-icon">📄</span><span class="trust-pill-label">Property Trust Score</span><span class="trust-pill-val">95/100</span></span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Card 2 — Kicukiro Niboye -->
+      <a href="#" class="prop-card reveal reveal-delay-1" data-price="120000000" data-type="land" data-location="kicukiro">
+        <div class="prop-card-photo">
+          <img src="https://images.unsplash.com/photo-1501854140801-50d01698950b?w=600&auto=format&q=75" alt="1500sqm residential land plot in Kicukiro Niboye">
+          <div class="prop-card-badges"><span class="badge badge-green">Land</span><span class="badge badge-dark">Residential</span></div>
+          <button class="prop-card-save" aria-label="Save listing" onclick="event.preventDefault();imaliAuth.requireLogin(window.location.href)">♡</button>
+        </div>
+        <div class="prop-card-body">
+          <div class="prop-card-price">RWF 120,000,000</div>
+          <div class="prop-card-title">1,500 sqm Plot — Kicukiro, Niboye</div>
+          <div class="prop-card-location"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1a3.5 3.5 0 0 1 3.5 3.5C9.5 8 6 11 6 11S2.5 8 2.5 4.5A3.5 3.5 0 0 1 6 1z" stroke="currentColor" stroke-width="1.2" fill="none"/><circle cx="6" cy="4.5" r="1" fill="currentColor"/></svg> Kicukiro District, Kigali</div>
+          <div class="prop-card-specs">
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="1" y="1" width="12" height="12" rx="1" stroke="currentColor" stroke-width="1.2"/></svg> 1,500 m²</span>
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 13V5l6-4 6 4v8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg> Title Deed</span>
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.2"/><path d="M7 4v3l2 2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg> For Sale</span>
+          </div>
+          <div class="trust-row">
+            <span class="trust-pill" data-score="mid" title="Seller Trust Score — ID verified, limited platform history"><span class="trust-pill-icon">👤</span><span class="trust-pill-label">Seller Trust Score</span><span class="trust-pill-val">72/100</span></span>
+            <span class="trust-pill" data-score="high" title="Property Trust Score — title deed present, survey complete"><span class="trust-pill-icon">📄</span><span class="trust-pill-label">Property Trust Score</span><span class="trust-pill-val">88/100</span></span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Card 3 — Musanze -->
+      <a href="#" class="prop-card reveal reveal-delay-2" data-price="28000000" data-type="land" data-location="musanze">
+        <div class="prop-card-photo">
+          <img src="https://images.unsplash.com/photo-1448375240586-882707db888b?w=600&auto=format&q=75" alt="800sqm land plot in Musanze, northern Rwanda">
+          <div class="prop-card-badges"><span class="badge badge-green">Land</span><span class="badge badge-dark">Freehold</span></div>
+          <button class="prop-card-save" aria-label="Save listing" onclick="event.preventDefault();imaliAuth.requireLogin(window.location.href)">♡</button>
+        </div>
+        <div class="prop-card-body">
+          <div class="prop-card-price">RWF 28,000,000</div>
+          <div class="prop-card-title">800 sqm Plot — Musanze District</div>
+          <div class="prop-card-location"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1a3.5 3.5 0 0 1 3.5 3.5C9.5 8 6 11 6 11S2.5 8 2.5 4.5A3.5 3.5 0 0 1 6 1z" stroke="currentColor" stroke-width="1.2" fill="none"/><circle cx="6" cy="4.5" r="1" fill="currentColor"/></svg> Musanze District</div>
+          <div class="prop-card-specs">
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="1" y="1" width="12" height="12" rx="1" stroke="currentColor" stroke-width="1.2"/></svg> 800 m²</span>
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 13V5l6-4 6 4v8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg> Freehold</span>
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.2"/><path d="M7 4v3l2 2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg> For Sale</span>
+          </div>
+          <div class="trust-row">
+            <span class="trust-pill" data-score="mid" title="Seller Trust Score — ID verified, 3 previous transactions"><span class="trust-pill-icon">👤</span><span class="trust-pill-label">Seller Trust Score</span><span class="trust-pill-val">65/100</span></span>
+            <span class="trust-pill" data-score="mid" title="Property Trust Score — freehold verified, survey pending"><span class="trust-pill-icon">📄</span><span class="trust-pill-label">Property Trust Score</span><span class="trust-pill-val">70/100</span></span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Card 4 — Rubavu (2 hectares) -->
+      <a href="#" class="prop-card reveal" data-price="80000000" data-type="land" data-location="rubavu">
+        <div class="prop-card-photo">
+          <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&auto=format&q=75" alt="2 hectare agricultural plot in Rubavu">
+          <div class="prop-card-badges"><span class="badge badge-green">Land</span><span class="badge badge-dark">Agricultural</span></div>
+          <button class="prop-card-save" aria-label="Save listing" onclick="event.preventDefault();imaliAuth.requireLogin(window.location.href)">♡</button>
+        </div>
+        <div class="prop-card-body">
+          <div class="prop-card-price">RWF 80,000,000</div>
+          <div class="prop-card-title">2 Hectare Plot — Rubavu District</div>
+          <div class="prop-card-location"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1a3.5 3.5 0 0 1 3.5 3.5C9.5 8 6 11 6 11S2.5 8 2.5 4.5A3.5 3.5 0 0 1 6 1z" stroke="currentColor" stroke-width="1.2" fill="none"/><circle cx="6" cy="4.5" r="1" fill="currentColor"/></svg> Rubavu District</div>
+          <div class="prop-card-specs">
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="1" y="1" width="12" height="12" rx="1" stroke="currentColor" stroke-width="1.2"/></svg> 2 ha</span>
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 13V5l6-4 6 4v8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg> Title Deed</span>
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.2"/><path d="M7 4v3l2 2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg> For Sale</span>
+          </div>
+          <div class="trust-row">
+            <span class="trust-pill" data-score="high" title="Seller Trust Score — agency-verified, 30+ transactions"><span class="trust-pill-icon">👤</span><span class="trust-pill-label">Seller Trust Score</span><span class="trust-pill-val">91/100</span></span>
+            <span class="trust-pill" data-score="high" title="Property Trust Score — full documentation, all verified"><span class="trust-pill-icon">📄</span><span class="trust-pill-label">Property Trust Score</span><span class="trust-pill-val">97/100</span></span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Card 5 — Nyarugenge (commercial) -->
+      <a href="#" class="prop-card reveal reveal-delay-1" data-price="55000000" data-type="land" data-location="nyarugenge">
+        <div class="prop-card-photo">
+          <img src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=600&auto=format&q=75" alt="400sqm commercial plot in Nyarugenge CBD">
+          <div class="prop-card-badges"><span class="badge badge-green">Land</span><span class="badge badge-orange">Commercial</span></div>
+          <button class="prop-card-save" aria-label="Save listing" onclick="event.preventDefault();imaliAuth.requireLogin(window.location.href)">♡</button>
+        </div>
+        <div class="prop-card-body">
+          <div class="prop-card-price">RWF 55,000,000</div>
+          <div class="prop-card-title">400 sqm Plot — Nyarugenge, CBD Zone</div>
+          <div class="prop-card-location"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1a3.5 3.5 0 0 1 3.5 3.5C9.5 8 6 11 6 11S2.5 8 2.5 4.5A3.5 3.5 0 0 1 6 1z" stroke="currentColor" stroke-width="1.2" fill="none"/><circle cx="6" cy="4.5" r="1" fill="currentColor"/></svg> Nyarugenge District, Kigali</div>
+          <div class="prop-card-specs">
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="1" y="1" width="12" height="12" rx="1" stroke="currentColor" stroke-width="1.2"/></svg> 400 m²</span>
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 13V5l6-4 6 4v8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg> Title Deed</span>
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.2"/><path d="M7 4v3l2 2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg> For Sale</span>
+          </div>
+          <div class="trust-row">
+            <span class="trust-pill" data-score="mid" title="Seller Trust Score — 5 transactions, ID verified"><span class="trust-pill-icon">👤</span><span class="trust-pill-label">Seller Trust Score</span><span class="trust-pill-val">79/100</span></span>
+            <span class="trust-pill" data-score="high" title="Property Trust Score — title deed and zoning certificate uploaded"><span class="trust-pill-icon">📄</span><span class="trust-pill-label">Property Trust Score</span><span class="trust-pill-val">85/100</span></span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Card 6 — Bugesera (large plot, survey only) -->
+      <a href="#" class="prop-card reveal reveal-delay-2" data-price="35000000" data-type="land" data-location="bugesera">
+        <div class="prop-card-photo">
+          <img src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=600&auto=format&q=75" alt="3000sqm plot in Bugesera">
+          <div class="prop-card-badges"><span class="badge badge-green">Land</span><span class="badge badge-muted">Survey Only</span></div>
+          <button class="prop-card-save" aria-label="Save listing" onclick="event.preventDefault();imaliAuth.requireLogin(window.location.href)">♡</button>
+        </div>
+        <div class="prop-card-body">
+          <div class="prop-card-price">RWF 35,000,000</div>
+          <div class="prop-card-title">3,000 sqm Plot — Bugesera District</div>
+          <div class="prop-card-location"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1a3.5 3.5 0 0 1 3.5 3.5C9.5 8 6 11 6 11S2.5 8 2.5 4.5A3.5 3.5 0 0 1 6 1z" stroke="currentColor" stroke-width="1.2" fill="none"/><circle cx="6" cy="4.5" r="1" fill="currentColor"/></svg> Bugesera District</div>
+          <div class="prop-card-specs">
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="1" y="1" width="12" height="12" rx="1" stroke="currentColor" stroke-width="1.2"/></svg> 3,000 m²</span>
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 13V5l6-4 6 4v8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg> Survey Only</span>
+            <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.2"/><path d="M7 4v3l2 2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg> For Sale</span>
+          </div>
+          <div class="trust-row">
+            <span class="trust-pill" data-score="low" title="Seller Trust Score — new seller, limited history"><span class="trust-pill-icon">👤</span><span class="trust-pill-label">Seller Trust Score</span><span class="trust-pill-val">58/100</span></span>
+            <span class="trust-pill" data-score="mid" title="Property Trust Score — survey only, title deed in process"><span class="trust-pill-icon">📄</span><span class="trust-pill-label">Property Trust Score</span><span class="trust-pill-val">62/100</span></span>
+          </div>
+        </div>
+      </a>
+
+    </div><!-- end listings-grid -->
+
+    <!-- Load more -->
+    <div class="load-more-wrap">
+      <button class="btn btn-outline" onclick="imaliAuth.requireLogin()">Load more land listings</button>
+    </div>
+
+  </div>
+</main>
+
+<div id="site-footer"></div>
+<script src="../../assets/js/core.js" data-root="../../"></script>
+<script src="../../assets/js/listings.js"></script>
+</body>
+</html>

@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <!-- Theme applied before paint to prevent flash -->
+  <script>(function(){var t=localStorage.getItem('imali-theme')||'light';document.documentElement.setAttribute('data-theme',t);})();</script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Browse land, homes, apartments, and off-plan projects across Rwanda. List your property or invest — all in one place.">
+  <title>Imali.biz — Rwanda's Property Marketplace</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet">
+
+  <!-- Shared CSS (order matters) -->
+  <link rel="stylesheet" href="./assets/css/tokens.css">
+  <link rel="stylesheet" href="./assets/css/base.css">
+  <link rel="stylesheet" href="./assets/css/animations.css">
+  <link rel="stylesheet" href="./assets/css/components.css">
+
+  <!-- Page-specific styles -->
+  <style>
+    /* ─── HERO ─────────────────────────────────── */
+    .hero {
+      position: relative;
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+    }
+    .hero-bg img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center 55%;
+    }
+    .hero-bg-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(13,13,18,0.30) 0%,
+        rgba(13,13,18,0.05) 30%,
+        rgba(13,13,18,0.60) 65%,
+        rgba(13,13,18,0.92) 100%
+      );
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding-bottom: 5rem;
+      padding-top: 8rem;
+    }
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 1rem;
+    }
+    .hero-eyebrow .live-dot {
+      width: 7px; height: 7px;
+      background: var(--green);
+      border-radius: 50%;
+      animation: pulseDot 2s infinite;
+    }
+    .hero-headline {
+      font-family: var(--font-head);
+      font-size: clamp(2.4rem, 5vw, 4.8rem);
+      font-weight: 800;
+      line-height: 1.03;
+      letter-spacing: -0.03em;
+      color: #fff;
+      margin-bottom: 1rem;
+      max-width: 820px;
+    }
+    .hero-headline em {
+      font-style: normal;
+      color: var(--orange-light);
+    }
+    .hero-sub {
+      font-size: 1.05rem;
+      color: rgba(255,255,255,0.72);
+      max-width: 520px;
+      line-height: 1.68;
+      margin-bottom: 2.5rem;
+    }
+
+    /* Search box — hero version */
+    .hero-search {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 24px 64px rgba(13,13,18,0.40);
+      max-width: 860px;
+      overflow: hidden;
+      margin-bottom: 2.5rem;
+    }
+    .hero-search .search-tabs {
+      background: var(--bg-alt);
+    }
+    .hero-search .search-tab {
+      background: none;
+      border: none;
+      padding: 0.85rem 1.5rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-dim);
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: color 0.18s, border-color 0.18s;
+      text-align: left;
+    }
+    .hero-search .search-tab.active {
+      color: var(--orange);
+      border-bottom-color: var(--orange);
+      background: var(--bg-card);
+    }
+
+    /* Hero stats */
+    .hero-stats {
+      display: flex;
+      gap: 0;
+    }
+    .hero-stat {
+      display: flex;
+      flex-direction: column;
+      padding: 0 2rem 0 0;
+      margin-right: 2rem;
+      border-right: 1px solid rgba(255,255,255,0.18);
+    }
+    .hero-stat:last-child { border-right: none; margin-right: 0; padding-right: 0; }
+    .hero-stat-num {
+      font-family: var(--font-head);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1;
+    }
+    .hero-stat-label {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.52);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-top: 0.25rem;
+    }
+
+    /* ─── AUDIENCE PATHS ─────────────────────── */
+    .paths-section { background: var(--bg-alt); }
+    .paths-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+
+    /* ─── FEATURED LISTINGS ──────────────────── */
+    .featured-section { background: var(--bg); }
+    .listings-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+    .listings-row-footer {
+      display: flex;
+      justify-content: center;
+      margin-top: 2.5rem;
+    }
+
+    /* ─── OFF-PLAN ───────────────────────────── */
+    .offplan-section { background: var(--bg-alt); }
+    .offplan-view-toggle {
+      display: inline-flex;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-pill);
+      padding: 4px;
+      gap: 2px;
+    }
+    .view-tab {
+      padding: 0.4rem 1.1rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      border-radius: var(--radius-pill);
+      border: none;
+      background: none;
+      color: var(--text-dim);
+      transition: background 0.18s, color 0.18s;
+    }
+    .view-tab.active { background: var(--bg-card); color: var(--text); box-shadow: var(--shadow-sm); }
+    .offplan-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      margin-top: 2.5rem;
+    }
+    /* Off-plan buyer/investor grid toggle — handled via section class + JS for buttons */
+    .offplan-section.show-investor .offplan-buyer-grid    { display: none; }
+    .offplan-section.show-investor .offplan-investor-grid { display: grid; }
+
+    /* ─── HOW IT WORKS ───────────────────────── */
+    .how-section { background: var(--bg); }
+    .how-tabs-wrap { margin-top: 1.5rem; }
+    .steps-panel { display: none; }
+    .steps-panel.active { display: grid; }
+
+    /* ─── WHY US ──────────────────────────────── */
+    .why-section {
+      background: var(--bg-dark-section);
+      color: var(--cream);
+      position: relative;
+      overflow: hidden;
+    }
+    .why-section::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(circle at 15% 50%, rgba(240,90,34,0.07) 0%, transparent 50%),
+        radial-gradient(circle at 85% 20%, rgba(46,160,72,0.06) 0%, transparent 45%);
+      pointer-events: none;
+    }
+    .why-inner {
+      position: relative; z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+    .why-left .eyebrow { color: var(--orange); }
+    .why-left .eyebrow::before { background: var(--orange); }
+    .why-headline {
+      font-family: var(--font-head);
+      font-size: clamp(2rem, 3vw, 3.2rem);
+      font-weight: 800;
+      line-height: 1.06;
+      letter-spacing: -0.025em;
+      margin-bottom: 1.25rem;
+    }
+    .why-headline em { font-style: normal; color: var(--orange-light); }
+    .why-body { font-size: 1rem; line-height: 1.75; color: rgba(248,245,240,0.68); margin-bottom: 2rem; }
+    .why-pillars {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .why-pillar {
+      background: rgba(248,245,240,0.05);
+      border: 1px solid rgba(248,245,240,0.08);
+      border-radius: var(--radius-md);
+      padding: 1.1rem 1.2rem;
+    }
+    .why-pillar h4 { font-family: var(--font-head); font-size: 0.9rem; font-weight: 700; margin-bottom: 0.3rem; }
+    .why-pillar p { font-size: 0.78rem; color: rgba(248,245,240,0.55); line-height: 1.55; }
+    .why-right {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .why-stat-card {
+      background: rgba(248,245,240,0.05);
+      border: 1px solid rgba(248,245,240,0.09);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .why-stat-card.accent-orange { border-color: rgba(240,90,34,0.25); background: rgba(240,90,34,0.08); }
+    .why-stat-card.accent-green  { border-color: rgba(46,160,72,0.22);  background: rgba(46,160,72,0.07);  }
+    .why-stat-icon { font-size: 1.5rem; margin-bottom: 0.25rem; }
+    .why-stat-num {
+      font-family: var(--font-head);
+      font-size: 2rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1;
+    }
+    .why-stat-label { font-size: 0.78rem; color: rgba(248,245,240,0.50); }
+
+    /* ─── CTA BANNER ─────────────────────────── */
+    .cta-section {
+      background: var(--bg-alt);
+      text-align: center;
+    }
+    .cta-inner { max-width: 680px; margin: 0 auto; }
+    .cta-headline {
+      font-family: var(--font-head);
+      font-size: clamp(2rem, 3.5vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.025em;
+      margin-bottom: 1rem;
+    }
+    .cta-headline em { font-style: normal; color: var(--orange); }
+    .cta-sub { font-size: 1rem; color: var(--text-dim); line-height: 1.7; margin-bottom: 2rem; }
+    .cta-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+    /* ─── RESPONSIVE ─────────────────────────── */
+    @media (max-width: 1024px) {
+      .paths-grid { grid-template-columns: 1fr; }
+      .listings-grid { grid-template-columns: repeat(2, 1fr); }
+      .offplan-grid { grid-template-columns: repeat(2, 1fr); }
+      .why-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .why-right { grid-template-columns: repeat(4, 1fr); }
+    }
+    @media (max-width: 768px) {
+      .hero-headline { font-size: 2.2rem; }
+      .hero-sub { font-size: 0.95rem; }
+      .hero-stats { flex-wrap: wrap; gap: 1rem; }
+      .hero-stat { border-right: none; padding-right: 0; margin-right: 0; }
+      .listings-grid { grid-template-columns: 1fr; }
+      .offplan-grid { grid-template-columns: 1fr; }
+      .why-right { grid-template-columns: repeat(2, 1fr); }
+      .why-pillars { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div class="cursor" aria-hidden="true"></div>
+<div class="cursor-ring" aria-hidden="true"></div>
+
+<!-- Nav injected by core.js -->
+<div id="site-nav"></div>
+
+<!-- ═══════════════════════════════════════
+     HERO
+════════════════════════════════════════ -->
+<section class="hero" id="hero">
+  <div class="hero-bg">
+    <img
+      src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=1920&auto=format&q=80"
+      alt="Modern apartment interior — Rwanda real estate"
+      loading="eager"
+    />
+    <div class="hero-bg-overlay"></div>
+  </div>
+
+  <div class="hero-content container">
+    <div class="hero-eyebrow anim-fade-up-1">
+      <span class="live-dot"></span>
+      Kigali, Rwanda
+    </div>
+
+    <h1 class="hero-headline anim-fade-up-2">
+      Your next move<br>in Rwanda <em>starts here</em>
+    </h1>
+
+    <p class="hero-sub anim-fade-up-3">
+      Browse land, homes, and investment opportunities across every district. Buy, sell, or grow your portfolio — all in one place.
+    </p>
+
+    <!-- Search bar -->
+    <div class="hero-search anim-fade-up-4" role="search">
+      <div class="search-tabs" role="tablist">
+        <button class="search-tab active" role="tab" data-search-tab="buy"    aria-selected="true">Buy</button>
+        <button class="search-tab"        role="tab" data-search-tab="sell"   aria-selected="false">Sell</button>
+        <button class="search-tab"        role="tab" data-search-tab="invest" aria-selected="false">Invest</button>
+      </div>
+      <div class="search-fields">
+        <div class="search-field">
+          <label for="s-type">Property Type</label>
+          <select id="s-type" aria-label="Select property type">
+            <option value="">Any type</option>
+            <option value="land">Land / Plot</option>
+            <option value="house">House</option>
+            <option value="apartment">Apartment</option>
+            <option value="off-plan">Off-Plan Project</option>
+          </select>
+        </div>
+        <div class="search-field">
+          <label for="s-location">Location</label>
+          <select id="s-location" aria-label="Select location">
+            <option value="">Any district</option>
+            <option value="kigali">Kigali</option>
+            <option value="gasabo">Gasabo</option>
+            <option value="kicukiro">Kicukiro</option>
+            <option value="nyarugenge">Nyarugenge</option>
+            <option value="musanze">Musanze</option>
+            <option value="huye">Huye</option>
+            <option value="rubavu">Rubavu</option>
+            <option value="muhanga">Muhanga</option>
+          </select>
+        </div>
+        <div class="search-field">
+          <label for="s-price">Max Price (RWF)</label>
+          <select id="s-price" aria-label="Select price range">
+            <option value="">Any price</option>
+            <option value="20m">Up to 20M</option>
+            <option value="50m">Up to 50M</option>
+            <option value="100m">Up to 100M</option>
+            <option value="250m">Up to 250M</option>
+            <option value="500m">Up to 500M</option>
+            <option value="500m+">500M+</option>
+          </select>
+        </div>
+        <button class="search-submit" id="hero-search-btn" aria-label="Search properties">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+            <circle cx="8" cy="8" r="5.5" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M12.5 12.5L16 16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          Search
+        </button>
+      </div>
+    </div>
+
+    <!-- Quick stats -->
+    <div class="hero-stats anim-fade-up-5">
+      <div class="hero-stat">
+        <span class="hero-stat-num">1,200+</span>
+        <span class="hero-stat-label">Active Listings</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">50+</span>
+        <span class="hero-stat-label">Off-Plan Projects</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">8</span>
+        <span class="hero-stat-label">Districts</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">0%</span>
+        <span class="hero-stat-label">Listing Fees</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════
+     AUDIENCE PATHS
+════════════════════════════════════════ -->
+<section class="paths-section section-pad">
+  <div class="container">
+    <div class="section-header center reveal">
+      <div class="eyebrow">Where do you start?</div>
+      <h2 class="section-title">Tell us what<br>you're looking for</h2>
+    </div>
+
+    <div class="paths-grid" style="margin-top:3rem">
+      <a href="./pages/buy/index.html" class="path-card path-buy reveal">
+        <div class="path-icon">🏠</div>
+        <h3>Buy</h3>
+        <p>Find land to build on, a home to move into, or an apartment in the city. Filter by location, size, and price until you see exactly what fits your life.</p>
+        <div class="path-links">
+          <span>Browse Land</span>
+          <span>Homes &amp; Apartments</span>
+          <span>Off-Plan Projects</span>
+        </div>
+      </a>
+
+      <a href="./pages/sell/index.html" class="path-card path-sell reveal reveal-delay-1">
+        <div class="path-icon">📋</div>
+        <h3>Sell</h3>
+        <p>List your land or property, get a free valuation estimate, and reach buyers who are actively looking. Agents can manage multiple listings from one dashboard.</p>
+        <div class="path-links">
+          <span>List Your Land</span>
+          <span>List a Property</span>
+          <span>Agent Portal</span>
+        </div>
+      </a>
+
+      <a href="./pages/invest/index.html" class="path-card path-invest reveal reveal-delay-2">
+        <div class="path-icon">📈</div>
+        <h3>Invest</h3>
+        <p>Own an entire asset or buy a fraction of a high-value project. See projected returns before you commit, and track your portfolio in one dashboard.</p>
+        <div class="path-links">
+          <span>Full Asset Deals (RWF 50M+)</span>
+          <span>Co-invest from RWF 75,000</span>
+          <span>Off-Plan (Investor View)</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════
+     FEATURED LISTINGS
+════════════════════════════════════════ -->
+<section class="featured-section section-pad">
+  <div class="container">
+    <div class="section-header reveal">
+      <div>
+        <div class="eyebrow">Fresh Listings</div>
+        <h2 class="section-title">Properties just <em>listed</em></h2>
+      </div>
+      <a href="./pages/buy/index.html" class="btn btn-outline">View all listings</a>
+    </div>
+
+    <div class="listings-grid">
+
+      <!-- Card 1 — Land -->
+      <a href="./pages/buy/land.html" class="prop-card reveal"
+         data-price="45000000" data-type="land" data-location="gasabo">
+        <div class="prop-card-photo">
+          <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&auto=format&q=75" alt="Land plot in Gasabo">
+          <div class="prop-card-badges">
+            <span class="badge badge-green">Land</span>
+            <span class="badge badge-dark">New</span>
+          </div>
+          <button class="prop-card-save" aria-label="Save listing" onclick="event.preventDefault(); imaliAuth.requireLogin(window.location.href)">♡</button>
+        </div>
+        <div class="prop-card-body">
+          <div class="prop-card-price">RWF 45,000,000</div>
+          <div class="prop-card-title">600 sqm Plot — Gasabo, Kibagabaga</div>
+          <div class="prop-card-location">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1a3.5 3.5 0 0 1 3.5 3.5C9.5 8 6 11 6 11S2.5 8 2.5 4.5A3.5 3.5 0 0 1 6 1z" stroke="currentColor" stroke-width="1.2" fill="none"/><circle cx="6" cy="4.5" r="1" fill="currentColor"/></svg>
+            Gasabo District, Kigali
+          </div>
+          <div class="prop-card-specs">
+            <span class="prop-spec">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="1" y="1" width="12" height="12" rx="1" stroke="currentColor" stroke-width="1.2"/></svg>
+              600 m²
+            </span>
+            <span class="prop-spec">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 13V5l6-4 6 4v8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+              Title Deed
+            </span>
+            <span class="prop-spec">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.2"/><path d="M7 4v3l2 2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+              For Sale
+            </span>
+          </div>
+          <div class="trust-row">
+            <span class="trust-pill" data-score="high" title="Seller Trust Score — verified ID, transaction history, 12 completed deals">
+              <span class="trust-pill-icon">👤</span>
+              <span class="trust-pill-label">Seller Trust Score</span>
+              <span class="trust-pill-val">87/100</span>
+            </span>
+            <span class="trust-pill" data-score="high" title="Listing Score — title deed present, survey complete, photos verified">
+              <span class="trust-pill-icon">📄</span>
+              <span class="trust-pill-label">Property Trust Score</span>
+              <span class="trust-pill-val">95/100</span>
+            </span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Card 2 — House -->
+      <a href="./pages/buy/homes.html" class="prop-card reveal reveal-delay-1"
+         data-price="180000000" data-type="house" data-location="kicukiro">
+        <div class="prop-card-photo">
+          <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&auto=format&q=75" alt="House in Kicukiro">
+          <div class="prop-card-badges">
+            <span class="badge badge-orange">House</span>
+          </div>
+          <button class="prop-card-save" aria-label="Save listing" onclick="event.preventDefault(); imaliAuth.requireLogin(window.location.href)">♡</button>
+        </div>
+        <div class="prop-card-body">
+          <div class="prop-card-price">RWF 180,000,000</div>
+          <div class="prop-card-title">4-Bedroom Family Home — Kicukiro</div>
+          <div class="prop-card-location">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1a3.5 3.5 0 0 1 3.5 3.5C9.5 8 6 11 6 11S2.5 8 2.5 4.5A3.5 3.5 0 0 1 6 1z" stroke="currentColor" stroke-width="1.2" fill="none"/><circle cx="6" cy="4.5" r="1" fill="currentColor"/></svg>
+            Kicukiro District, Kigali
+          </div>
+          <div class="prop-card-specs">
+            <span class="prop-spec">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 8h12M3 8V5h8v3M1 8v3h12V8" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>
+              4 Beds
+            </span>
+            <span class="prop-spec">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="2" y="4" width="10" height="7" rx="1" stroke="currentColor" stroke-width="1.1"/><path d="M5 4V3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1" stroke="currentColor" stroke-width="1.1"/></svg>
+              3 Baths
+            </span>
+            <span class="prop-spec">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="1" y="1" width="12" height="12" rx="1" stroke="currentColor" stroke-width="1.2"/></svg>
+              240 m²
+            </span>
+          </div>
+          <div class="trust-row">
+            <span class="trust-pill" data-score="mid" title="Seller Trust Score — ID verified, limited platform history">
+              <span class="trust-pill-icon">👤</span>
+              <span class="trust-pill-label">Seller Trust Score</span>
+              <span class="trust-pill-val">71/100</span>
+            </span>
+            <span class="trust-pill" data-score="high" title="Listing Score — title deed present, building plans uploaded">
+              <span class="trust-pill-icon">📄</span>
+              <span class="trust-pill-label">Property Trust Score</span>
+              <span class="trust-pill-val">92/100</span>
+            </span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Card 3 — Apartment -->
+      <a href="./pages/buy/homes.html" class="prop-card reveal reveal-delay-2"
+         data-price="95000000" data-type="apartment" data-location="nyarugenge">
+        <div class="prop-card-photo">
+          <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&auto=format&q=75" alt="Apartment in Nyarugenge">
+          <div class="prop-card-badges">
+            <span class="badge badge-muted">Apartment</span>
+            <span class="badge badge-dark">New</span>
+          </div>
+          <button class="prop-card-save" aria-label="Save listing" onclick="event.preventDefault(); imaliAuth.requireLogin(window.location.href)">♡</button>
+        </div>
+        <div class="prop-card-body">
+          <div class="prop-card-price">RWF 95,000,000</div>
+          <div class="prop-card-title">2-Bed Apartment — CBD View, Nyarugenge</div>
+          <div class="prop-card-location">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1a3.5 3.5 0 0 1 3.5 3.5C9.5 8 6 11 6 11S2.5 8 2.5 4.5A3.5 3.5 0 0 1 6 1z" stroke="currentColor" stroke-width="1.2" fill="none"/><circle cx="6" cy="4.5" r="1" fill="currentColor"/></svg>
+            Nyarugenge District, Kigali
+          </div>
+          <div class="prop-card-specs">
+            <span class="prop-spec">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 8h12M3 8V5h8v3M1 8v3h12V8" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>
+              2 Beds
+            </span>
+            <span class="prop-spec">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="2" y="4" width="10" height="7" rx="1" stroke="currentColor" stroke-width="1.1"/></svg>
+              2 Baths
+            </span>
+            <span class="prop-spec">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="1" y="1" width="12" height="12" rx="1" stroke="currentColor" stroke-width="1.2"/></svg>
+              120 m²
+            </span>
+          </div>
+          <div class="trust-row">
+            <span class="trust-pill" data-score="high" title="Seller Trust Score — agency-verified, 30+ transactions">
+              <span class="trust-pill-icon">👤</span>
+              <span class="trust-pill-label">Seller Trust Score</span>
+              <span class="trust-pill-val">82/100</span>
+            </span>
+            <span class="trust-pill" data-score="mid" title="Listing Score — title deed present, some documents pending">
+              <span class="trust-pill-icon">📄</span>
+              <span class="trust-pill-label">Property Trust Score</span>
+              <span class="trust-pill-val">68/100</span>
+            </span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+
+    <div class="listings-row-footer reveal">
+      <a href="./pages/buy/index.html" class="btn btn-outline btn-lg">
+        See all 1,200+ listings
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════
+     OFF-PLAN PROJECTS
+════════════════════════════════════════ -->
+<section class="offplan-section section-pad" id="offplan-section">
+  <div class="container">
+    <div class="section-header reveal">
+      <div>
+        <div class="eyebrow">Off-Plan</div>
+        <h2 class="section-title">Own before<br>it's <em>built</em></h2>
+      </div>
+      <div class="offplan-view-toggle" role="tablist" aria-label="View as buyer or investor">
+        <button class="view-tab active" data-offplan-tab="buyer"    role="tab" aria-selected="true">I'm Buying</button>
+        <button class="view-tab"        data-offplan-tab="investor" role="tab" aria-selected="false">I'm Investing</button>
+      </div>
+    </div>
+
+    <!-- Context line changes per tab -->
+    <p class="section-sub reveal" id="offplan-context">
+      Reserve your unit now, move in on completion day. See payment plans, floor types, and what's still available.
+    </p>
+
+    <div class="offplan-grid">
+
+      <!-- Project 1 -->
+      <div class="offplan-card reveal">
+        <div class="offplan-photo">
+          <img src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=600&auto=format&q=75" alt="Horizon Residences project">
+          <div class="offplan-photo-badges">
+            <span class="badge badge-dark">Off-Plan</span>
+            <span class="badge badge-orange">Selling Fast</span>
+          </div>
+          <div class="offplan-progress-bar">
+            <div class="offplan-progress-fill" style="width:68%"></div>
+          </div>
+        </div>
+        <div class="offplan-body">
+          <div class="offplan-name">Horizon Residences</div>
+          <div class="offplan-location">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1a3.5 3.5 0 0 1 3.5 3.5C9.5 8 6 11 6 11S2.5 8 2.5 4.5A3.5 3.5 0 0 1 6 1z" stroke="currentColor" stroke-width="1.2" fill="none"/><circle cx="6" cy="4.5" r="1" fill="currentColor"/></svg>
+            Gasabo, Kigali
+          </div>
+
+          <!-- BUYER VIEW -->
+          <div data-view="buyer" class="offplan-buyer-grid">
+            <div class="offplan-data-item">
+              <span class="offplan-data-label">Price from</span>
+              <span class="offplan-data-val highlight">RWF 65M</span>
+            </div>
+            <div class="offplan-data-item">
+              <span class="offplan-data-label">Payment Plan</span>
+              <span class="offplan-data-val">30 / 70</span>
+            </div>
+            <div class="offplan-data-item">
+              <span class="offplan-data-label">Completion</span>
+              <span class="offplan-data-val">Q3 2026</span>
+            </div>
+            <div class="offplan-data-item">
+              <span class="offplan-data-label">Unit Types</span>
+              <span class="offplan-data-val">1, 2 &amp; 3 Bed</span>
+            </div>
+          </div>
+
+          <!-- INVESTOR VIEW -->
+          <div data-view="investor" class="offplan-investor-grid">
+            <div class="offplan-data-item">
+              <span class="offplan-data-label">Total Value</span>
+              <span class="offplan-data-val">RWF 3.2B</span>
+            </div>
+            <div class="offplan-data-item">
+              <span class="offplan-data-label">Entry from</span>
+              <span class="offplan-data-val highlight">RWF 8M</span>
+            </div>
+            <div class="offplan-data-item">
+              <span class="offplan-data-label">Projected ROI</span>
+              <span class="offplan-data-val green">18–24% p.a.</span>
+            </div>
+            <div class="offplan-data-item">
+              <span class="offplan-data-label">Timeline</span>
+              <span class="offplan-data-val">24 months</span>
+            </div>
+          </div>
+
+          <div class="offplan-footer">
+            <span class="offplan-units">
+              <strong>32</strong> units available
+            </span>
+            <a href="./pages/off-plan-buy/index.html" class="btn btn-primary btn-sm" data-view="buyer">View Details</a>
+            <a href="./pages/off-plan-invest/index.html" class="btn btn-green btn-sm" data-view="investor" style="display:none">Invest Now</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 2 -->
+      <div class="offplan-card reveal reveal-delay-1">
+        <div class="offplan-photo">
+          <img src="https://images.unsplash.com/photo-1592595896551-12b371d546d5?w=600&auto=format&q=75" alt="Kigali Heights project">
+          <div class="offplan-photo-badges">
+            <span class="badge badge-dark">Off-Plan</span>
+            <span class="badge badge-green">New Launch</span>
+          </div>
+          <div class="offplan-progress-bar">
+            <div class="offplan-progress-fill" style="width:20%"></div>
+          </div>
+        </div>
+        <div class="offplan-body">
+          <div class="offplan-name">Kigali Heights Phase 2</div>
+          <div class="offplan-location">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1a3.5 3.5 0 0 1 3.5 3.5C9.5 8 6 11 6 11S2.5 8 2.5 4.5A3.5 3.5 0 0 1 6 1z" stroke="currentColor" stroke-width="1.2" fill="none"/><circle cx="6" cy="4.5" r="1" fill="currentColor"/></svg>
+            Nyarugenge, Kigali
+          </div>
+          <div data-view="buyer" class="offplan-buyer-grid">
+            <div class="offplan-data-item">
+              <span class="offplan-data-label">Price from</span>
+              <span class="offplan-data-val highlight">RWF 110M</span>
+            </div>
+            <div class="offplan-data-item">
+              <span class="offplan-data-label">Payment Plan</span>
+              <span class="offplan-data-val">20 / 80</span>
+            </div>
+            <div class="offplan-data-item">
+              <span class="offplan-data-label">Completion</span>
+              <span class="offplan-data-val">Q1 2027</span>
+            </div>
+            <div class="offplan-data-item">
+              <span class="offplan-data-label">Unit Types</span>
+              <span class="offplan-data-val">2 &amp; 3 Bed</span>
+            </div>
+          </div>
+          <div data-view="investor" class="offplan-investor-grid">
+            <div class="offplan-data-item">
+              <span class="offplan-data-label">Total Value</span>
+              <span class="offplan-data-val">RWF 7.8B</span>
+            </div>
+            <div class="offplan-data-item">
+              <span class="offplan-data-label">Entry from</span>
+              <span class="offplan-data-val highlight">RWF 15M</span>
+            </div>
+            <div class="offplan-data-item">
+              <span class="offplan-data-label">Projected ROI</span>
+              <span class="offplan-data-val green">22–28% p.a.</span>
+            </div>
+            <div class="offplan-data-item">
+              <span class="offplan-data-label">Timeline</span>
+              <span class="offplan-data-val">30 months</span>
+            </div>
+          </div>
+          <div class="offplan-footer">
+            <span class="offplan-units"><strong>86</strong> units available</span>
+            <a href="./pages/off-plan-buy/index.html" class="btn btn-primary btn-sm" data-view="buyer">View Details</a>
+            <a href="./pages/off-plan-invest/index.html" class="btn btn-green btn-sm" data-view="investor" style="display:none">Invest Now</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 3 -->
+      <div class="offplan-card reveal reveal-delay-2">
+        <div class="offplan-photo">
+          <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=600&auto=format&q=75" alt="Musanze Eco Villas">
+          <div class="offplan-photo-badges">
+            <span class="badge badge-dark">Off-Plan</span>
+          </div>
+          <div class="offplan-progress-bar">
+            <div class="offplan-progress-fill" style="width:45%"></div>
+          </div>
+        </div>
+        <div class="offplan-body">
+          <div class="offplan-name">Musanze Eco Villas</div>
+          <div class="offplan-location">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1a3.5 3.5 0 0 1 3.5 3.5C9.5 8 6 11 6 11S2.5 8 2.5 4.5A3.5 3.5 0 0 1 6 1z" stroke="currentColor" stroke-width="1.2" fill="none"/><circle cx="6" cy="4.5" r="1" fill="currentColor"/></svg>
+            Musanze District
+          </div>
+          <div data-view="buyer" class="offplan-buyer-grid">
+            <div class="offplan-data-item">
+              <span class="offplan-data-label">Price from</span>
+              <span class="offplan-data-val highlight">RWF 220M</span>
+            </div>
+            <div class="offplan-data-item">
+              <span class="offplan-data-label">Payment Plan</span>
+              <span class="offplan-data-val">40 / 60</span>
+            </div>
+            <div class="offplan-data-item">
+              <span class="offplan-data-label">Completion</span>
+              <span class="offplan-data-val">Q4 2026</span>
+            </div>
+            <div class="offplan-data-item">
+              <span class="offplan-data-label">Unit Types</span>
+              <span class="offplan-data-val">4-Bed Villa</span>
+            </div>
+          </div>
+          <div data-view="investor" class="offplan-investor-grid">
+            <div class="offplan-data-item">
+              <span class="offplan-data-label">Total Value</span>
+              <span class="offplan-data-val">RWF 5.5B</span>
+            </div>
+            <div class="offplan-data-item">
+              <span class="offplan-data-label">Entry from</span>
+              <span class="offplan-data-val highlight">RWF 22M</span>
+            </div>
+            <div class="offplan-data-item">
+              <span class="offplan-data-label">Projected ROI</span>
+              <span class="offplan-data-val green">15–20% p.a.</span>
+            </div>
+            <div class="offplan-data-item">
+              <span class="offplan-data-label">Timeline</span>
+              <span class="offplan-data-val">20 months</span>
+            </div>
+          </div>
+          <div class="offplan-footer">
+            <span class="offplan-units"><strong>12</strong> units available</span>
+            <a href="./pages/off-plan-buy/index.html" class="btn btn-primary btn-sm" data-view="buyer">View Details</a>
+            <a href="./pages/off-plan-invest/index.html" class="btn btn-green btn-sm" data-view="investor" style="display:none">Invest Now</a>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /offplan-grid -->
+
+    <div class="listings-row-footer reveal" style="margin-top:2.5rem">
+      <a href="./pages/off-plan-buy/index.html"    class="btn btn-outline btn-lg" id="offplan-see-all-buyer">See all off-plan projects →</a>
+      <a href="./pages/off-plan-invest/index.html" class="btn btn-outline btn-lg" id="offplan-see-all-investor" style="display:none">See all investment projects →</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════
+     HOW IT WORKS
+════════════════════════════════════════ -->
+<section class="how-section section-pad">
+  <div class="container">
+    <div class="section-header center reveal">
+      <div class="eyebrow">Simple process</div>
+      <h2 class="section-title">From interest<br>to <em>ownership</em></h2>
+      <div class="role-tabs how-tabs-wrap" role="tablist" aria-label="Select your role">
+        <button class="role-tab active" data-how-tab="buyer"    role="tab" aria-selected="true">Buyer</button>
+        <button class="role-tab"        data-how-tab="seller"   role="tab" aria-selected="false">Seller</button>
+        <button class="role-tab"        data-how-tab="investor" role="tab" aria-selected="false">Investor</button>
+      </div>
+    </div>
+
+    <!-- Buyer steps -->
+    <div class="steps-panel active steps-grid" id="steps-buyer" role="tabpanel">
+      <div class="step reveal">
+        <div class="step-num">01</div>
+        <span class="step-icon">🔍</span>
+        <h4>Search &amp; Filter</h4>
+        <p>Browse by location, property type, price, and size. Save your favourite listings for later.</p>
+      </div>
+      <div class="step reveal reveal-delay-1">
+        <div class="step-num">02</div>
+        <span class="step-icon">📞</span>
+        <h4>Contact the Seller</h4>
+        <p>Message the owner or agent directly through the platform — no broker middleman, no hidden fees.</p>
+      </div>
+      <div class="step reveal reveal-delay-2">
+        <div class="step-num">03</div>
+        <span class="step-icon">✅</span>
+        <h4>Verify &amp; Negotiate</h4>
+        <p>See title deed status, land documents, and valuation data before you make an offer.</p>
+      </div>
+      <div class="step reveal reveal-delay-3">
+        <div class="step-num">04</div>
+        <span class="step-icon">🏡</span>
+        <h4>Complete the Purchase</h4>
+        <p>Secure escrow, sign digitally, and transfer ownership — all tracked and documented.</p>
+      </div>
+    </div>
+
+    <!-- Seller steps -->
+    <div class="steps-panel steps-grid" id="steps-seller" role="tabpanel">
+      <div class="step reveal">
+        <div class="step-num">01</div>
+        <span class="step-icon">📸</span>
+        <h4>Create Your Listing</h4>
+        <p>Add photos, location, documents, and your asking price. It takes under 10 minutes.</p>
+      </div>
+      <div class="step reveal reveal-delay-1">
+        <div class="step-num">02</div>
+        <span class="step-icon">🌍</span>
+        <h4>Reach Qualified Buyers</h4>
+        <p>Your listing goes live to buyers actively searching in your area — no cold calls, no guesswork.</p>
+      </div>
+      <div class="step reveal reveal-delay-2">
+        <div class="step-num">03</div>
+        <span class="step-icon">💬</span>
+        <h4>Respond to Enquiries</h4>
+        <p>Manage all messages from your dashboard. Accept viewings or answer questions at your pace.</p>
+      </div>
+      <div class="step reveal reveal-delay-3">
+        <div class="step-num">04</div>
+        <span class="step-icon">💰</span>
+        <h4>Close &amp; Get Paid</h4>
+        <p>Agree terms, use escrow for safety, and receive payment once transfer is confirmed.</p>
+      </div>
+    </div>
+
+    <!-- Investor steps -->
+    <div class="steps-panel steps-grid" id="steps-investor" role="tabpanel">
+      <div class="step reveal">
+        <div class="step-num">01</div>
+        <span class="step-icon">📊</span>
+        <h4>Browse Opportunities</h4>
+        <p>Filter by ROI, entry amount, timeline, and risk profile. Full asset or fractional — your choice.</p>
+      </div>
+      <div class="step reveal reveal-delay-1">
+        <div class="step-num">02</div>
+        <span class="step-icon">🔢</span>
+        <h4>Model Your Returns</h4>
+        <p>Use the returns calculator to see exactly what you'd earn based on your investment amount and timeline.</p>
+      </div>
+      <div class="step reveal reveal-delay-2">
+        <div class="step-num">03</div>
+        <span class="step-icon">🔐</span>
+        <h4>Commit &amp; Secure</h4>
+        <p>Reserve your stake with a deposit. Funds go into escrow until the deal is fully verified.</p>
+      </div>
+      <div class="step reveal reveal-delay-3">
+        <div class="step-num">04</div>
+        <span class="step-icon">📈</span>
+        <h4>Track &amp; Earn</h4>
+        <p>Follow project milestones in your dashboard and receive returns at agreed intervals.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════
+     WHY IMALI.BIZ
+════════════════════════════════════════ -->
+<section class="why-section section-pad-lg">
+  <div class="container">
+    <div class="why-inner">
+      <div class="why-left reveal">
+        <div class="eyebrow">Why us</div>
+        <h2 class="why-headline">Rwanda's property market<br><em>deserves better</em></h2>
+        <p class="why-body">
+          Too many deals happen through word of mouth. Prices are opaque. Documents are hard to verify. We built Imali.biz so every buyer, seller, and investor can transact with confidence — with data, transparency, and zero subscription fees.
+        </p>
+        <div class="why-pillars">
+          <div class="why-pillar">
+            <h4>No Listing Fees</h4>
+            <p>List your land or property for free. We only earn when you transact.</p>
+          </div>
+          <div class="why-pillar">
+            <h4>Trust Scores on Every Listing</h4>
+            <p>Every property shows a Seller Trust Score and a Property Trust Score — so you know the seller's track record and how complete the documents are before you enquire.</p>
+          </div>
+          <div class="why-pillar">
+            <h4>Open to Everyone</h4>
+            <p>Individual buyers, agents, developers, and diaspora investors — all welcome.</p>
+          </div>
+          <div class="why-pillar">
+            <h4>Built for Rwanda</h4>
+            <p>Rwandan pricing, Rwandan banks, Kinyarwanda support — not a copy-paste platform.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="why-right reveal anim-fade-in-1">
+        <div class="why-stat-card accent-orange">
+          <span class="why-stat-icon">🏘️</span>
+          <span class="why-stat-num">1,200+</span>
+          <span class="why-stat-label">Active listings across Rwanda</span>
+        </div>
+        <div class="why-stat-card">
+          <span class="why-stat-icon">📈</span>
+          <span class="why-stat-num">12%</span>
+          <span class="why-stat-label">Average annual land appreciation in Kigali</span>
+        </div>
+        <div class="why-stat-card accent-green">
+          <span class="why-stat-icon">🤝</span>
+          <span class="why-stat-num">0%</span>
+          <span class="why-stat-label">Listing fees — we earn when you do</span>
+        </div>
+        <div class="why-stat-card">
+          <span class="why-stat-icon">🌍</span>
+          <span class="why-stat-num">8</span>
+          <span class="why-stat-label">Districts covered and growing</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════
+     CTA BANNER
+════════════════════════════════════════ -->
+<section class="cta-section section-pad-lg">
+  <div class="container">
+    <div class="cta-inner reveal">
+      <div class="eyebrow" style="justify-content:center">Get started today</div>
+      <h2 class="cta-headline">Ready to find your<br>next <em>opportunity?</em></h2>
+      <p class="cta-sub">Whether you're buying your first home, selling land, or building an investment portfolio — create a free account and start in minutes.</p>
+      <div class="cta-btns">
+        <a href="./auth/register.html" class="btn btn-primary btn-lg">
+          Create Free Account
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="./pages/buy/index.html" class="btn btn-outline btn-lg">Browse listings</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Footer injected by core.js -->
+<div id="site-footer"></div>
+
+
+<!-- ─── Scripts ─────────────────────────────── -->
+<script src="./assets/js/core.js" data-root="./"></script>
+<script>
+  /* ─── Search tab switcher ─── */
+  document.querySelectorAll('[data-search-tab]').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('[data-search-tab]').forEach(function(b) {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+    });
+  });
+
+  /* ─── Hero search submit ─── */
+  document.getElementById('hero-search-btn').addEventListener('click', function() {
+    var type     = document.getElementById('s-type').value;
+    var location = document.getElementById('s-location').value;
+    var price    = document.getElementById('s-price').value;
+    var tab      = document.querySelector('[data-search-tab].active').dataset.searchTab;
+    var dest = './pages/buy/index.html';
+    if (tab === 'sell')   dest = './pages/sell/index.html';
+    if (tab === 'invest') dest = './pages/invest/index.html';
+    var params = new URLSearchParams();
+    if (type)     params.set('type', type);
+    if (location) params.set('location', location);
+    if (price)    params.set('price', price);
+    var qs = params.toString();
+    window.location.href = dest + (qs ? '?' + qs : '');
+  });
+
+  /* ─── Off-plan view toggle ─── */
+  var offplanSection = document.getElementById('offplan-section');
+  var offplanContext = document.getElementById('offplan-context');
+  var buyerCtx   = 'Reserve your unit now, move in on completion day. See payment plans, floor types, and what\'s still available.';
+  var investCtx  = 'Lock in pre-launch pricing and projected returns. All figures show per-unit ROI across the full build timeline.';
+
+  document.querySelectorAll('[data-offplan-tab]').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var tab = btn.dataset.offplanTab;
+      document.querySelectorAll('[data-offplan-tab]').forEach(function(b) {
+        b.classList.toggle('active', b.dataset.offplanTab === tab);
+        b.setAttribute('aria-selected', b.dataset.offplanTab === tab);
+      });
+
+      var isInvestor = tab === 'investor';
+      offplanSection.classList.toggle('show-investor', isInvestor);
+      offplanContext.textContent = isInvestor ? investCtx : buyerCtx;
+
+      /* swap footer CTAs */
+      document.getElementById('offplan-see-all-buyer').style.display    = isInvestor ? 'none'         : '';
+      document.getElementById('offplan-see-all-investor').style.display = isInvestor ? 'inline-flex'  : 'none';
+
+      /* swap per-card detail/invest buttons */
+      document.querySelectorAll('.btn[data-view="buyer"]').forEach(function(el) {
+        el.style.display = isInvestor ? 'none' : '';
+      });
+      document.querySelectorAll('.btn[data-view="investor"]').forEach(function(el) {
+        el.style.display = isInvestor ? 'inline-flex' : 'none';
+      });
+    });
+  });
+
+  /* ─── How-it-works tab switcher ─── */
+  document.querySelectorAll('[data-how-tab]').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var tab = btn.dataset.howTab;
+      document.querySelectorAll('[data-how-tab]').forEach(function(b) {
+        b.classList.toggle('active', b.dataset.howTab === tab);
+        b.setAttribute('aria-selected', b.dataset.howTab === tab);
+      });
+      document.querySelectorAll('.steps-panel').forEach(function(p) {
+        p.classList.toggle('active', p.id === 'steps-' + tab);
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
