@@ -7,46 +7,13 @@
   <title>Sell Your Land or Property — Imali.biz</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../../assets/css/tokens.css">
   <link rel="stylesheet" href="../../assets/css/base.css">
   <link rel="stylesheet" href="../../assets/css/animations.css">
   <link rel="stylesheet" href="../../assets/css/components.css">
   <style>
-    /* Sell stats strip */
-    .sell-stats {
-      display: flex;
-      justify-content: center;
-      gap: 0;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-    }
-    .sell-stat {
-      flex: 1;
-      padding: 2rem 1.5rem;
-      text-align: center;
-      border-right: 1px solid var(--border);
-    }
-    .sell-stat:last-child { border-right: none; }
-    .sell-stat-val {
-      font-family: var(--font-head);
-      font-size: clamp(1.6rem, 3vw, 2.2rem);
-      font-weight: 800;
-      color: var(--orange);
-      line-height: 1;
-      display: block;
-      margin-bottom: 0.35rem;
-    }
-    .sell-stat-label { font-size: 0.82rem; color: var(--text-dim); }
-
-    @media (max-width: 600px) {
-      .sell-stats { flex-wrap: wrap; }
-      .sell-stat { flex: 1 0 50%; border-right: none; border-bottom: 1px solid var(--border); }
-      .sell-stat:nth-child(odd) { border-right: 1px solid var(--border); }
-      .sell-stat:nth-last-child(-n+2) { border-bottom: none; }
-    }
+    /* nothing page-specific needed — all hero styles in components.css */
   </style>
 </head>
 <body>
@@ -60,32 +27,26 @@
   <div class="sell-hero-bg" style="background-image:url('https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=1920&auto=format&q=80')" aria-hidden="true"></div>
   <div class="container">
     <div class="sell-hero-content anim-fade-up-1">
-      <p class="eyebrow" style="color:rgba(248,245,240,0.55)">SELL WITH IMALI.BIZ</p>
+      <p class="eyebrow">SELL WITH IMALI.BIZ</p>
       <h1>Your property,<br><span>serious buyers.</span></h1>
-      <p>List for free and reach thousands of buyers across Rwanda. You keep 100% of your sale price — we earn nothing until you close.</p>
+      <p>Free to list. Reach thousands of verified buyers across Rwanda. We only earn when your deal closes.</p>
       <div class="sell-hero-btns">
         <a href="../../auth/register.html" class="btn btn-primary">List your property free</a>
         <a href="#how-it-works" class="btn-ghost-light">See how it works</a>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- ── Stats strip ──────────────────────────────────────── -->
-<section class="section-pad" style="padding-bottom:0">
-  <div class="container">
-    <div class="sell-stats reveal">
-      <div class="sell-stat">
-        <span class="sell-stat-val">RWF 0</span>
-        <span class="sell-stat-label">Listing fee</span>
-      </div>
-      <div class="sell-stat">
-        <span class="sell-stat-val">1,200+</span>
-        <span class="sell-stat-label">Active buyers on platform</span>
-      </div>
-      <div class="sell-stat">
-        <span class="sell-stat-val">&lt;5 min</span>
-        <span class="sell-stat-label">Average time to list</span>
+      <div class="sell-hero-stats">
+        <div class="sell-hero-stat">
+          <span class="sell-hero-stat-num">RWF 0</span>
+          <span class="sell-hero-stat-label">Listing fee</span>
+        </div>
+        <div class="sell-hero-stat">
+          <span class="sell-hero-stat-num">1,200+</span>
+          <span class="sell-hero-stat-label">Active buyers</span>
+        </div>
+        <div class="sell-hero-stat">
+          <span class="sell-hero-stat-num">&lt;5 min</span>
+          <span class="sell-hero-stat-label">Time to list</span>
+        </div>
       </div>
     </div>
   </div>
@@ -131,22 +92,22 @@
     </div>
     <div class="sell-pillars">
       <div class="sell-pillar reveal">
-        <div class="sell-pillar-icon">🎯</div>
+        <div class="sell-pillar-icon"><i class="bi bi-bullseye"></i></div>
         <h4>Reach the right buyers</h4>
         <p>Your listing appears in front of buyers who match your property type, location, and price range — not random browsers.</p>
       </div>
       <div class="sell-pillar reveal reveal-delay-1">
-        <div class="sell-pillar-icon">💰</div>
+        <div class="sell-pillar-icon"><i class="bi bi-cash-coin"></i></div>
         <h4>Zero listing fees, always</h4>
         <p>Free to list, free to update, free to message buyers. We only earn when a deal closes — and even then, nothing is taken from your sale price.</p>
       </div>
       <div class="sell-pillar reveal reveal-delay-1">
-        <div class="sell-pillar-icon">📊</div>
+        <div class="sell-pillar-icon"><i class="bi bi-bar-chart-fill"></i></div>
         <h4>Transparent pricing data</h4>
         <p>See what similar properties have sold for in your area. Price confidently, backed by real market data from across Rwanda.</p>
       </div>
       <div class="sell-pillar reveal reveal-delay-2">
-        <div class="sell-pillar-icon">🔒</div>
+        <div class="sell-pillar-icon"><i class="bi bi-shield-lock-fill"></i></div>
         <h4>Your documents, secured</h4>
         <p>Upload your title deed and ownership documents once. Share them securely with interested buyers. Your data stays in your control.</p>
       </div>

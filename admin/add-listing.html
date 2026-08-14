@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <script>(function(){var t=localStorage.getItem('imali-theme')||'light';document.documentElement.setAttribute('data-theme',t);})();</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Listing — Imali.biz Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/animations.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+/* ── Page layout ──────────────────────────────────────────────────────────── */
+.admin-wrap { max-width: 820px; margin: 0 auto; padding: 6rem 1.5rem 6rem; }
+.admin-back { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.82rem; color: var(--text-dim); text-decoration: none; margin-bottom: 2rem; transition: color 0.2s; }
+.admin-back:hover { color: var(--text); }
+.admin-eyebrow { font-size: 0.68rem; letter-spacing: 0.13em; text-transform: uppercase; color: var(--green); margin-bottom: 0.5rem; font-weight: 600; }
+.admin-title { font-family: var(--font-head); font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 0.5rem; }
+.admin-sub { font-size: 0.88rem; color: var(--text-dim); margin-bottom: 2.5rem; }
+
+/* ── Type picker ──────────────────────────────────────────────────────────── */
+.type-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 2.5rem; }
+.type-card { border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1rem 0.75rem; cursor: pointer; transition: border-color 0.2s, background 0.2s, box-shadow 0.2s; text-align: center; user-select: none; }
+.type-card:hover { border-color: var(--green); background: rgba(76,175,130,0.04); }
+.type-card.selected { border-color: var(--green); background: rgba(76,175,130,0.08); box-shadow: 0 0 0 3px rgba(76,175,130,0.12); }
+.type-card-icon { font-size: 1.5rem; margin-bottom: 0.4rem; }
+.type-card-label { font-family: var(--font-head); font-size: 0.78rem; font-weight: 700; color: var(--text); line-height: 1.3; }
+.type-card-sub { font-size: 0.68rem; color: var(--text-dim); margin-top: 0.2rem; }
+
+/* ── Form cards ───────────────────────────────────────────────────────────── */
+.form-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1.25rem; }
+.form-section-title { font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 1.25rem; font-weight: 700; }
+.field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.field-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+.field-grid.cols-1 { grid-template-columns: 1fr; }
+.field { display: flex; flex-direction: column; gap: 0.35rem; }
+.field.span2 { grid-column: 1 / -1; }
+.field-label { font-size: 0.68rem; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-dim); font-weight: 600; }
+.field-label .opt { font-size: 0.6rem; font-weight: 400; opacity: 0.7; text-transform: none; letter-spacing: 0; margin-left: 4px; }
+.field-input, .field-select, .field-textarea {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) * 0.7);
+  padding: 0.65rem 0.9rem;
+  font-family: var(--font-body); font-size: 0.9rem;
+  color: var(--text); outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  width: 100%; box-sizing: border-box;
+}
+.field-input:focus, .field-select:focus, .field-textarea:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px rgba(76,175,130,0.12);
+}
+.field-input.auto-filled { border-color: rgba(76,175,130,0.5); background: rgba(76,175,130,0.05); }
+.field-select.auto-filled { border-color: rgba(76,175,130,0.5); background: rgba(76,175,130,0.05); }
+.field-textarea { resize: vertical; min-height: 90px; line-height: 1.55; }
+.field-hint { font-size: 0.7rem; color: var(--text-dim); line-height: 1.4; }
+
+/* ── UPI card ─────────────────────────────────────────────────────────────── */
+.upi-card { background: rgba(76,175,130,0.05); border: 1px solid rgba(76,175,130,0.2); border-radius: var(--radius-lg); padding: 1.25rem 1.5rem; margin-bottom: 1.25rem; }
+.upi-label { font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--green); margin-bottom: 0.65rem; font-weight: 700; }
+.upi-row { display: flex; gap: 0.6rem; }
+.upi-input {
+  flex: 1; background: var(--bg); border: 1px solid rgba(76,175,130,0.3);
+  border-radius: calc(var(--radius) * 0.7); padding: 0.7rem 1rem;
+  font-family: var(--font-body); font-size: 0.92rem; color: var(--text); outline: none;
+  transition: border-color 0.2s;
+}
+.upi-input:focus { border-color: var(--green); }
+.upi-btn {
+  background: var(--green); border: none; border-radius: calc(var(--radius) * 0.7);
+  padding: 0.7rem 1.3rem; color: #fff;
+  font-family: var(--font-head); font-size: 0.82rem; font-weight: 700;
+  cursor: pointer; white-space: nowrap; transition: opacity 0.15s;
+}
+.upi-btn:hover { opacity: 0.87; }
+.upi-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.upi-status { margin-top: 0.65rem; font-size: 0.78rem; color: var(--text-dim); }
+.upi-status.ok { color: #4caf82; }
+.upi-status.err { color: #ef5350; }
+.upi-status.loading { color: var(--green); }
+
+/* ── Map ──────────────────────────────────────────────────────────────────── */
+.map-wrap { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; height: 220px; position: relative; background: var(--bg-alt); }
+#miniMap { width: 100%; height: 100%; }
+.map-placeholder { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 0.78rem; color: var(--text-dim); text-align: center; padding: 1rem; background: var(--bg-alt); pointer-events: none; }
+
+/* ── Upload zones ─────────────────────────────────────────────────────────── */
+.upload-zone {
+  border: 1.5px dashed rgba(76,175,130,0.35);
+  border-radius: var(--radius); padding: 1.4rem 1rem;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 0.35rem; cursor: pointer; text-align: center;
+  transition: border-color 0.2s, background 0.2s;
+}
+.upload-zone:hover, .upload-zone.drag-over { border-color: var(--green); background: rgba(76,175,130,0.04); }
+.upload-zone-icon { font-size: 1.5rem; }
+.upload-zone-text { font-size: 0.8rem; color: var(--text-dim); }
+.upload-zone-formats { font-size: 0.67rem; color: var(--text-dim); opacity: 0.6; }
+.upload-thumbs { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 0.75rem; }
+.upload-thumb { position: relative; width: 84px; height: 84px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); background: var(--bg-alt); display: flex; align-items: center; justify-content: center; flex-direction: column; flex-shrink: 0; }
+.upload-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.upload-thumb.uploading { border-style: dashed; }
+.thumb-spinner { width: 22px; height: 22px; border: 2px solid rgba(76,175,130,0.2); border-top-color: var(--green); border-radius: 50%; animation: tsp 0.7s linear infinite; }
+@keyframes tsp { to { transform: rotate(360deg); } }
+.thumb-remove { position: absolute; top: 3px; right: 3px; background: rgba(0,0,0,0.65); border: none; color: #fff; width: 18px; height: 18px; border-radius: 50%; font-size: 11px; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.15s; padding: 0; }
+.upload-thumb:hover .thumb-remove { opacity: 1; }
+.thumb-cover-btn { position: absolute; bottom: 3px; left: 3px; background: rgba(0,0,0,0.65); border: none; color: rgba(255,255,255,0.4); width: 18px; height: 18px; border-radius: 50%; font-size: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.15s, color 0.15s; padding: 0; }
+.upload-thumb:hover .thumb-cover-btn { opacity: 1; }
+.thumb-cover-btn.is-cover { color: #f5c518; opacity: 1; }
+
+/* ── Trust score sliders ──────────────────────────────────────────────────── */
+.trust-row { display: flex; align-items: center; gap: 1rem; }
+.trust-row input[type="range"] { flex: 1; accent-color: var(--green); }
+.trust-val { font-family: var(--font-head); font-size: 1rem; font-weight: 700; min-width: 2.5rem; text-align: right; }
+
+/* ── Submit / action ──────────────────────────────────────────────────────── */
+.submit-row { display: flex; gap: 1rem; align-items: center; margin-top: 2rem; flex-wrap: wrap; }
+.btn-submit { background: var(--green); border: none; border-radius: var(--radius); padding: 0.85rem 2rem; color: #fff; font-family: var(--font-head); font-size: 0.92rem; font-weight: 700; cursor: pointer; transition: opacity 0.15s; }
+.btn-submit:hover { opacity: 0.87; }
+.btn-submit:disabled { opacity: 0.45; cursor: not-allowed; }
+.btn-cancel { font-size: 0.88rem; color: var(--text-dim); text-decoration: none; }
+.btn-cancel:hover { color: var(--text); }
+
+/* ── Success banner ───────────────────────────────────────────────────────── */
+.success-banner { display: none; text-align: center; padding: 3rem 2rem; border: 1px solid rgba(76,175,130,0.2); border-radius: var(--radius-lg); background: rgba(76,175,130,0.04); margin-bottom: 2rem; }
+.success-banner.visible { display: block; }
+.success-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+.success-title { font-family: var(--font-head); font-size: 1.4rem; font-weight: 700; margin-bottom: 0.5rem; }
+.success-sub { font-size: 0.85rem; color: var(--text-dim); margin-bottom: 1.5rem; line-height: 1.6; }
+.success-links { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+.success-link { font-size: 0.82rem; font-weight: 500; padding: 0.55rem 1.2rem; border-radius: var(--radius); text-decoration: none; }
+.success-link.primary { background: var(--green); color: #fff; }
+.success-link.secondary { background: var(--bg-alt); color: var(--text); border: 1px solid var(--border); }
+
+/* ── Conditional section visibility ──────────────────────────────────────── */
+[data-show-for] { display: none; }
+[data-show-for].visible { display: block; }
+
+/* ── Edit mode banner ─────────────────────────────────────────────────────── */
+.edit-banner { background: rgba(212,168,50,0.08); border: 1px solid rgba(212,168,50,0.25); border-radius: var(--radius); padding: 0.75rem 1rem; font-size: 0.82rem; color: var(--text); margin-bottom: 1.5rem; display: none; }
+.edit-banner.visible { display: block; }
+
+/* ── Lightbox ─────────────────────────────────────────────────────────────── */
+.img-lightbox { position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.92); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.2s; cursor: zoom-out; }
+.img-lightbox.open { opacity: 1; pointer-events: all; }
+.img-lightbox .lb-img { max-width: 80vw; max-height: 88vh; object-fit: contain; border-radius: 8px; cursor: default; }
+.img-lightbox-close { position: absolute; top: 1rem; right: 1.5rem; color: rgba(255,255,255,0.7); font-size: 2rem; cursor: pointer; background: none; border: none; }
+
+@media (max-width: 680px) {
+  .type-grid { grid-template-columns: repeat(2, 1fr); }
+  .field-grid, .field-grid.cols-3 { grid-template-columns: 1fr; }
+  .upi-row { flex-direction: column; }
+}
+@media (max-width: 400px) {
+  .type-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="cursor" aria-hidden="true"></div>
+<div class="cursor-ring" aria-hidden="true"></div>
+
+<div id="site-nav"></div>
+
+<div class="admin-wrap">
+
+  <a href="manage-listings.html" class="admin-back">
+    <i class="bi bi-arrow-left"></i> Manage listings
+  </a>
+
+  <div class="edit-banner" id="editBanner">
+    <i class="bi bi-pencil-square"></i> <strong>Edit mode</strong> — you are editing an existing listing. Changes save over the original record.
+  </div>
+
+  <p class="admin-eyebrow">IMALI.BIZ ADMIN</p>
+  <h1 class="admin-title" id="pageTitle">Add New Listing</h1>
+  <p class="admin-sub">Fill in the listing details below. UPI auto-fills location, size, and zone from Rwanda's cadastral registry.</p>
+
+  <!-- ── Listing Type Picker ─────────────────────────────────────────────── -->
+  <div class="form-card" style="margin-bottom:1.5rem">
+    <div class="form-section-title">Listing type — select one</div>
+    <div class="type-grid" id="typePicker">
+      <div class="type-card" data-type="buy-land" onclick="selectType('buy-land',this)">
+        <div class="type-card-icon">🏞</div>
+        <div class="type-card-label">Land For Sale</div>
+        <div class="type-card-sub">Plot · Title deed</div>
+      </div>
+      <div class="type-card" data-type="buy-home" onclick="selectType('buy-home',this)">
+        <div class="type-card-icon">🏠</div>
+        <div class="type-card-label">Property For Sale</div>
+        <div class="type-card-sub">House · Apartment · Villa</div>
+      </div>
+      <div class="type-card" data-type="off-plan-buy" onclick="selectType('off-plan-buy',this)">
+        <div class="type-card-icon">🏗</div>
+        <div class="type-card-label">Off-plan: Buy</div>
+        <div class="type-card-sub">Reserve before completion</div>
+      </div>
+      <div class="type-card" data-type="invest-full" onclick="selectType('invest-full',this)">
+        <div class="type-card-icon">🏦</div>
+        <div class="type-card-label">Invest: Full Asset</div>
+        <div class="type-card-sub">Full ownership investment</div>
+      </div>
+      <div class="type-card" data-type="invest-fractional" onclick="selectType('invest-fractional',this)">
+        <div class="type-card-icon">📊</div>
+        <div class="type-card-label">Invest: Fractional</div>
+        <div class="type-card-sub">Co-invest from RWF 75,000</div>
+      </div>
+      <div class="type-card" data-type="off-plan-invest" onclick="selectType('off-plan-invest',this)">
+        <div class="type-card-icon">📈</div>
+        <div class="type-card-label">Off-plan: Invest</div>
+        <div class="type-card-sub">Invest in a development</div>
+      </div>
+    </div>
+    <input type="hidden" id="selectedType" name="listing_category" value="">
+  </div>
+
+  <!-- ── Main form (shown after type selected) ──────────────────────────── -->
+  <div id="mainForm" style="display:none">
+
+  <!-- UPI Lookup -->
+  <div class="upi-card">
+    <div class="upi-label">
+      UPI Auto-Lookup <span id="upiOptLabel" style="font-weight:400;opacity:0.7;text-transform:none;letter-spacing:0;font-size:0.7rem">(optional for non-land listings)</span>
+    </div>
+    <div class="upi-row">
+      <input class="upi-input" type="text" id="upiLookup" placeholder="e.g. 1/01/02/03/0456" maxlength="30">
+      <button type="button" class="upi-btn" id="lookupBtn" onclick="lookupUPI()">Look up UPI</button>
+    </div>
+    <div class="upi-status" id="upiStatus">Enter a UPI above to auto-fill district, sector, size, and zone from Rwanda's cadastral registry.</div>
+  </div>
+
+  <form id="listingForm" onsubmit="submitListing(event)">
+
+    <!-- Core details -->
+    <div class="form-card">
+      <div class="form-section-title">Listing details</div>
+      <div class="field-grid cols-1" style="gap:1rem">
+        <div class="field">
+          <label class="field-label" for="f_title">Listing title</label>
+          <input class="field-input" id="f_title" name="title" type="text" placeholder="e.g. 600 sqm plot in Kibagabaga, Gasabo" required>
+        </div>
+        <div class="field">
+          <label class="field-label" for="f_description">Description</label>
+          <textarea class="field-textarea" id="f_description" name="description" placeholder="Describe the property — location, features, nearby infrastructure, investment upside…" style="min-height:110px"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Location -->
+    <div class="form-card">
+      <div class="form-section-title">Location</div>
+      <div class="field-grid">
+        <div class="field">
+          <label class="field-label" for="f_upi">UPI <span class="opt">(optional)</span></label>
+          <input class="field-input" id="f_upi" name="upi" type="text" placeholder="Auto-filled from lookup">
+        </div>
+        <div class="field">
+          <label class="field-label" for="f_district">District</label>
+          <select class="field-select" id="f_district" name="district">
+            <option value="">Select district</option>
+            <optgroup label="Kigali">
+              <option>Gasabo</option><option>Kicukiro</option><option>Nyarugenge</option>
+            </optgroup>
+            <optgroup label="Eastern Province">
+              <option>Bugesera</option><option>Gatsibo</option><option>Kayonza</option>
+              <option>Kirehe</option><option>Ngoma</option><option>Nyagatare</option><option>Rwamagana</option>
+            </optgroup>
+            <optgroup label="Northern Province">
+              <option>Burera</option><option>Gakenke</option><option>Gicumbi</option>
+              <option>Musanze</option><option>Rulindo</option>
+            </optgroup>
+            <optgroup label="Southern Province">
+              <option>Gisagara</option><option>Huye</option><option>Kamonyi</option>
+              <option>Muhanga</option><option>Nyamagabe</option><option>Nyanza</option>
+              <option>Nyaruguru</option><option>Ruhango</option>
+            </optgroup>
+            <optgroup label="Western Province">
+              <option>Karongi</option><option>Ngororero</option><option>Nyabihu</option>
+              <option>Nyamasheke</option><option>Rubavu</option><option>Rusizi</option><option>Rutsiro</option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="field">
+          <label class="field-label" for="f_sector">Sector</label>
+          <input class="field-input" id="f_sector" name="sector" type="text" placeholder="e.g. Gisozi">
+        </div>
+        <div class="field">
+          <label class="field-label" for="f_cell">Cell <span class="opt">(optional)</span></label>
+          <input class="field-input" id="f_cell" name="cell" type="text" placeholder="e.g. Cyibaba">
+        </div>
+        <div class="field">
+          <label class="field-label" for="f_gps_lat">GPS Latitude <span class="opt">(auto)</span></label>
+          <input class="field-input" id="f_gps_lat" name="gps_lat" type="number" step="any" placeholder="e.g. -1.9536">
+        </div>
+        <div class="field">
+          <label class="field-label" for="f_gps_lng">GPS Longitude <span class="opt">(auto)</span></label>
+          <input class="field-input" id="f_gps_lng" name="gps_lng" type="number" step="any" placeholder="e.g. 30.0605">
+        </div>
+      </div>
+    </div>
+
+    <!-- Land-specific fields -->
+    <div class="form-card" data-show-for="buy-land">
+      <div class="form-section-title">Land details</div>
+      <div class="field-grid">
+        <div class="field">
+          <label class="field-label" for="f_size">Plot size (m²)</label>
+          <input class="field-input" id="f_size" name="size_sqm" type="number" min="0" placeholder="e.g. 600 (auto-filled from UPI)">
+        </div>
+        <div class="field">
+          <label class="field-label" for="f_zone">Zone <span class="opt">(auto)</span></label>
+          <select class="field-select" id="f_zone" name="zone">
+            <option value="">Unknown / Not zoned</option>
+            <optgroup label="Residential">
+              <option value="R1">R1 — Low density residential</option>
+              <option value="R1A">R1A — Low density densification</option>
+              <option value="R1B">R1B — Rural residential</option>
+              <option value="R2">R2 — Medium density (Improvement)</option>
+              <option value="R3">R3 — Medium density (Expansion)</option>
+              <option value="R4">R4 — High density residential</option>
+            </optgroup>
+            <optgroup label="Commercial">
+              <option value="C1">C1 — Mixed use</option>
+              <option value="C3">C3 — City commercial</option>
+            </optgroup>
+            <optgroup label="Industrial">
+              <option value="I1">I1 — Light industrial</option>
+              <option value="I2">I2 — General industrial</option>
+            </optgroup>
+            <optgroup label="Agricultural">
+              <option value="A1">A1 — Agriculture</option>
+            </optgroup>
+            <optgroup label="Public / Parks">
+              <option value="PA">PA — Public administration</option>
+              <option value="P1">P1 — Parks and open spaces</option>
+            </optgroup>
+            <optgroup label="Wetland">
+              <option value="W2">W2 — Wetland rehabilitation</option>
+              <option value="W4">W4 — Wetland conservation</option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="field">
+          <label class="field-label" for="f_title_deed">Title deed type</label>
+          <select class="field-select" id="f_title_deed" name="title_deed">
+            <option value="">Not specified</option>
+            <option value="freehold">Freehold (Title deed issued)</option>
+            <option value="emphyteutic">Emphyteutic (Long-term lease)</option>
+            <option value="lease">Lease</option>
+            <option value="in_progress">Application in progress</option>
+            <option value="none">No title deed yet</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="field-label" for="f_topography">Topography <span class="opt">(optional)</span></label>
+          <select class="field-select" id="f_topography" name="topography">
+            <option value="">Not specified</option>
+            <option value="flat">Flat</option>
+            <option value="gentle_slope">Gentle slope</option>
+            <option value="steep_slope">Steep slope</option>
+            <option value="valley">Valley / wetland edge</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Property for sale fields -->
+    <div class="form-card" data-show-for="buy-home">
+      <div class="form-section-title">Property details</div>
+      <div class="field-grid">
+        <div class="field">
+          <label class="field-label" for="f_prop_sub_type">Property type</label>
+          <select class="field-select" id="f_prop_sub_type" name="property_sub_type">
+            <option value="">Select type</option>
+            <option value="house">House / Villa</option>
+            <option value="apartment">Apartment</option>
+            <option value="townhouse">Townhouse</option>
+            <option value="commercial">Commercial building</option>
+            <option value="warehouse">Warehouse / Industrial</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="field-label" for="f_title_deed2">Title deed</label>
+          <select class="field-select" id="f_title_deed2" name="title_deed">
+            <option value="">Not specified</option>
+            <option value="freehold">Freehold (Title deed issued)</option>
+            <option value="emphyteutic">Emphyteutic</option>
+            <option value="lease">Lease</option>
+            <option value="in_progress">Application in progress</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="field-label" for="f_bedrooms">Bedrooms</label>
+          <input class="field-input" id="f_bedrooms" name="bedrooms" type="number" min="0" max="20" placeholder="e.g. 3">
+        </div>
+        <div class="field">
+          <label class="field-label" for="f_bathrooms">Bathrooms</label>
+          <input class="field-input" id="f_bathrooms" name="bathrooms" type="number" min="0" max="20" placeholder="e.g. 2">
+        </div>
+        <div class="field">
+          <label class="field-label" for="f_floor_area">Floor area (m²)</label>
+          <input class="field-input" id="f_floor_area" name="floor_area_sqm" type="number" min="0" placeholder="Total built area">
+        </div>
+        <div class="field">
+          <label class="field-label" for="f_plot_size">Plot size (m²) <span class="opt">(houses)</span></label>
+          <input class="field-input" id="f_plot_size" name="plot_size_sqm" type="number" min="0" placeholder="Land the property sits on">
+        </div>
+        <div class="field">
+          <label class="field-label" for="f_year_built">Year built <span class="opt">(optional)</span></label>
+          <input class="field-input" id="f_year_built" name="year_built" type="number" min="1900" max="2030" placeholder="e.g. 2019">
+        </div>
+        <div class="field">
+          <label class="field-label" for="f_furnishing">Furnishing</label>
+          <select class="field-select" id="f_furnishing" name="furnishing">
+            <option value="">Not specified</option>
+            <option value="unfurnished">Unfurnished</option>
+            <option value="part_furnished">Part furnished</option>
+            <option value="fully_furnished">Fully furnished</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="field-label" for="f_parking">Parking spaces <span class="opt">(optional)</span></label>
+          <input class="field-input" id="f_parking" name="parking_spaces" type="number" min="0" placeholder="e.g. 2">
+        </div>
+        <div class="field">
+          <label class="field-label" for="f_floor_num">Floor number <span class="opt">(apts)</span></label>
+          <input class="field-input" id="f_floor_num" name="floor_number" type="number" min="0" placeholder="Ground = 0">
+        </div>
+      </div>
+    </div>
+
+    <!-- Off-plan buy fields -->
+    <div class="form-card" data-show-for="off-plan-buy">
+      <div class="form-section-title">Off-plan development details</div>
+      <div class="field-grid">
+        <div class="field">
+          <label class="field-label" for="f_dev_name">Development name</label>
+          <input class="field-input" id="f_dev_name" name="development_name" type="text" placeholder="e.g. Kigali Heights Residence">
+        </div>
+        <div class="field">
+          <label class="field-label" for="f_developer">Developer / Company</label>
+          <input class="field-input" id="f_developer" name="developer" type="text" placeholder="Developer or company name">
+        </div>
+        <div class="field">
+          <label class="field-label" for="f_unit_sub_type">Unit type</label>
+          <select class="field-select" id="f_unit_sub_type" name="unit_sub_type">
+            <option value="">Select type</option>
+            <option value="studio">Studio</option>
+            <option value="apartment_1br">1-bedroom apartment</option>
+            <option value="apartment_2br">2-bedroom apartment</option>
+            <option value="apartment_3br">3-bedroom apartment</option>
+            <option value="penthouse">Penthouse</option>
+            <option value="villa">Villa</option>
+            <option value="townhouse">Townhouse</option>
+            <option value="commercial">Commercial unit</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="field-label" for="f_completion_date">Estimated completion</label>
+          <input class="field-input" id="f_completion_date" name="completion_date" type="month" placeholder="Month / Year">
+        </div>
+        <div class="field">
+          <label class="field-label" for="f_op_floor_area">Unit floor area (m²)</label>
+          <input class="field-input" id="f_op_floor_area" name="floor_area_sqm" type="number" min="0" placeholder="e.g. 85">
+        </div>
+        <div class="field">
+          <label class="field-label" for="f_op_bedrooms">Bedrooms</label>
+          <input class="field-input" id="f_op_bedrooms" name="bedrooms" type="number" min="0" max="10" placeholder="e.g. 2">
+        </div>
+        <div class="field">
+          <label class="field-label" for="f_reservation_fee">Reservation fee (RWF) <span class="opt">(optional)</span></label>
+          <input class="field-input" id="f_reservation_fee" name="reservation_fee_rwf" type="number" min="0" placeholder="Amount to reserve a unit">
+        </div>
+        <div class="field">
+          <label class="field-label" for="f_dev_phase">Phase / Stage <span class="opt">(optional)</span></label>
+          <input class="field-input" id="f_dev_phase" name="dev_phase" type="text" placeholder="e.g. Phase 1">
+        </div>
+      </div>
+    </div>
+
+    <!-- Full asset invest fields -->
+    <div class="form-card" data-show-for="invest-full">
+      <div class="form-section-title">Full asset investment details</div>
+      <div class="field-grid">
+        <div class="field">
+          <label class="field-label" for="f_fa_asset_type">Asset type</label>
+          <select class="field-select" id="f_fa_asset_type" name="property_sub_type">
+            <option value="">Select type</option>
+            <option value="house">House / Villa</option>
+            <option value="apartment">Apartment</option>
+            <option value="commercial">Commercial property</option>
+            <option value="off-plan">Off-plan unit</option>
+            <option value="land">Land</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="field-label" for="f_fa_yield">Projected yield (% p.a.)</label>
+          <input class="field-input" id="f_fa_yield" name="yield_pct" type="number" min="0" max="100" step="0.1" placeholder="e.g. 18">
+        </div>
+        <div class="field">
+          <label class="field-label" for="f_fa_rental">Rental income (RWF/month) <span class="opt">(optional)</span></label>
+          <input class="field-input" id="f_fa_rental" name="rental_income_rwf_pm" type="number" min="0" placeholder="Current or projected monthly rent">
+        </div>
+        <div class="field">
+          <label class="field-label" for="f_fa_bedrooms">Bedrooms <span class="opt">(if applicable)</span></label>
+          <input class="field-input" id="f_fa_bedrooms" name="bedrooms" type="number" min="0" max="20" placeholder="e.g. 3">
+        </div>
+        <div class="field">
+          <label class="field-label" for="f_fa_floor_area">Floor area (m²) <span class="opt">(optional)</span></label>
+          <input class="field-input" id="f_fa_floor_area" name="floor_area_sqm" type="number" min="0" placeholder="Built area">
+        </div>
+        <div class="field">
+          <label class="field-label" for="f_fa_exit_strategy">Exit strategy <span class="opt">(optional)</span></label>
+          <select class="field-select" id="f_fa_exit_strategy" name="exit_strategy">
+            <option value="">Not specified</option>
+            <option value="hold_rent">Hold &amp; rent (indefinite)</option>
+            <option value="sell_3yr">Sell within 3 years</option>
+            <option value="sell_5yr">Sell within 5 years</option>
+            <option value="flexible">Flexible / open to offers</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fractional invest fields -->
+    <div class="form-card" data-show-for="invest-fractional">
+      <div class="form-section-title">Fractional investment details</div>
+      <div class="field-grid">
+        <div class="field">
+          <label class="field-label" for="f_frac_asset_type">Asset type</label>
+          <select class="field-select" id="f_frac_asset_type" name="property_sub_type">
+            <option value="">Select type</option>
+            <option value="apartment">Apartment block</option>
+            <option value="commercial">Commercial property</option>
+            <option value="mixed_use">Mixed-use building</option>
+            <option value="villa">Villa</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="field-label" for="f_frac_min_invest">Minimum investment (RWF)</label>
+          <input class="field-input" id="f_frac_min_invest" name="min_invest_rwf" type="number" min="0" placeholder="e.g. 75000">
+        </div>
+        <div class="field">
+          <label class="field-label" for="f_frac_yield">Projected yield (% p.a.)</label>
+          <input class="field-input" id="f_frac_yield" name="projected_yield_pct" type="number" min="0" max="100" step="0.1" placeholder="e.g. 15">
+        </div>
+        <div class="field">
+          <label class="field-label" for="f_frac_total_raise">Total raise (RWF)</label>
+          <input class="field-input" id="f_frac_total_raise" name="total_raise_rwf" type="number" min="0" placeholder="Total investment target">
+        </div>
+        <div class="field">
+          <label class="field-label" for="f_frac_property_val">Property value (RWF)</label>
+          <input class="field-input" id="f_frac_property_val" name="property_value_rwf" type="number" min="0" placeholder="Full property value">
+        </div>
+        <div class="field">
+          <label class="field-label" for="f_frac_payout">Payout schedule</label>
+          <select class="field-select" id="f_frac_payout" name="payout_schedule">
+            <option value="">Not specified</option>
+            <option value="monthly">Monthly</option>
+            <option value="quarterly">Quarterly</option>
+            <option value="biannual">Bi-annual</option>
+            <option value="annual">Annual</option>
+            <option value="on_exit">On exit / sale only</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="field-label" for="f_frac_units_avail">Units / shares available <span class="opt">(optional)</span></label>
+          <input class="field-input" id="f_frac_units_avail" name="shares_available" type="number" min="0" placeholder="e.g. 100 shares of 1% each">
+        </div>
+        <div class="field">
+          <label class="field-label" for="f_frac_floor_area">Floor area (m²) <span class="opt">(optional)</span></label>
+          <input class="field-input" id="f_frac_floor_area" name="floor_area_sqm" type="number" min="0" placeholder="Total built area">
+        </div>
+      </div>
+    </div>
+
+    <!-- Off-plan invest fields -->
+    <div class="form-card" data-show-for="off-plan-invest">
+      <div class="form-section-title">Off-plan investment details</div>
+      <div class="field-grid">
+        <div class="field">
+          <label class="field-label" for="f_opi_dev_name">Development name</label>
+          <input class="field-input" id="f_opi_dev_name" name="development_name" type="text" placeholder="e.g. Kigali Heights Residence">
+        </div>
+        <div class="field">
+          <label class="field-label" for="f_opi_developer">Developer</label>
+          <input class="field-input" id="f_opi_developer" name="developer" type="text" placeholder="Developer or company name">
+        </div>
+        <div class="field">
+          <label class="field-label" for="f_opi_inv_type">Investment type</label>
+          <select class="field-select" id="f_opi_inv_type" name="offplan_invest_type">
+            <option value="">Select</option>
+            <option value="fractional">Fractional stake</option>
+            <option value="full_unit">Full unit</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="field-label" for="f_opi_completion">Estimated completion</label>
+          <input class="field-input" id="f_opi_completion" name="completion_date" type="month">
+        </div>
+        <div class="field">
+          <label class="field-label" for="f_opi_min_invest">Min investment (RWF) <span class="opt">(fractional)</span></label>
+          <input class="field-input" id="f_opi_min_invest" name="min_invest_rwf" type="number" min="0" placeholder="e.g. 75000">
+        </div>
+        <div class="field">
+          <label class="field-label" for="f_opi_yield">Projected yield (% p.a.)</label>
+          <input class="field-input" id="f_opi_yield" name="projected_yield_pct" type="number" min="0" max="100" step="0.1" placeholder="e.g. 18">
+        </div>
+        <div class="field">
+          <label class="field-label" for="f_opi_total_raise">Total raise (RWF)</label>
+          <input class="field-input" id="f_opi_total_raise" name="total_raise_rwf" type="number" min="0" placeholder="Total investment target">
+        </div>
+        <div class="field">
+          <label class="field-label" for="f_opi_dev_phase">Phase / Stage <span class="opt">(optional)</span></label>
+          <input class="field-input" id="f_opi_dev_phase" name="dev_phase" type="text" placeholder="e.g. Phase 1">
+        </div>
+      </div>
+    </div>
+
+    <!-- Pricing -->
+    <div class="form-card">
+      <div class="form-section-title">Pricing</div>
+      <div class="field-grid">
+        <div class="field">
+          <label class="field-label" for="f_price">
+            <span id="priceLabelText">Asking price (RWF)</span>
+          </label>
+          <input class="field-input" id="f_price" name="price_rwf" type="number" min="0" placeholder="e.g. 45000000" required>
+          <span class="field-hint" id="priceHint"></span>
+        </div>
+        <div class="field">
+          <label class="field-label" for="f_price_negotiable">Price negotiable?</label>
+          <select class="field-select" id="f_price_negotiable" name="price_negotiable">
+            <option value="">Not specified</option>
+            <option value="yes">Yes — open to offers</option>
+            <option value="firm">Firm price only</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Trust Scores -->
+    <div class="form-card">
+      <div class="form-section-title">Trust scores</div>
+      <div class="field-grid cols-1" style="gap:1.25rem">
+        <div class="field">
+          <label class="field-label" for="f_trust_seller">Seller trust score <span class="opt">(0 = none · 100 = fully verified)</span></label>
+          <div class="trust-row">
+            <input type="range" id="f_trust_seller" name="trust_seller" min="0" max="100" value="70" oninput="document.getElementById('sellerVal').textContent=this.value">
+            <span class="trust-val" id="sellerVal">70</span>
+          </div>
+          <span class="field-hint">Based on ID verification, track record, and document completeness.</span>
+        </div>
+        <div class="field">
+          <label class="field-label" for="f_trust_property">Property trust score <span class="opt">(0 = none · 100 = fully verified)</span></label>
+          <div class="trust-row">
+            <input type="range" id="f_trust_property" name="trust_property" min="0" max="100" value="70" oninput="document.getElementById('propVal').textContent=this.value">
+            <span class="trust-val" id="propVal">70</span>
+          </div>
+          <span class="field-hint">Based on legal docs, title deed status, and property inspection.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Badges / highlights -->
+    <div class="form-card">
+      <div class="form-section-title">Badges &amp; highlights <span style="font-size:0.68rem;font-weight:400;text-transform:none;opacity:0.7">(tick all that apply)</span></div>
+      <div style="display:flex;flex-wrap:wrap;gap:0.6rem">
+        <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.82rem;cursor:pointer"><input type="checkbox" name="badges" value="Title Deed"> Title Deed</label>
+        <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.82rem;cursor:pointer"><input type="checkbox" name="badges" value="Verified"> Verified</label>
+        <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.82rem;cursor:pointer"><input type="checkbox" name="badges" value="New Listing"> New Listing</label>
+        <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.82rem;cursor:pointer"><input type="checkbox" name="badges" value="Featured"> Featured</label>
+        <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.82rem;cursor:pointer"><input type="checkbox" name="badges" value="Off-plan"> Off-plan</label>
+        <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.82rem;cursor:pointer"><input type="checkbox" name="badges" value="Reduced Price"> Reduced Price</label>
+        <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.82rem;cursor:pointer"><input type="checkbox" name="badges" value="Road Access"> Road Access</label>
+        <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.82rem;cursor:pointer"><input type="checkbox" name="badges" value="Utilities"> Utilities Connected</label>
+      </div>
+    </div>
+
+    <!-- Photos & Media -->
+    <div class="form-card">
+      <div class="form-section-title">Photos</div>
+      <div class="upload-zone" id="photoZone">
+        <div class="upload-zone-icon">📷</div>
+        <div class="upload-zone-text">Click or drag property photos here</div>
+        <div class="upload-zone-formats">JPG · PNG · HEIC · up to 15 photos · ★ = cover photo</div>
+      </div>
+      <input type="file" id="photoInput" accept="image/*" multiple style="display:none">
+      <div class="upload-thumbs" id="photoThumbs"></div>
+
+      <div style="margin-top:1.25rem">
+        <div class="form-section-title" style="margin-bottom:0.75rem">Documents <span style="font-size:0.68rem;font-weight:400;text-transform:none;opacity:0.7">(optional — title deeds, plans, etc.)</span></div>
+        <div class="upload-zone" id="docZone">
+          <div class="upload-zone-icon">📄</div>
+          <div class="upload-zone-text">Click or drag documents here</div>
+          <div class="upload-zone-formats">PDF · JPG · PNG · up to 10 files</div>
+        </div>
+        <input type="file" id="docInput" accept="image/*,application/pdf" multiple style="display:none">
+        <div class="upload-thumbs" id="docThumbs"></div>
+      </div>
+    </div>
+
+    <!-- Map preview -->
+    <div class="form-card" id="mapCard">
+      <div class="form-section-title">Map preview</div>
+      <div class="map-wrap">
+        <div id="miniMap"></div>
+        <div class="map-placeholder" id="mapMsg">Look up a UPI or enter GPS coordinates to show the location on the map.</div>
+      </div>
+    </div>
+
+    <!-- Publishing -->
+    <div class="form-card">
+      <div class="form-section-title">Publishing</div>
+      <div class="field-grid">
+        <div class="field">
+          <label class="field-label" for="f_status">Listing status</label>
+          <select class="field-select" id="f_status" name="status">
+            <option value="live">Live — visible on the website</option>
+            <option value="draft">Draft — saved but not shown</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="field-label" for="f_added_by">Added by <span class="opt">(internal)</span></label>
+          <input class="field-input" id="f_added_by" name="added_by" type="text" placeholder="Your name or initials">
+        </div>
+        <div class="field span2">
+          <label class="field-label" for="f_notes">Internal notes <span class="opt">(not shown publicly)</span></label>
+          <textarea class="field-textarea" id="f_notes" name="notes" placeholder="Seller contact, viewing arrangements, context for the team…"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="submit-row">
+      <button type="submit" class="btn-submit" id="submitBtn">Save listing →</button>
+      <a href="manage-listings.html" class="btn-cancel">Cancel</a>
+      <span id="submitStatus" style="font-size:0.82rem;color:var(--text-dim)"></span>
+    </div>
+
+  </form>
+
+  </div><!-- /mainForm -->
+
+  <!-- Success banner (replaces form) -->
+  <div class="success-banner" id="successBanner">
+    <div class="success-icon">✓</div>
+    <div class="success-title" id="successTitle">Listing saved</div>
+    <div class="success-sub" id="successSub">The listing has been saved to the database.</div>
+    <div class="success-links">
+      <a href="manage-listings.html" class="success-link primary">View all listings</a>
+      <a href="add-listing.html" class="success-link secondary">Add another</a>
+    </div>
+  </div>
+
+</div><!-- /admin-wrap -->
+
+<!-- Lightbox -->
+<div class="img-lightbox" id="imgLightbox" onclick="closeLightbox()">
+  <button class="img-lightbox-close" onclick="closeLightbox()">×</button>
+  <img class="lb-img" src="" alt="" onclick="event.stopPropagation()">
+</div>
+
+<div id="site-footer"></div>
+<script src="../assets/js/core.js" data-root="../"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="db.js"></script>
+<script>
+// ── Admin password gate ────────────────────────────────────────────────────────
+(function () {
+  var SK = 'imali_admin_auth';
+  if (sessionStorage.getItem(SK) === 'ok') return;
+
+  async function sha256(text) {
+    var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+    return Array.from(new Uint8Array(buf)).map(function (b) { return b.toString(16).padStart(2, '0'); }).join('');
+  }
+
+  function showGate(hash) {
+    var o = document.createElement('div');
+    o.id = 'adminGate';
+    o.style.cssText = 'position:fixed;inset:0;background:rgba(13,13,18,0.92);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:99999;font-family:var(--font-body),sans-serif;backdrop-filter:blur(4px)';
+    o.innerHTML = '<div style="background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:2.5rem;width:min(380px,90vw);text-align:center">' +
+      '<div style="font-size:2rem;margin-bottom:0.5rem">🔒</div>' +
+      '<div style="font-family:var(--font-head),sans-serif;font-size:1.3rem;font-weight:700;margin-bottom:0.4rem">Admin Access</div>' +
+      '<div style="color:var(--text-dim);font-size:0.84rem;margin-bottom:1.4rem">Enter the admin password to continue.</div>' +
+      '<input id="gateInput" type="password" placeholder="Password" autocomplete="current-password" style="width:100%;box-sizing:border-box;padding:0.75rem 1rem;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:0.95rem;outline:none;margin-bottom:0.6rem">' +
+      '<div id="gateErr" style="color:#ef5350;font-size:0.82rem;margin-bottom:0.7rem;min-height:1.2rem"></div>' +
+      '<button id="gateBtn" style="width:100%;padding:0.75rem;background:var(--green);border:none;border-radius:8px;font-family:var(--font-head),sans-serif;font-weight:700;font-size:0.95rem;color:#fff;cursor:pointer">Unlock</button>' +
+      '</div>';
+    document.body.appendChild(o);
+    var inp = document.getElementById('gateInput');
+    var btn = document.getElementById('gateBtn');
+    var err = document.getElementById('gateErr');
+    inp.focus();
+    inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') attempt(); });
+    btn.addEventListener('click', attempt);
+    async function attempt() {
+      var pw = inp.value;
+      if (!pw) { err.textContent = 'Please enter the password.'; return; }
+      btn.disabled = true; btn.textContent = 'Checking…';
+      if (await sha256(pw) === hash) {
+        sessionStorage.setItem(SK, 'ok');
+        o.style.transition = 'opacity 0.25s'; o.style.opacity = '0';
+        setTimeout(function () { o.remove(); }, 280);
+      } else {
+        inp.value = ''; err.textContent = 'Incorrect password.';
+        btn.disabled = false; btn.textContent = 'Unlock'; inp.focus();
+      }
+    }
+  }
+
+  listingsDB.ready
+    .then(function () { return listingsDB.getConfig('admin'); })
+    .then(function (cfg) {
+      return cfg && cfg.passwordHash ? cfg.passwordHash : sha256('imali-admin');
+    })
+    .then(showGate)
+    .catch(function () { sha256('imali-admin').then(showGate); });
+})();
+
+// ── Type picker ────────────────────────────────────────────────────────────────
+var _currentType = '';
+
+var PRICE_LABELS = {
+  'buy-land':        'Asking price (RWF)',
+  'buy-home':        'Asking price (RWF)',
+  'off-plan-buy':    'Total price (RWF)',
+  'invest-full':     'Purchase price (RWF)',
+  'invest-fractional': 'Minimum investment (RWF) — also set the "Min investment" field above',
+  'off-plan-invest': 'Full unit price (RWF)',
+};
+
+function selectType(type, el) {
+  _currentType = type;
+  document.getElementById('selectedType').value = type;
+  document.querySelectorAll('.type-card').forEach(function (c) { c.classList.remove('selected'); });
+  el.classList.add('selected');
+  document.getElementById('mainForm').style.display = '';
+  document.getElementById('upiOptLabel').style.display = type === 'buy-land' ? 'none' : '';
+  var lbl = PRICE_LABELS[type] || 'Price (RWF)';
+  document.getElementById('priceLabelText').textContent = lbl;
+  document.querySelectorAll('[data-show-for]').forEach(function (sec) {
+    sec.classList.toggle('visible', sec.getAttribute('data-show-for') === type);
+  });
+  window.scrollTo({ top: document.getElementById('mainForm').offsetTop - 80, behavior: 'smooth' });
+}
+
+// ── UPI Lookup ─────────────────────────────────────────────────────────────────
+var lastGeometry = null;
+
+function _setAuto(id, val) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  el.value = val;
+  el.classList.add('auto-filled');
+}
+function _clearAuto(id) {
+  var el = document.getElementById(id);
+  if (el) el.classList.remove('auto-filled');
+}
+function _cap(s) {
+  if (!s) return '';
+  return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
+}
+function _selectDistrict(name) {
+  var sel = document.getElementById('f_district');
+  var lo = (name || '').toLowerCase();
+  for (var i = 0; i < sel.options.length; i++) {
+    if (sel.options[i].text.toLowerCase() === lo || sel.options[i].value.toLowerCase() === lo) {
+      sel.selectedIndex = i; sel.classList.add('auto-filled'); break;
+    }
+  }
+}
+function _applyUPIResult(upi, r) {
+  _setAuto('f_upi', upi);
+  if (r.district) _selectDistrict(r.district);
+  if (r.sector)   _setAuto('f_sector', r.sector);
+  if (r.cell)     _setAuto('f_cell', r.cell);
+  if (r.size > 0) _setAuto('f_size', r.size);
+  if (r.zone) {
+    var zsel = document.getElementById('f_zone');
+    if (zsel) {
+      for (var z = 0; z < zsel.options.length; z++) {
+        if (zsel.options[z].value === r.zone) { zsel.selectedIndex = z; zsel.classList.add('auto-filled'); break; }
+      }
+    }
+  }
+  if (r.geometry) {
+    lastGeometry = r.geometry;
+    var ring = r.geometry.coordinates[0];
+    var sumX = 0, sumY = 0;
+    ring.forEach(function (c) { sumX += c[0]; sumY += c[1]; });
+    var lat = sumY / ring.length, lng = sumX / ring.length;
+    _setAuto('f_gps_lat', lat.toFixed(6));
+    _setAuto('f_gps_lng', lng.toFixed(6));
+    showOnMap(lat, lng, ring);
+  }
+  var locStr = [r.sector, r.district].filter(Boolean).join(', ');
+  var sizeStr = r.size > 0 ? ' — ' + r.size.toLocaleString() + ' m²' : '';
+  var zoneStr = r.zone ? ' · Zone ' + r.zone : '';
+  var src = r.source === 'CoK' ? ' [Kigali City GIS]' : ' [RSA National]';
+  var st = document.getElementById('upiStatus');
+  st.className = 'upi-status ok';
+  st.textContent = '✓ Found: ' + locStr + sizeStr + zoneStr + src;
+}
+
+function _tryCoKGIS(upi) {
+  var url = 'https://masterplan.kigalicity.gov.rw/server/rest/services/Hosted/KigaliParcels_withZoning/FeatureServer/0/query' +
+    '?where=' + encodeURIComponent("upi='" + upi + "'") +
+    '&outFields=upi,district,sector,cell,size,main_zone_code&returnGeometry=true&outSR=4326&f=json';
+  return fetch(url).then(function (r) { return r.json(); }).then(function (data) {
+    if (!data.features || !data.features.length) return null;
+    var a = data.features[0].attributes, g = data.features[0].geometry;
+    var ring = (g && g.rings && g.rings[0]) ? g.rings[0] : null;
+    return { district: a.district||'', sector: a.sector||'', cell: a.cell||'', size: Math.round(a.size||0), zone: a.main_zone_code||'', geometry: ring ? { type:'Polygon', coordinates:[ring] } : null, source:'CoK' };
+  });
+}
+function _tryRSANational(upi) {
+  var url = 'https://portal.space.gov.rw/server/rest/services/Merged_UPIs/MapServer/1/query' +
+    '?where=' + encodeURIComponent("UPI='" + upi.replace(/'/g,"''") + "'") +
+    '&outFields=UPI,district,sector,cell,village,area_in_we&returnGeometry=true&outSR=4326&f=json';
+  return fetch(url).then(function (r) { return r.json(); }).then(function (data) {
+    if (!data.features || !data.features.length) return null;
+    var a = data.features[0].attributes, g = data.features[0].geometry;
+    var ring = (g && g.rings && g.rings[0]) ? g.rings[0] : null;
+    return { district: _cap(a.district||''), sector: _cap(a.sector||''), cell: _cap(a.cell||''), size: Math.round(a.area_in_we||0), zone: '', geometry: ring ? { type:'Polygon', coordinates:[ring] } : null, source:'RSA' };
+  });
+}
+function lookupUPI() {
+  var upi = document.getElementById('upiLookup').value.trim();
+  if (!upi) return;
+  var st = document.getElementById('upiStatus'), btn = document.getElementById('lookupBtn');
+  st.className = 'upi-status loading'; st.textContent = 'Searching cadastral registry…';
+  btn.disabled = true; lastGeometry = null;
+  _tryCoKGIS(upi).catch(function () { return null; })
+    .then(function (r) {
+      if (r) return r;
+      st.textContent = 'Not in Kigali GIS — checking national database…';
+      return _tryRSANational(upi).catch(function () { return null; });
+    })
+    .then(function (r) {
+      btn.disabled = false;
+      if (!r) { st.className = 'upi-status err'; st.textContent = '✗ Not found — fill in details manually.'; return; }
+      _applyUPIResult(upi, r);
+    })
+    .catch(function () {
+      btn.disabled = false; st.className = 'upi-status err'; st.textContent = '✗ Network error — fill in manually.';
+    });
+}
+document.getElementById('upiLookup').addEventListener('keydown', function (e) {
+  if (e.key === 'Enter') { e.preventDefault(); lookupUPI(); }
+});
+
+// ── Mini map ───────────────────────────────────────────────────────────────────
+var miniMap = null, miniMarker = null, miniPoly = null;
+function showOnMap(lat, lng, ring) {
+  document.getElementById('mapMsg').style.display = 'none';
+  if (!miniMap) {
+    miniMap = L.map('miniMap', { zoomControl: true, attributionControl: false }).setView([lat, lng], 15);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(miniMap);
+  }
+  if (miniMarker) { miniMap.removeLayer(miniMarker); miniMarker = null; }
+  if (miniPoly)   { miniMap.removeLayer(miniPoly);   miniPoly   = null; }
+  var icon = L.divIcon({ className:'', html:'<div style="width:12px;height:12px;background:#4caf82;border-radius:50%;border:2px solid #fff;box-shadow:0 0 6px rgba(76,175,130,0.6)"></div>', iconSize:[12,12], iconAnchor:[6,6] });
+  miniMarker = L.marker([lat, lng], { icon: icon }).addTo(miniMap);
+  if (ring && ring.length > 2) {
+    var lr = ring.map(function (c) { return [c[1], c[0]]; });
+    miniPoly = L.polygon(lr, { color:'#4caf82', weight:2, opacity:0.9, fillColor:'#4caf82', fillOpacity:0.12 }).addTo(miniMap);
+    miniMap.fitBounds(miniPoly.getBounds(), { padding:[20,20] });
+  } else {
+    miniMap.setView([lat, lng], 16);
+  }
+}
+
+// ── Price USD hint ─────────────────────────────────────────────────────────────
+document.getElementById('f_price').addEventListener('input', function () {
+  var rwf = parseFloat(this.value);
+  var hint = document.getElementById('priceHint');
+  hint.textContent = (!isNaN(rwf) && rwf > 0) ? '≈ $' + Math.round(rwf / 1472).toLocaleString() + ' USD' : '';
+});
+
+// ── Photo / document upload ────────────────────────────────────────────────────
+var CLOUDINARY_CLOUD  = 'nfykhohc';
+var CLOUDINARY_PRESET = 'imali_listings';   // create this preset in Cloudinary dashboard
+
+var _photoUrls = [];
+var _docUrls   = [];
+var _uploadStore = {};
+var _coverPhotoUrl = '';
+
+function cloudUpload(file) {
+  return new Promise(function (resolve, reject) {
+    var xhr = new XMLHttpRequest();
+    var fd  = new FormData();
+    fd.append('file', file);
+    fd.append('upload_preset', CLOUDINARY_PRESET);
+    fd.append('folder', 'imali-listings');
+    xhr.open('POST', 'https://api.cloudinary.com/v1_1/' + CLOUDINARY_CLOUD + '/image/upload', true);
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+        try { resolve(JSON.parse(xhr.responseText)); }
+        catch (e) { reject(new Error('Invalid response')); }
+      } else {
+        var msg = 'Upload failed (' + xhr.status + ')';
+        try { msg = JSON.parse(xhr.responseText).error.message; } catch (e) {}
+        reject(new Error(msg));
+      }
+    };
+    xhr.onerror = function () { reject(new Error('Network error')); };
+    xhr.send(fd);
+  });
+}
+
+function setupUpload(zoneId, inputId, type) {
+  var zone = document.getElementById(zoneId);
+  var input = document.getElementById(inputId);
+  zone.addEventListener('click', function () { input.click(); });
+  zone.addEventListener('dragover', function (e) { e.preventDefault(); zone.classList.add('drag-over'); });
+  zone.addEventListener('dragleave', function () { zone.classList.remove('drag-over'); });
+  zone.addEventListener('drop', function (e) { e.preventDefault(); zone.classList.remove('drag-over'); handleFiles(Array.from(e.dataTransfer.files), type); });
+  input.addEventListener('change', function () { handleFiles(Array.from(input.files), type); input.value = ''; });
+}
+setupUpload('photoZone', 'photoInput', 'photo');
+setupUpload('docZone',   'docInput',   'doc');
+
+function handleFiles(files, type) {
+  var arr = type === 'photo' ? _photoUrls : _docUrls;
+  var thumbsId = type === 'photo' ? 'photoThumbs' : 'docThumbs';
+  var limit = type === 'photo' ? 15 : 10;
+  if (arr.length >= limit) { alert('Maximum ' + limit + ' files.'); return; }
+  files.slice(0, limit - arr.length).forEach(function (file) {
+    if (!file.type.startsWith('image/') && file.type !== 'application/pdf') return;
+    var uid = 'u-' + Date.now() + '-' + Math.random().toString(36).substr(2,5);
+    var el = document.createElement('div');
+    el.className = 'upload-thumb uploading'; el.id = uid;
+    el.innerHTML = '<div class="thumb-spinner"></div>';
+    document.getElementById(thumbsId).appendChild(el);
+    cloudUpload(file).then(function (res) {
+      var url = res.secure_url;
+      arr.push(url);
+      _uploadStore[uid] = { url: url, type: type };
+      el.classList.remove('uploading');
+      var isImg = file.type.startsWith('image/');
+      if (isImg) {
+        var isFirst = type === 'photo' && _photoUrls.length === 1;
+        if (isFirst && !_coverPhotoUrl) _coverPhotoUrl = url;
+        el.innerHTML = '<img src="' + url + '" alt="">' +
+          (type === 'photo' ? '<button type="button" class="thumb-cover-btn' + (isFirst ? ' is-cover' : '') + '" onclick="setCover(\'' + uid + '\',event)" title="Set as cover">★</button>' : '') +
+          '<button type="button" class="thumb-remove" onclick="removeThumb(\'' + uid + '\')" title="Remove">×</button>';
+      } else {
+        el.style.cssText = 'align-items:center;justify-content:center;flex-direction:column;padding:4px;font-size:0.55rem;color:var(--text-dim);word-break:break-all;text-align:center';
+        el.innerHTML = '<span style="font-size:1.6rem">📄</span>' + file.name.substr(0,12) + (file.name.length>12?'…':'') +
+          '<button type="button" class="thumb-remove" onclick="removeThumb(\'' + uid + '\')" title="Remove">×</button>';
+      }
+    }).catch(function (err) { el.remove(); alert('Upload failed: ' + err.message); });
+  });
+}
+function removeThumb(uid) {
+  var info = _uploadStore[uid];
+  if (!info) return;
+  var arr = info.type === 'photo' ? _photoUrls : _docUrls;
+  var idx = arr.indexOf(info.url);
+  if (idx !== -1) arr.splice(idx, 1);
+  if (_coverPhotoUrl === info.url) { _coverPhotoUrl = _photoUrls[0] || ''; updateCoverStars(); }
+  delete _uploadStore[uid];
+  var el = document.getElementById(uid); if (el) el.remove();
+}
+function setCover(uid, e) {
+  if (e) e.stopPropagation();
+  var info = _uploadStore[uid];
+  if (!info || info.type !== 'photo') return;
+  _coverPhotoUrl = info.url; updateCoverStars(uid);
+}
+function updateCoverStars(activeUid) {
+  document.querySelectorAll('#photoThumbs .thumb-cover-btn').forEach(function (btn) {
+    var uid = btn.closest('.upload-thumb').id;
+    btn.classList.toggle('is-cover', activeUid ? uid === activeUid : _uploadStore[uid] && _uploadStore[uid].url === _coverPhotoUrl);
+  });
+}
+
+// Lightbox (photos only)
+function closeLightbox() { document.getElementById('imgLightbox').classList.remove('open'); }
+document.querySelectorAll('.upload-thumbs').forEach(function (t) {
+  t.addEventListener('click', function (e) {
+    var img = e.target.closest('.upload-thumb') && e.target.tagName === 'IMG' ? e.target : null;
+    if (!img) return;
+    document.getElementById('imgLightbox').querySelector('.lb-img').src = img.src;
+    document.getElementById('imgLightbox').classList.add('open');
+  });
+});
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape') closeLightbox();
+});
+
+// ── Form submit ────────────────────────────────────────────────────────────────
+var _editId = null;
+
+function submitListing(e) {
+  e.preventDefault();
+  if (!_currentType) { alert('Please select a listing type first.'); return; }
+
+  var fd = new FormData(e.target);
+  var badges = [];
+  document.querySelectorAll('input[name="badges"]:checked').forEach(function (cb) { badges.push(cb.value); });
+
+  var entry = {
+    listing_category:     _currentType,
+    title:                (fd.get('title') || '').trim(),
+    description:          (fd.get('description') || '').trim(),
+    upi:                  (fd.get('upi') || '').trim(),
+    district:             fd.get('district') || '',
+    sector:               (fd.get('sector') || '').trim(),
+    cell:                 (fd.get('cell') || '').trim(),
+    gps:                  { lat: parseFloat(fd.get('gps_lat')) || 0, lng: parseFloat(fd.get('gps_lng')) || 0 },
+    geometry:             lastGeometry || null,
+    size_sqm:             parseFloat(fd.get('size_sqm')) || 0,
+    zone:                 fd.get('zone') || '',
+    title_deed:           fd.get('title_deed') || '',
+    topography:           fd.get('topography') || '',
+    property_sub_type:    fd.get('property_sub_type') || '',
+    bedrooms:             parseInt(fd.get('bedrooms')) || 0,
+    bathrooms:            parseInt(fd.get('bathrooms')) || 0,
+    floor_area_sqm:       parseFloat(fd.get('floor_area_sqm')) || 0,
+    plot_size_sqm:        parseFloat(fd.get('plot_size_sqm')) || 0,
+    year_built:           parseInt(fd.get('year_built')) || 0,
+    furnishing:           fd.get('furnishing') || '',
+    parking_spaces:       parseInt(fd.get('parking_spaces')) || 0,
+    floor_number:         parseInt(fd.get('floor_number')) || 0,
+    development_name:     (fd.get('development_name') || '').trim(),
+    developer:            (fd.get('developer') || '').trim(),
+    unit_sub_type:        fd.get('unit_sub_type') || '',
+    completion_date:      fd.get('completion_date') || '',
+    reservation_fee_rwf:  parseFloat(fd.get('reservation_fee_rwf')) || 0,
+    dev_phase:            (fd.get('dev_phase') || '').trim(),
+    offplan_invest_type:  fd.get('offplan_invest_type') || '',
+    price_rwf:            parseFloat(fd.get('price_rwf')) || 0,
+    price_negotiable:     fd.get('price_negotiable') || '',
+    yield_pct:            parseFloat(fd.get('yield_pct')) || 0,
+    projected_yield_pct:  parseFloat(fd.get('projected_yield_pct')) || 0,
+    min_invest_rwf:       parseFloat(fd.get('min_invest_rwf')) || 0,
+    total_raise_rwf:      parseFloat(fd.get('total_raise_rwf')) || 0,
+    property_value_rwf:   parseFloat(fd.get('property_value_rwf')) || 0,
+    payout_schedule:      fd.get('payout_schedule') || '',
+    shares_available:     parseInt(fd.get('shares_available')) || 0,
+    rental_income_rwf_pm: parseFloat(fd.get('rental_income_rwf_pm')) || 0,
+    exit_strategy:        fd.get('exit_strategy') || '',
+    trust_seller:         parseInt(fd.get('trust_seller')) || 70,
+    trust_property:       parseInt(fd.get('trust_property')) || 70,
+    badges:               badges,
+    photos:               _photoUrls.slice(),
+    documents:            _docUrls.slice(),
+    cover_photo:          _coverPhotoUrl || (_photoUrls[0] || ''),
+    status:               fd.get('status') || 'live',
+    notes:                (fd.get('notes') || '').trim(),
+    added_by:             (fd.get('added_by') || '').trim(),
+  };
+
+  var btn = document.getElementById('submitBtn');
+  var statusEl = document.getElementById('submitStatus');
+  btn.disabled = true;
+  btn.textContent = _editId ? 'Saving changes…' : 'Saving…';
+  statusEl.textContent = '';
+
+  var op = _editId ? listingsDB.update(_editId, entry) : listingsDB.save(entry);
+  op.then(function () {
+    document.getElementById('listingForm').style.display = 'none';
+    document.querySelector('.upi-card').style.display = 'none';
+    var banner = document.getElementById('successBanner');
+    banner.classList.add('visible');
+    document.getElementById('successTitle').textContent = _editId ? 'Listing updated' : 'Listing saved';
+    document.getElementById('successSub').textContent = '"' + entry.title + '" has been ' + (_editId ? 'updated' : 'saved') + ' to the database.';
+  }).catch(function (err) {
+    alert('Error: ' + err.message);
+    btn.disabled = false;
+    btn.textContent = _editId ? 'Save changes →' : 'Save listing →';
+  });
+}
+
+// ── Edit mode — pre-fill from Firestore ───────────────────────────────────────
+(function () {
+  var params = new URLSearchParams(window.location.search);
+  var editId = params.get('edit');
+  if (!editId) return;
+  _editId = editId;
+  document.getElementById('editBanner').classList.add('visible');
+  document.getElementById('pageTitle').textContent = 'Edit Listing';
+  document.getElementById('submitBtn').textContent = 'Save changes →';
+
+  listingsDB.ready.then(function () {
+    return listingsDB.getById(editId);
+  }).then(function (data) {
+    if (!data) { alert('Listing not found.'); return; }
+
+    // Select the type
+    var typeEl = document.querySelector('.type-card[data-type="' + data.listing_category + '"]');
+    if (typeEl) selectType(data.listing_category, typeEl);
+
+    function setVal(id, val) {
+      var el = document.getElementById(id);
+      if (!el || val === undefined || val === null) return;
+      el.value = val;
+    }
+    function setSelect(id, val) {
+      var el = document.getElementById(id);
+      if (!el || !val) return;
+      for (var i = 0; i < el.options.length; i++) {
+        if (el.options[i].value === val || el.options[i].text === val) { el.selectedIndex = i; break; }
+      }
+    }
+
+    setVal('f_title', data.title);
+    setVal('f_description', data.description);
+    setVal('f_upi', data.upi);
+    setSelect('f_district', data.district);
+    setVal('f_sector', data.sector);
+    setVal('f_cell', data.cell);
+    if (data.gps) { setVal('f_gps_lat', data.gps.lat); setVal('f_gps_lng', data.gps.lng); }
+    setVal('f_size', data.size_sqm || '');
+    setSelect('f_zone', data.zone);
+    setSelect('f_title_deed', data.title_deed);
+    setSelect('f_title_deed2', data.title_deed);
+    setSelect('f_topography', data.topography);
+    setSelect('f_prop_sub_type', data.property_sub_type);
+    setSelect('f_fa_asset_type', data.property_sub_type);
+    setSelect('f_frac_asset_type', data.property_sub_type);
+    setVal('f_bedrooms', data.bedrooms || '');
+    setVal('f_bathrooms', data.bathrooms || '');
+    setVal('f_floor_area', data.floor_area_sqm || '');
+    setVal('f_op_floor_area', data.floor_area_sqm || '');
+    setVal('f_fa_floor_area', data.floor_area_sqm || '');
+    setVal('f_frac_floor_area', data.floor_area_sqm || '');
+    setVal('f_plot_size', data.plot_size_sqm || '');
+    setVal('f_year_built', data.year_built || '');
+    setSelect('f_furnishing', data.furnishing);
+    setVal('f_parking', data.parking_spaces || '');
+    setVal('f_floor_num', data.floor_number || '');
+    setVal('f_dev_name', data.development_name);
+    setVal('f_developer', data.developer);
+    setVal('f_opi_dev_name', data.development_name);
+    setVal('f_opi_developer', data.developer);
+    setSelect('f_unit_sub_type', data.unit_sub_type);
+    setVal('f_completion_date', data.completion_date || '');
+    setVal('f_opi_completion', data.completion_date || '');
+    setVal('f_reservation_fee', data.reservation_fee_rwf || '');
+    setVal('f_dev_phase', data.dev_phase);
+    setVal('f_opi_dev_phase', data.dev_phase);
+    setSelect('f_opi_inv_type', data.offplan_invest_type);
+    setVal('f_price', data.price_rwf || '');
+    setSelect('f_price_negotiable', data.price_negotiable);
+    setVal('f_fa_yield', data.yield_pct || '');
+    setVal('f_fa_rental', data.rental_income_rwf_pm || '');
+    setVal('f_fa_bedrooms', data.bedrooms || '');
+    setSelect('f_fa_exit_strategy', data.exit_strategy);
+    setVal('f_frac_min_invest', data.min_invest_rwf || '');
+    setVal('f_opi_min_invest', data.min_invest_rwf || '');
+    setVal('f_frac_yield', data.projected_yield_pct || '');
+    setVal('f_opi_yield', data.projected_yield_pct || '');
+    setVal('f_frac_total_raise', data.total_raise_rwf || '');
+    setVal('f_opi_total_raise', data.total_raise_rwf || '');
+    setVal('f_frac_property_val', data.property_value_rwf || '');
+    setSelect('f_frac_payout', data.payout_schedule);
+    setVal('f_frac_units_avail', data.shares_available || '');
+    setVal('f_op_bedrooms', data.bedrooms || '');
+    var tsEl = document.getElementById('f_trust_seller');
+    if (tsEl) { tsEl.value = data.trust_seller || 70; document.getElementById('sellerVal').textContent = data.trust_seller || 70; }
+    var tpEl = document.getElementById('f_trust_property');
+    if (tpEl) { tpEl.value = data.trust_property || 70; document.getElementById('propVal').textContent = data.trust_property || 70; }
+    (data.badges || []).forEach(function (b) {
+      var cb = document.querySelector('input[name="badges"][value="' + b + '"]');
+      if (cb) cb.checked = true;
+    });
+    setSelect('f_status', data.status);
+    setVal('f_added_by', data.added_by);
+    setVal('f_notes', data.notes);
+
+    // Restore existing photos as thumbnails (non-re-uploadable, just display)
+    if (data.photos && data.photos.length) {
+      _photoUrls = data.photos.slice();
+      _coverPhotoUrl = data.cover_photo || _photoUrls[0];
+      var thumbsEl = document.getElementById('photoThumbs');
+      data.photos.forEach(function (url, i) {
+        var uid = 'existing-' + i;
+        var div = document.createElement('div');
+        div.className = 'upload-thumb'; div.id = uid;
+        _uploadStore[uid] = { url: url, type: 'photo' };
+        div.innerHTML = '<img src="' + url + '" alt="">' +
+          '<button type="button" class="thumb-cover-btn' + (url === _coverPhotoUrl ? ' is-cover' : '') + '" onclick="setCover(\'' + uid + '\',event)" title="Set as cover">★</button>' +
+          '<button type="button" class="thumb-remove" onclick="removeThumb(\'' + uid + '\')" title="Remove">×</button>';
+        thumbsEl.appendChild(div);
+      });
+    }
+    if (data.geometry) {
+      lastGeometry = data.geometry;
+      var ring = data.geometry.coordinates[0];
+      if (ring && data.gps) showOnMap(data.gps.lat, data.gps.lng, ring);
+    }
+
+    // Price hint
+    if (data.price_rwf) {
+      document.getElementById('priceHint').textContent = '≈ $' + Math.round(data.price_rwf / 1472).toLocaleString() + ' USD';
+    }
+  }).catch(function (err) {
+    alert('Could not load listing: ' + err.message);
+  });
+})();
+</script>
+</body>
+</html>

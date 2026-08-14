@@ -19,6 +19,12 @@
 (function () {
   'use strict';
 
+  /* ─── Bootstrap Icons (injected once, covers all pages) ── */
+  var _bi = document.createElement('link');
+  _bi.rel  = 'stylesheet';
+  _bi.href = 'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css';
+  document.head.appendChild(_bi);
+
   /* ─── Path resolution ─────────────────────────────── */
   const scriptEl = document.currentScript ||
     document.querySelector('script[src*="core.js"]');
@@ -59,17 +65,17 @@
         <ul class="nav-dropdown" role="list">
           <div class="drop-group">
             <li><a href="${r('pages/buy/land.html')}">
-              <span class="drop-icon">🌿</span>
+              <span class="drop-icon"><i class="bi bi-tree-fill"></i></span>
               <div><div class="drop-label">Browse Land</div><div class="drop-sub">Plots by size, zone &amp; location</div></div>
             </a></li>
             <li><a href="${r('pages/buy/homes.html')}">
-              <span class="drop-icon">🏠</span>
+              <span class="drop-icon"><i class="bi bi-house-fill"></i></span>
               <div><div class="drop-label">Homes &amp; Apartments</div><div class="drop-sub">Ready-to-move properties</div></div>
             </a></li>
           </div>
           <div class="drop-group">
             <li><a href="${r('pages/off-plan-buy/index.html')}">
-              <span class="drop-icon">🏗️</span>
+              <span class="drop-icon"><i class="bi bi-buildings"></i></span>
               <div><div class="drop-label">Off-Plan Projects</div><div class="drop-sub">Reserve before completion</div></div>
             </a></li>
           </div>
@@ -87,17 +93,17 @@
         <ul class="nav-dropdown" role="list">
           <div class="drop-group">
             <li><a href="${r('pages/sell/index.html')}">
-              <span class="drop-icon">📋</span>
+              <span class="drop-icon"><i class="bi bi-clipboard-fill"></i></span>
               <div><div class="drop-label">List Your Land</div><div class="drop-sub">Reach qualified buyers fast</div></div>
             </a></li>
             <li><a href="${r('pages/sell/list-property.html')}">
-              <span class="drop-icon">🏡</span>
+              <span class="drop-icon"><i class="bi bi-house-heart-fill"></i></span>
               <div><div class="drop-label">List a Property</div><div class="drop-sub">Houses &amp; apartments</div></div>
             </a></li>
           </div>
           <div class="drop-group">
             <li><a href="${r('pages/sell/agents.html')}">
-              <span class="drop-icon">🤝</span>
+              <span class="drop-icon"><i class="bi bi-people-fill"></i></span>
               <div><div class="drop-label">Agent Portal</div><div class="drop-sub">Manage multiple listings</div></div>
             </a></li>
           </div>
@@ -115,21 +121,21 @@
         <ul class="nav-dropdown" role="list">
           <div class="drop-group">
             <li><a href="${r('pages/invest/full-asset.html')}">
-              <span class="drop-icon">🏦</span>
+              <span class="drop-icon"><i class="bi bi-bank2"></i></span>
               <div><div class="drop-label">Full Asset Deals</div><div class="drop-sub">Complete ownership from day one</div></div>
             </a></li>
             <li><a href="${r('pages/invest/fractional.html')}">
-              <span class="drop-icon">📊</span>
+              <span class="drop-icon"><i class="bi bi-pie-chart-fill"></i></span>
               <div><div class="drop-label">Fractional Ownership</div><div class="drop-sub">Start from a lower entry point</div></div>
             </a></li>
           </div>
           <div class="drop-group">
             <li><a href="${r('pages/off-plan-invest/index.html')}">
-              <span class="drop-icon">📈</span>
+              <span class="drop-icon"><i class="bi bi-graph-up-arrow"></i></span>
               <div><div class="drop-label">Off-Plan (Investor)</div><div class="drop-sub">Lock in pre-launch returns</div></div>
             </a></li>
             <li><a href="${r('pages/invest/calculator.html')}">
-              <span class="drop-icon">🔢</span>
+              <span class="drop-icon"><i class="bi bi-calculator-fill"></i></span>
               <div><div class="drop-label">Returns Calculator</div><div class="drop-sub">Model your ROI before committing</div></div>
             </a></li>
           </div>

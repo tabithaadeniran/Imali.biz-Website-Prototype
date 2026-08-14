@@ -7,15 +7,16 @@
   <title>Browse Property in Rwanda — Imali.biz</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../../assets/css/tokens.css">
   <link rel="stylesheet" href="../../assets/css/base.css">
   <link rel="stylesheet" href="../../assets/css/animations.css">
   <link rel="stylesheet" href="../../assets/css/components.css">
   <style>
+    /* ── Buy Hero ── */
     .buy-hero {
       position: relative;
-      height: 500px;
+      min-height: 100svh;
       display: flex;
       align-items: center;
       overflow: hidden;
@@ -24,45 +25,68 @@
       position: absolute; inset: 0;
       background: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&auto=format&q=80') center/cover no-repeat;
     }
-    .buy-hero-bg::after {
-      content: '';
+    .buy-hero-overlay {
       position: absolute; inset: 0;
-      background: linear-gradient(90deg, rgba(13,13,18,0.80) 0%, rgba(13,13,18,0.44) 60%, rgba(13,13,18,0.18) 100%);
+      background:
+        linear-gradient(to bottom, rgba(248,245,240,0.40) 0%, rgba(248,245,240,0) 13%),
+        linear-gradient(to bottom, rgba(248,245,240,0.05) 0%, rgba(248,245,240,0.72) 38%, rgba(248,245,240,0.94) 65%, rgba(248,245,240,1.00) 100%);
     }
-    .buy-hero-content {
+    [data-theme="dark"] .buy-hero-overlay {
+      background:
+        linear-gradient(to bottom, rgba(13,13,18,0.55) 0%, rgba(13,13,18,0) 13%),
+        linear-gradient(to bottom, rgba(13,13,18,0.20) 0%, rgba(13,13,18,0.52) 35%, rgba(13,13,18,0.78) 65%, rgba(13,13,18,0.96) 100%);
+    }
+    .buy-hero-inner {
       position: relative; z-index: 1;
-      color: var(--cream);
-      padding-top: 4.5rem;
-      max-width: 540px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: center;
+      padding: 7rem 0 5rem;
+      width: 100%;
     }
-    .buy-hero-content .eyebrow { color: rgba(248,245,240,0.55); letter-spacing: 0.15em; }
+    .buy-hero-content .eyebrow { color: var(--text); text-shadow: 0 0 20px rgba(248,245,240,0.9); }
     .buy-hero-content .eyebrow::before { background: var(--orange); }
+    [data-theme="dark"] .buy-hero-content .eyebrow { color: rgba(248,245,240,0.72); text-shadow: none; }
     .buy-hero-content h1 {
       font-family: var(--font-head);
       font-size: clamp(2rem, 5vw, 3rem);
       font-weight: 800;
       line-height: 1.08;
-      margin: 0.6rem 0 1rem;
+      color: var(--text);
+      margin: 0.6rem 0 0.85rem;
+      text-shadow: 0 0 32px rgba(248,245,240,1), 0 0 64px rgba(248,245,240,0.9);
     }
     .buy-hero-content h1 span { color: var(--orange); }
     .buy-hero-content p {
-      font-size: 1rem;
-      opacity: 0.70;
-      margin-bottom: 2rem;
+      font-size: 1.05rem;
+      color: var(--text);
+      margin-bottom: 1.75rem;
       line-height: 1.65;
+      text-shadow: 0 0 24px rgba(248,245,240,1), 0 0 48px rgba(248,245,240,0.9);
+      max-width: 420px;
     }
     .buy-hero-btns { display: flex; gap: 0.85rem; flex-wrap: wrap; }
-    .btn-ghost-light {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      padding: 0.7rem 1.4rem;
-      border: 1.5px solid rgba(248,245,240,0.35);
-      border-radius: var(--radius-pill);
-      color: var(--cream);
-      text-decoration: none;
-      font-size: 0.9rem; font-weight: 500;
-      transition: border-color 0.18s, background 0.18s;
+    [data-theme="light"] .buy-hero-content .btn-ghost-light {
+      border-color: rgba(13,13,18,0.25); color: var(--text);
     }
-    .btn-ghost-light:hover { border-color: var(--cream); background: rgba(248,245,240,0.08); }
+    [data-theme="light"] .buy-hero-content .btn-ghost-light:hover {
+      border-color: rgba(13,13,18,0.5); background: rgba(13,13,18,0.05);
+    }
+    [data-theme="dark"] .buy-hero-content .eyebrow { color: rgba(248,245,240,0.55); }
+    [data-theme="dark"] .buy-hero-content h1 { color: #fff; text-shadow: 0 2px 24px rgba(13,13,18,0.55); }
+    [data-theme="dark"] .buy-hero-content h1 span { color: var(--orange); }
+    [data-theme="dark"] .buy-hero-content p { color: rgba(255,255,255,0.85); text-shadow: 0 1px 12px rgba(13,13,18,0.6); }
+
+    /* Listing cards — 2×2 grid (bhl-* styles in components.css) */
+    .buy-hero-listings { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+
+    @media (max-width: 900px) {
+      .buy-hero-inner { grid-template-columns: 1fr; gap: 1.75rem; }
+    }
+    @media (max-width: 600px) {
+      .buy-hero-listings { grid-template-columns: 1fr; }
+    }
 
     .preview-section { padding: 3.5rem 0 0; }
     .preview-header {
@@ -86,15 +110,59 @@
 <!-- ── Hero ────────────────────────────────────────────── -->
 <section class="buy-hero" aria-label="Browse property">
   <div class="buy-hero-bg" aria-hidden="true"></div>
+  <div class="buy-hero-overlay" aria-hidden="true"></div>
   <div class="container">
-    <div class="buy-hero-content anim-fade-up-1">
-      <p class="eyebrow">BROWSE PROPERTY</p>
-      <h1>Your next property<br>is <span>right here.</span></h1>
-      <p>Land, homes, and apartments across Rwanda — every listing comes with a Seller Trust Score and a Property Trust Score.</p>
-      <div class="buy-hero-btns">
-        <a href="land.html" class="btn btn-primary">Browse Land</a>
-        <a href="homes.html" class="btn-ghost-light">Homes &amp; Apartments</a>
+    <div class="buy-hero-inner">
+
+      <div class="buy-hero-content anim-fade-up-1">
+        <p class="eyebrow">BROWSE PROPERTY</p>
+        <h1>Your next property<br>is <span>right here.</span></h1>
+        <p>Land, homes, and off-plan projects across Rwanda — verified listings, real sellers.</p>
+        <div class="buy-hero-btns">
+          <a href="land.html" class="btn btn-primary">Browse Land</a>
+          <a href="homes.html" class="btn-ghost-light">Homes &amp; Apartments</a>
+        </div>
       </div>
+
+      <div class="buy-hero-listings anim-fade-up-2">
+        <a href="../off-plan-buy/index.html" class="bhl-card">
+          <div class="bhl-top">
+            <span class="bhl-badge bhl-badge-orange">Off-plan</span>
+            <span class="bhl-badge">Studio Apt</span>
+          </div>
+          <div class="bhl-name">Kigali Heights Residence</div>
+          <div class="bhl-price">RWF 14,700,000 <span class="bhl-usd">~$10,000</span></div>
+          <div class="bhl-meta">Kicukiro, Kigali · Completion 2026</div>
+        </a>
+        <a href="../off-plan-buy/index.html" class="bhl-card">
+          <div class="bhl-top">
+            <span class="bhl-badge bhl-badge-orange">Off-plan</span>
+            <span class="bhl-badge">2-Bed Apt</span>
+          </div>
+          <div class="bhl-name">Norrsken View Apartments</div>
+          <div class="bhl-price">RWF 38,500,000 <span class="bhl-usd">~$26,200</span></div>
+          <div class="bhl-meta">Kiyovu, Kigali · Completion 2027</div>
+        </a>
+        <a href="land.html" class="bhl-card">
+          <div class="bhl-top">
+            <span class="bhl-badge bhl-badge-green">Land</span>
+            <span class="bhl-badge">Title Deed</span>
+          </div>
+          <div class="bhl-name">Residential Plot — Bugesera</div>
+          <div class="bhl-price">RWF 8,200,000 <span class="bhl-usd">~$5,575</span></div>
+          <div class="bhl-meta">Bugesera District · 600 m²</div>
+        </a>
+        <a href="homes.html" class="bhl-card">
+          <div class="bhl-top">
+            <span class="bhl-badge bhl-badge-green">Ready</span>
+            <span class="bhl-badge">3-Bed House</span>
+          </div>
+          <div class="bhl-name">Family Home — Kimironko</div>
+          <div class="bhl-price">RWF 52,000,000 <span class="bhl-usd">~$35,400</span></div>
+          <div class="bhl-meta">Kimironko, Kigali · 140 m²</div>
+        </a>
+      </div>
+
     </div>
   </div>
 </section>
@@ -104,19 +172,19 @@
   <div class="container">
     <div class="cat-grid">
       <a href="land.html" class="cat-card reveal">
-        <div class="cat-icon">🌿</div>
+        <div class="cat-icon"><i class="bi bi-tree-fill"></i></div>
         <div class="cat-name">Land Plots</div>
         <p class="cat-desc">Residential, commercial, and agricultural plots in Kigali and beyond. Title deed status shown on every listing.</p>
         <div class="cat-cta">Browse land <span aria-hidden="true">→</span></div>
       </a>
       <a href="homes.html" class="cat-card reveal reveal-delay-1">
-        <div class="cat-icon">🏠</div>
+        <div class="cat-icon"><i class="bi bi-house-fill"></i></div>
         <div class="cat-name">Homes &amp; Apartments</div>
         <p class="cat-desc">Houses, apartments, and villas from individual sellers and agencies. Move-in ready options across Kigali.</p>
         <div class="cat-cta">Browse homes <span aria-hidden="true">→</span></div>
       </a>
       <a href="../off-plan-buy/index.html" class="cat-card reveal reveal-delay-2">
-        <div class="cat-icon">🏗️</div>
+        <div class="cat-icon"><i class="bi bi-buildings"></i></div>
         <div class="cat-name">Off-Plan Projects</div>
         <p class="cat-desc">Reserve your unit before construction completes. See payment plans, floor types, and available units.</p>
         <div class="cat-cta">Browse off-plan <span aria-hidden="true">→</span></div>
@@ -150,8 +218,8 @@
             <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.2"/><path d="M7 4v3l2 2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg> For Sale</span>
           </div>
           <div class="trust-row">
-            <span class="trust-pill" data-score="high" title="Seller Trust Score — verified ID, 12 completed deals"><span class="trust-pill-icon">👤</span><span class="trust-pill-label">Seller Trust Score</span><span class="trust-pill-val">87/100</span></span>
-            <span class="trust-pill" data-score="high" title="Property Trust Score — title deed present, survey complete"><span class="trust-pill-icon">📄</span><span class="trust-pill-label">Property Trust Score</span><span class="trust-pill-val">95/100</span></span>
+            <span class="trust-pill" data-score="high" title="Seller Trust Score — verified ID, 12 completed deals"><span class="trust-pill-icon"><i class="bi bi-person-check-fill"></i></span><span class="trust-pill-label">Seller Trust Score</span><span class="trust-pill-val">87/100</span></span>
+            <span class="trust-pill" data-score="high" title="Property Trust Score — title deed present, survey complete"><span class="trust-pill-icon"><i class="bi bi-file-earmark-check-fill"></i></span><span class="trust-pill-label">Property Trust Score</span><span class="trust-pill-val">95/100</span></span>
           </div>
         </div>
       </a>
@@ -172,8 +240,8 @@
             <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.2"/><path d="M7 4v3l2 2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg> For Sale</span>
           </div>
           <div class="trust-row">
-            <span class="trust-pill" data-score="mid" title="Seller Trust Score — ID verified, limited platform history"><span class="trust-pill-icon">👤</span><span class="trust-pill-label">Seller Trust Score</span><span class="trust-pill-val">72/100</span></span>
-            <span class="trust-pill" data-score="high" title="Property Trust Score — title deed present, survey complete"><span class="trust-pill-icon">📄</span><span class="trust-pill-label">Property Trust Score</span><span class="trust-pill-val">88/100</span></span>
+            <span class="trust-pill" data-score="mid" title="Seller Trust Score — ID verified, limited platform history"><span class="trust-pill-icon"><i class="bi bi-person-check-fill"></i></span><span class="trust-pill-label">Seller Trust Score</span><span class="trust-pill-val">72/100</span></span>
+            <span class="trust-pill" data-score="high" title="Property Trust Score — title deed present, survey complete"><span class="trust-pill-icon"><i class="bi bi-file-earmark-check-fill"></i></span><span class="trust-pill-label">Property Trust Score</span><span class="trust-pill-val">88/100</span></span>
           </div>
         </div>
       </a>
@@ -194,8 +262,8 @@
             <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.2"/><path d="M7 4v3l2 2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg> For Sale</span>
           </div>
           <div class="trust-row">
-            <span class="trust-pill" data-score="high" title="Seller Trust Score — agency-verified, 30+ transactions"><span class="trust-pill-icon">👤</span><span class="trust-pill-label">Seller Trust Score</span><span class="trust-pill-val">91/100</span></span>
-            <span class="trust-pill" data-score="high" title="Property Trust Score — all documents complete"><span class="trust-pill-icon">📄</span><span class="trust-pill-label">Property Trust Score</span><span class="trust-pill-val">97/100</span></span>
+            <span class="trust-pill" data-score="high" title="Seller Trust Score — agency-verified, 30+ transactions"><span class="trust-pill-icon"><i class="bi bi-person-check-fill"></i></span><span class="trust-pill-label">Seller Trust Score</span><span class="trust-pill-val">91/100</span></span>
+            <span class="trust-pill" data-score="high" title="Property Trust Score — all documents complete"><span class="trust-pill-icon"><i class="bi bi-file-earmark-check-fill"></i></span><span class="trust-pill-label">Property Trust Score</span><span class="trust-pill-val">97/100</span></span>
           </div>
         </div>
       </a>
@@ -229,8 +297,8 @@
             <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="1" y="1" width="12" height="12" rx="1" stroke="currentColor" stroke-width="1.2"/></svg> 240 m²</span>
           </div>
           <div class="trust-row">
-            <span class="trust-pill" data-score="mid" title="Seller Trust Score — ID verified, limited platform history"><span class="trust-pill-icon">👤</span><span class="trust-pill-label">Seller Trust Score</span><span class="trust-pill-val">71/100</span></span>
-            <span class="trust-pill" data-score="high" title="Property Trust Score — title deed and building plans uploaded"><span class="trust-pill-icon">📄</span><span class="trust-pill-label">Property Trust Score</span><span class="trust-pill-val">92/100</span></span>
+            <span class="trust-pill" data-score="mid" title="Seller Trust Score — ID verified, limited platform history"><span class="trust-pill-icon"><i class="bi bi-person-check-fill"></i></span><span class="trust-pill-label">Seller Trust Score</span><span class="trust-pill-val">71/100</span></span>
+            <span class="trust-pill" data-score="high" title="Property Trust Score — title deed and building plans uploaded"><span class="trust-pill-icon"><i class="bi bi-file-earmark-check-fill"></i></span><span class="trust-pill-label">Property Trust Score</span><span class="trust-pill-val">92/100</span></span>
           </div>
         </div>
       </a>
@@ -251,8 +319,8 @@
             <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="1" y="1" width="12" height="12" rx="1" stroke="currentColor" stroke-width="1.2"/></svg> 185 m²</span>
           </div>
           <div class="trust-row">
-            <span class="trust-pill" data-score="high" title="Seller Trust Score — 8 completed deals, high response rate"><span class="trust-pill-icon">👤</span><span class="trust-pill-label">Seller Trust Score</span><span class="trust-pill-val">89/100</span></span>
-            <span class="trust-pill" data-score="high" title="Property Trust Score — full documentation, photos verified"><span class="trust-pill-icon">📄</span><span class="trust-pill-label">Property Trust Score</span><span class="trust-pill-val">94/100</span></span>
+            <span class="trust-pill" data-score="high" title="Seller Trust Score — 8 completed deals, high response rate"><span class="trust-pill-icon"><i class="bi bi-person-check-fill"></i></span><span class="trust-pill-label">Seller Trust Score</span><span class="trust-pill-val">89/100</span></span>
+            <span class="trust-pill" data-score="high" title="Property Trust Score — full documentation, photos verified"><span class="trust-pill-icon"><i class="bi bi-file-earmark-check-fill"></i></span><span class="trust-pill-label">Property Trust Score</span><span class="trust-pill-val">94/100</span></span>
           </div>
         </div>
       </a>
@@ -273,8 +341,8 @@
             <span class="prop-spec"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="1" y="1" width="12" height="12" rx="1" stroke="currentColor" stroke-width="1.2"/></svg> 120 m²</span>
           </div>
           <div class="trust-row">
-            <span class="trust-pill" data-score="high" title="Seller Trust Score — agency-verified, 30+ transactions"><span class="trust-pill-icon">👤</span><span class="trust-pill-label">Seller Trust Score</span><span class="trust-pill-val">82/100</span></span>
-            <span class="trust-pill" data-score="mid" title="Property Trust Score — title deed present, some documents pending"><span class="trust-pill-icon">📄</span><span class="trust-pill-label">Property Trust Score</span><span class="trust-pill-val">68/100</span></span>
+            <span class="trust-pill" data-score="high" title="Seller Trust Score — agency-verified, 30+ transactions"><span class="trust-pill-icon"><i class="bi bi-person-check-fill"></i></span><span class="trust-pill-label">Seller Trust Score</span><span class="trust-pill-val">82/100</span></span>
+            <span class="trust-pill" data-score="mid" title="Property Trust Score — title deed present, some documents pending"><span class="trust-pill-icon"><i class="bi bi-file-earmark-check-fill"></i></span><span class="trust-pill-label">Property Trust Score</span><span class="trust-pill-val">68/100</span></span>
           </div>
         </div>
       </a>
@@ -295,14 +363,14 @@
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem">
       <a href="../off-plan-buy/index.html" class="invest-path reveal">
-        <div class="invest-path-icon">🏗️</div>
+        <div class="invest-path-icon"><i class="bi bi-buildings"></i></div>
         <span class="invest-path-entry">Buyer</span>
         <h3>Buy Off-Plan</h3>
         <p>Reserve your unit at today's price and start saving towards your new home — full payment is only due on handover.</p>
         <span class="invest-path-cta">Browse available units →</span>
       </a>
       <a href="../off-plan-invest/index.html" class="invest-path reveal reveal-delay-1">
-        <div class="invest-path-icon">📈</div>
+        <div class="invest-path-icon"><i class="bi bi-graph-up-arrow"></i></div>
         <span class="invest-path-entry">Investor — from RWF 75,000 <span style="font-size:0.83em;opacity:0.6;font-weight:400">~$51</span></span>
         <h3>Invest in Off-Plan</h3>
         <p>Fractional stakes from RWF 75,000 or buy a full unit as an investment. Earn projected returns of 14–22% p.a. on verified new developments.</p>
