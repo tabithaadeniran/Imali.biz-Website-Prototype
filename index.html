@@ -532,7 +532,7 @@
       <a href="./pages/buy/index.html" class="btn btn-outline">View all listings</a>
     </div>
 
-    <div class="listings-grid">
+    <div class="listings-grid" id="featuredGrid">
 
       <!-- Card 1 — Land -->
       <a href="./pages/buy/land.html" class="prop-card reveal"
@@ -1100,6 +1100,13 @@
 
 <!-- ─── Scripts ─────────────────────────────── -->
 <script src="./assets/js/core.js" data-root="./"></script>
+<script src="./assets/js/public-db.js"></script>
+<script src="./assets/js/listings.js"></script>
+<script>
+  window.imaliPublicDB && window.imaliPublicDB.ready.then(function () {
+    window.imaliListings.loadFeaturedSection('featuredGrid', 6, './');
+  });
+</script>
 <script>
   /* ─── Search tab switcher ─── */
   document.querySelectorAll('[data-search-tab]').forEach(function(btn) {

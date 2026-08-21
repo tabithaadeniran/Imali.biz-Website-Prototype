@@ -364,6 +364,10 @@
           '<img id="lm-img" src="" alt="">' +
           '<div class="modal-photo-badges" id="lm-badges"></div>' +
           '<button class="modal-close" id="lm-close" aria-label="Close">✕</button>' +
+          '<button class="gallery-nav-btn gallery-prev" id="lm-prev" aria-label="Previous photo">&#8249;</button>' +
+          '<button class="gallery-nav-btn gallery-next" id="lm-next" aria-label="Next photo">&#8250;</button>' +
+          '<div class="gallery-counter" id="lm-counter"></div>' +
+          '<div class="gallery-strip" id="lm-strip"></div>' +
         '</div>' +
         '<div class="modal-body-col">' +
           '<div id="lm-content"></div>' +
@@ -375,9 +379,64 @@
       '</div>';
     document.body.appendChild(overlay);
 
+    // ── Gallery state ──
+    var _photos = [];
+    var _photoIdx = 0;
+
+    function setPhoto(idx) {
+      if (!_photos.length) return;
+      _photoIdx = Math.max(0, Math.min(_photos.length - 1, idx));
+      document.getElementById('lm-img').src = _photos[_photoIdx];
+      var show = _photos.length > 1;
+      document.getElementById('lm-prev').style.display    = show ? '' : 'none';
+      document.getElementById('lm-next').style.display    = show ? '' : 'none';
+      document.getElementById('lm-counter').style.display = 'none';
+      // update filmstrip active thumb
+      var strip = document.getElementById('lm-strip');
+      var thumbs = strip ? strip.querySelectorAll('.gallery-strip-thumb') : [];
+      thumbs.forEach(function (t, i) { t.classList.toggle('active', i === _photoIdx); });
+      if (thumbs[_photoIdx]) thumbs[_photoIdx].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    }
+
+    function initGallery(card) {
+      _photos = []; _photoIdx = 0;
+      try {
+        var parsed = JSON.parse(card.dataset.photos || '[]');
+        if (Array.isArray(parsed)) _photos = parsed.filter(Boolean);
+      } catch (e) {}
+      var fallbackImg = card.querySelector('img');
+      if (!_photos.length && fallbackImg && fallbackImg.src) _photos = [fallbackImg.src];
+      // build filmstrip
+      var strip = document.getElementById('lm-strip');
+      strip.innerHTML = '';
+      if (_photos.length > 1) {
+        _photos.forEach(function (src, i) {
+          var btn = document.createElement('button');
+          btn.className = 'gallery-strip-thumb' + (i === 0 ? ' active' : '');
+          btn.setAttribute('aria-label', 'Photo ' + (i + 1));
+          var thumb = document.createElement('img');
+          thumb.src = src; thumb.alt = '';
+          btn.appendChild(thumb);
+          btn.addEventListener('click', function (e) { e.stopPropagation(); setPhoto(i); });
+          strip.appendChild(btn);
+        });
+        strip.style.display = 'flex';
+      } else {
+        strip.style.display = 'none';
+      }
+      setPhoto(0);
+    }
+
+    document.getElementById('lm-prev').addEventListener('click', function (e) { e.stopPropagation(); setPhoto(_photoIdx - 1); });
+    document.getElementById('lm-next').addEventListener('click', function (e) { e.stopPropagation(); setPhoto(_photoIdx + 1); });
     document.getElementById('lm-close').addEventListener('click', closeModal);
     overlay.addEventListener('click', function (e) { if (e.target === overlay) closeModal(); });
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeModal(); });
+    document.addEventListener('keydown', function (e) {
+      if (!overlay.classList.contains('open')) return;
+      if (e.key === 'Escape')     closeModal();
+      if (e.key === 'ArrowLeft')  setPhoto(_photoIdx - 1);
+      if (e.key === 'ArrowRight') setPhoto(_photoIdx + 1);
+    });
 
     document.addEventListener('click', function (e) {
       if (e.target.closest('.prop-card-save')) return;
@@ -401,9 +460,9 @@
     }
 
     function populateProp(card) {
+      initGallery(card);
       var img    = card.querySelector('.prop-card-photo img');
       var badges = card.querySelector('.prop-card-badges');
-      document.getElementById('lm-img').src               = img    ? img.src   : '';
       document.getElementById('lm-img').alt               = img    ? img.alt   : '';
       document.getElementById('lm-badges').innerHTML      = badges ? badges.innerHTML : '';
 
@@ -439,9 +498,9 @@
     }
 
     function populateProject(card) {
+      initGallery(card);
       var img    = card.querySelector('.project-card-photo img');
       var badges = card.querySelector('.project-card-badges');
-      document.getElementById('lm-img').src               = img    ? img.src   : '';
       document.getElementById('lm-img').alt               = img    ? img.alt   : '';
       document.getElementById('lm-badges').innerHTML      = badges ? badges.innerHTML : '';
 

@@ -83,7 +83,7 @@
     </div>
 
     <!-- Cards -->
-    <div class="listings-grid">
+    <div class="listings-grid" id="listingsGrid">
 
       <!-- Card 1 — 4-bed house, Kicukiro -->
       <a href="#" class="prop-card reveal" data-price="180000000" data-type="house" data-location="kicukiro">
@@ -235,6 +235,12 @@
 
 <div id="site-footer"></div>
 <script src="../../assets/js/core.js" data-root="../../"></script>
+<script src="../../assets/js/public-db.js"></script>
 <script src="../../assets/js/listings.js"></script>
+<script>
+  window.imaliPublicDB && window.imaliPublicDB.ready.then(function () {
+    window.imaliListings.loadListingsPage('listingsGrid', 'buy-home', '../../');
+  });
+</script>
 </body>
 </html>

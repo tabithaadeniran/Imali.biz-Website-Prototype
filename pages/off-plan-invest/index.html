@@ -20,41 +20,41 @@
       gap: 0;
       background: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
+      border-radius: var(--radius-md);
       overflow: hidden;
-      margin-bottom: 2.5rem;
+      margin-bottom: 0.75rem;
     }
     .invest-stat {
       flex: 1;
-      padding: 1.75rem 1.25rem;
+      padding: 0.75rem 1rem;
       text-align: center;
       border-right: 1px solid var(--border);
     }
     .invest-stat:last-child { border-right: none; }
     .invest-stat-val {
       font-family: var(--font-head);
-      font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+      font-size: clamp(1.1rem, 2vw, 1.3rem);
       font-weight: 800;
       color: var(--green);
       line-height: 1;
       display: block;
-      margin-bottom: 0.3rem;
+      margin-bottom: 0.2rem;
     }
-    .invest-stat-label { font-size: 0.8rem; color: var(--text-dim); }
+    .invest-stat-label { font-size: 0.72rem; color: var(--text-dim); }
 
     /* Investor callout */
     .investor-callout {
       background: rgba(34, 197, 94, 0.06);
       border: 1px solid rgba(34, 197, 94, 0.18);
-      border-radius: var(--radius-lg);
-      padding: 1.25rem 1.5rem;
+      border-radius: var(--radius-md);
+      padding: 0.6rem 1rem;
       display: flex;
-      align-items: flex-start;
-      gap: 1rem;
-      margin-bottom: 2.5rem;
+      align-items: center;
+      gap: 0.65rem;
+      margin-bottom: 1rem;
     }
-    .investor-callout-icon { font-size: 1.5rem; flex-shrink: 0; }
-    .investor-callout p { margin: 0; font-size: 0.875rem; color: var(--text-dim); line-height: 1.6; }
+    .investor-callout-icon { font-size: 1rem; flex-shrink: 0; }
+    .investor-callout p { margin: 0; font-size: 0.78rem; color: var(--text-dim); line-height: 1.5; }
     .investor-callout strong { color: var(--text); }
     .investor-callout a { color: var(--green); text-decoration: none; }
     .investor-callout a:hover { text-decoration: underline; }
@@ -90,28 +90,28 @@
       <span aria-current="page">Off-Plan (Investor)</span>
     </nav>
     <h1 class="page-header-title">Off-Plan Investor View</h1>
-    <p class="page-header-sub">Lock in pre-launch pricing on verified new developments. Earn projected returns of 14–22% p.a.</p>
+    <p class="page-header-sub">Lock in pre-launch pricing on verified new developments across Rwanda. Earn projected returns of 12–18% p.a.</p>
   </div>
 </section>
 
 <!-- ── Stats strip ──────────────────────────────────────── -->
-<section class="section-pad" style="padding-bottom:0">
+<section class="section-pad" style="padding-top:0.6rem;padding-bottom:0">
   <div class="container">
     <div class="invest-stats reveal">
       <div class="invest-stat">
-        <span class="invest-stat-val">14–22%</span>
+        <span class="invest-stat-val" id="stat-yield">14–22%</span>
         <span class="invest-stat-label">Projected return p.a.</span>
       </div>
       <div class="invest-stat">
-        <span class="invest-stat-val">RWF 75K</span>
+        <span class="invest-stat-val" id="stat-min-invest">RWF 75K</span>
         <span class="invest-stat-label">Fractional min. (~$51)</span>
       </div>
       <div class="invest-stat">
-        <span class="invest-stat-val">4</span>
+        <span class="invest-stat-val" id="stat-projects">4</span>
         <span class="invest-stat-label">Active projects</span>
       </div>
       <div class="invest-stat">
-        <span class="invest-stat-val">596</span>
+        <span class="invest-stat-val" id="stat-slots">596</span>
         <span class="invest-stat-label">Fraction slots available</span>
       </div>
     </div>
@@ -152,14 +152,14 @@
 </section>
 
 <!-- ── Project cards ──────────────────────────────────────── -->
-<section class="section-pad" style="padding-top:2rem">
+<section class="section-pad" style="padding-top:0.75rem">
   <div class="container">
     <div class="investor-callout reveal">
       <span class="investor-callout-icon"><i class="bi bi-graph-up-arrow"></i></span>
       <p><strong>Each project accepts two types of investor.</strong> <strong>Fractional investors</strong> co-own a verified percentage of the development — earning proportional returns from RWF 75,000 (~$51). <strong>Full asset investors</strong> purchase a complete unit as an investment and earn 100% of rental income and capital appreciation. Projected returns are not guaranteed. <a href="../../pages/off-plan-buy/index.html">Looking to buy a unit to live in? →</a></p>
     </div>
 
-    <div class="listings-grid" id="projects-grid">
+    <div class="listings-grid" id="listingsGrid">
 
       <!-- ── Card 1: Kiyovu Gardens ── -->
       <a href="../../pages/off-plan-invest/kiyovu-gardens.html"
@@ -448,28 +448,41 @@
 
 <div id="site-footer"></div>
 <script src="../../assets/js/core.js" data-root="../../"></script>
+<script src="../../assets/js/public-db.js"></script>
+<script src="../../assets/js/listings.js"></script>
 <script>
-(function () {
-  function applyFilters() {
-    var location = document.getElementById('filter-location').value;
-    var roi      = document.getElementById('filter-roi').value;
-    var min      = document.getElementById('filter-min').value;
-    var cards    = document.querySelectorAll('#projects-grid .project-card');
-    var visible  = 0;
-    cards.forEach(function (card) {
-      var locMatch = !location || card.dataset.location === location;
-      var roiMatch = !roi      || card.dataset.roi      === roi;
-      var minMatch = !min      || card.dataset.min      === min;
-      var show = locMatch && roiMatch && minMatch;
-      card.style.display = show ? '' : 'none';
-      if (show) visible++;
-    });
-    document.getElementById('empty-state').style.display = visible ? 'none' : 'block';
+window.imaliPublicDB && window.imaliPublicDB.ready.then(function () {
+  return window.imaliListings.loadOffPlanInvestPage('listingsGrid', '../../');
+}).then(function (listings) {
+  if (!listings || !listings.length) return;
+
+  var count  = listings.length;
+  var yields = listings.map(function (l) { return l.projected_yield_pct || l.yield_pct || 0; }).filter(Boolean);
+  var mins   = listings.map(function (l) { return l.min_invest_rwf || 0; }).filter(Boolean);
+  var slots  = listings.reduce(function (sum, l) { return sum + (l.shares_available || 0); }, 0);
+
+  var elP = document.getElementById('stat-projects');
+  if (elP) elP.textContent = count;
+
+  var elS = document.getElementById('stat-slots');
+  if (elS && slots > 0) elS.textContent = slots.toLocaleString();
+
+  if (yields.length) {
+    var minY = Math.min.apply(null, yields);
+    var maxY = Math.max.apply(null, yields);
+    var elY = document.getElementById('stat-yield');
+    if (elY) elY.textContent = minY === maxY ? minY + '%' : minY + '–' + maxY + '%';
   }
-  document.querySelectorAll('.filter-select').forEach(function (sel) {
-    sel.addEventListener('change', applyFilters);
-  });
-})();
+
+  if (mins.length) {
+    var minInvest = Math.min.apply(null, mins);
+    var elM = document.getElementById('stat-min-invest');
+    if (elM) {
+      var k = Math.round(minInvest / 1000);
+      elM.textContent = 'RWF ' + (k >= 1000 ? Math.round(k / 1000) + 'M' : k + 'K');
+    }
+  }
+}).catch(function () {});
 </script>
 </body>
 </html>

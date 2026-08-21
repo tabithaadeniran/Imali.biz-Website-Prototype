@@ -29,6 +29,23 @@
     }
     @media (max-width: 900px) { .returns-steps { grid-template-columns: 1fr; } }
     @media (max-width: 600px) { .returns-steps { grid-template-columns: 1fr; } }
+    /* Compact hero cards — 2×2 grid, photo-first */
+    .invest-hero-cards .bhl-card  { padding: 0.5rem 0.65rem 0.6rem; }
+    .invest-hero-cards .bhl-top   { margin-bottom: 0.18rem; }
+    .invest-hero-cards .bhl-badge { font-size: 0.62rem; padding: 0.08rem 0.4rem; }
+    .invest-hero-cards .bhl-name  { font-size: 0.72rem; line-height: 1.25; margin-bottom: 0.06rem; }
+    .invest-hero-cards .bhl-price { font-size: 0.76rem; }
+    .invest-hero-cards .bhl-usd   { font-size: 0.66rem; }
+    .invest-hero-cards .bhl-meta  { font-size: 0.62rem; margin-top: 0.04rem; line-height: 1.3; }
+    .invest-hero-cards .bhl-photo {
+      height: 150px;
+      overflow: hidden;
+      border-radius: 11px 11px 0 0;
+      margin: -0.5rem -0.65rem 0.45rem;
+      width: calc(100% + 1.3rem);
+    }
+    .invest-hero-cards .bhl-photo img { width:100%; height:100%; object-fit:cover; display:block; transition: transform 0.4s ease; }
+    .invest-hero-cards .bhl-card:hover .bhl-photo img { transform: scale(1.04); }
   </style>
 </head>
 <body>
@@ -57,7 +74,7 @@
             <span class="invest-hero-stat-label">Invested</span>
           </div>
           <div class="invest-hero-stat">
-            <span class="invest-hero-stat-num">14–22%</span>
+            <span class="invest-hero-stat-num">8–18%</span>
             <span class="invest-hero-stat-label">Projected p.a.</span>
           </div>
           <div class="invest-hero-stat">
@@ -69,6 +86,9 @@
 
       <div class="invest-hero-cards anim-fade-up-2">
         <a href="full-asset.html" class="bhl-card">
+          <div class="bhl-photo">
+            <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400&auto=format&q=75" alt="Kigali Heights Residence" loading="lazy">
+          </div>
           <div class="bhl-top">
             <span class="bhl-badge bhl-badge-orange">Off-plan</span>
             <span class="bhl-badge">Full Asset</span>
@@ -78,12 +98,38 @@
           <div class="bhl-meta">Kicukiro · Full ownership · 18% p.a. projected</div>
         </a>
         <a href="fractional.html" class="bhl-card">
+          <div class="bhl-photo">
+            <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400&auto=format&q=75" alt="Norrsken View Apartments" loading="lazy">
+          </div>
           <div class="bhl-top">
             <span class="bhl-badge bhl-badge-green">Fractional</span>
           </div>
           <div class="bhl-name">Norrsken View Apartments</div>
           <div class="bhl-price">From RWF 75,000 <span class="bhl-usd">~$51</span></div>
           <div class="bhl-meta">Kiyovu, Kigali · 15% p.a. projected</div>
+        </a>
+        <a href="../../pages/off-plan-invest/index.html" class="bhl-card">
+          <div class="bhl-photo">
+            <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=400&auto=format&q=75" alt="Kanyinya Warehouse Project" loading="lazy">
+          </div>
+          <div class="bhl-top">
+            <span class="bhl-badge bhl-badge-orange">Off-plan</span>
+            <span class="bhl-badge bhl-badge-green">Fractional</span>
+          </div>
+          <div class="bhl-name">Kanyinya Warehouse Project</div>
+          <div class="bhl-price">From RWF 150,000 <span class="bhl-usd">~$102</span></div>
+          <div class="bhl-meta">Kanyinya, Kigali · 14% p.a. projected</div>
+        </a>
+        <a href="full-asset.html" class="bhl-card">
+          <div class="bhl-photo">
+            <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&auto=format&q=75" alt="Musanze Eco Villas" loading="lazy">
+          </div>
+          <div class="bhl-top">
+            <span class="bhl-badge">Full Asset</span>
+          </div>
+          <div class="bhl-name">Musanze Eco Villas</div>
+          <div class="bhl-price">From RWF 45,000,000 <span class="bhl-usd">~$30,600</span></div>
+          <div class="bhl-meta">Musanze · Full ownership · 12% p.a. projected</div>
         </a>
       </div>
 
@@ -124,6 +170,17 @@
   </div>
 </section>
 
+<!-- ── Featured deals preview ───────────────────────────── -->
+<section class="preview-section" style="padding-bottom:1rem">
+  <div class="container">
+    <div class="preview-header">
+      <h2>Featured Deals</h2>
+      <a href="full-asset.html">See all invest deals →</a>
+    </div>
+    <div class="listings-grid" id="investFeaturedGrid"></div>
+  </div>
+</section>
+
 <!-- ── Off-plan ────────────────────────────────────────────── -->
 <section class="section-pad" style="background:var(--bg-alt)">
   <div class="container">
@@ -132,7 +189,7 @@
         <p class="eyebrow">OFF-PLAN DEVELOPMENTS</p>
         <h2 class="section-title">Reserve a unit or invest<br>before completion.</h2>
       </div>
-      <p style="max-width:38ch;color:var(--text-dim);line-height:1.6">Four active projects currently available. Lock in pre-launch pricing as a buyer, or earn projected returns of 14–22% p.a. as a fractional or full-asset investor.</p>
+      <p style="max-width:38ch;color:var(--text-dim);line-height:1.6">New developments across Rwanda currently available. Lock in pre-launch pricing as a buyer, or earn projected returns of 12–18% p.a. as a fractional or full-asset investor.</p>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem">
       <a href="../../pages/off-plan-buy/index.html" class="invest-path reveal">
@@ -146,7 +203,7 @@
         <div class="invest-path-icon"><i class="bi bi-graph-up-arrow"></i></div>
         <span class="invest-path-entry">Investor — from RWF 75,000 <span style="font-size:0.83em;opacity:0.6;font-weight:400">~$51</span></span>
         <h3>Invest in Off-Plan</h3>
-        <p>Fractional stakes from RWF 75,000 or buy a full unit as an investment. Earn projected returns of 14–22% p.a. on verified new developments.</p>
+        <p>Fractional stakes from RWF 75,000 or buy a full unit as an investment. Earn projected returns of 12–18% p.a. on verified new developments across Rwanda.</p>
         <span class="invest-path-cta">View investor projects →</span>
       </a>
     </div>
@@ -234,5 +291,12 @@
 
 <div id="site-footer"></div>
 <script src="../../assets/js/core.js" data-root="../../"></script>
+<script src="../../assets/js/public-db.js"></script>
+<script src="../../assets/js/listings.js"></script>
+<script>
+  window.imaliPublicDB && window.imaliPublicDB.ready.then(function () {
+    window.imaliListings.loadListingsPage('investFeaturedGrid', 'invest', '../../');
+  });
+</script>
 </body>
 </html>

@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <script>(function(){var t=localStorage.getItem('imali-theme')||'light';document.documentElement.setAttribute('data-theme',t);})();</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Listings — Imali.biz Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/animations.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+<style>
+/* ── Layout ───────────────────────────────────────────────────────────────── */
+.admin-wrap { max-width: 1100px; margin: 0 auto; padding: 6rem 1.5rem 5rem; }
+.admin-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
+.admin-header-right { display: flex; align-items: center; gap: 0.65rem; flex-wrap: wrap; }
+.admin-eyebrow { font-size: 0.68rem; letter-spacing: 0.13em; text-transform: uppercase; color: var(--green); margin-bottom: 0.4rem; font-weight: 600; }
+.admin-title { font-family: var(--font-head); font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 800; letter-spacing: -0.03em; }
+.btn-add { background: var(--green); color: #fff; border: none; border-radius: var(--radius); padding: 0.7rem 1.4rem; font-family: var(--font-head); font-size: 0.88rem; font-weight: 700; cursor: pointer; text-decoration: none; white-space: nowrap; display: inline-flex; align-items: center; gap: 0.4rem; transition: opacity 0.15s; }
+.btn-add:hover { opacity: 0.87; }
+.user-chip { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; font-weight: 600; color: var(--text-dim); background: var(--bg-alt); border: 1px solid var(--border); border-radius: 999px; padding: 0.35rem 0.85rem; white-space: nowrap; }
+.btn-signout { font-size: 0.78rem; font-family: var(--font-head); font-weight: 700; padding: 0.38rem 0.85rem; border: 1px solid var(--border); border-radius: 999px; background: var(--bg-card); color: var(--text-dim); cursor: pointer; transition: all 0.15s; white-space: nowrap; }
+.btn-signout:hover { border-color: #ef5350; color: #ef5350; }
+
+/* ── Stats bar ────────────────────────────────────────────────────────────── */
+.stats-row { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.75rem; }
+.stat-chip { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.75rem 1.1rem; min-width: 110px; }
+.stat-chip-val { font-family: var(--font-head); font-size: 1.5rem; font-weight: 800; line-height: 1; }
+.stat-chip-label { font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 0.2rem; }
+.stat-chip.green .stat-chip-val { color: var(--green); }
+.stat-chip.gold .stat-chip-val { color: #c89a20; }
+.stat-chip.red .stat-chip-val { color: #ef5350; }
+
+/* ── Filters ──────────────────────────────────────────────────────────────── */
+.filters-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; align-items: center; }
+.filter-btn { font-size: 0.78rem; font-family: var(--font-body); padding: 0.4rem 0.9rem; border: 1px solid var(--border); border-radius: 999px; background: var(--bg-card); color: var(--text-dim); cursor: pointer; transition: all 0.15s; }
+.filter-btn:hover { border-color: var(--green); color: var(--text); }
+.filter-btn.active { background: var(--green); border-color: var(--green); color: #fff; }
+.filter-sep { width: 1px; height: 1.4rem; background: var(--border); margin: 0 0.25rem; }
+.search-input { font-family: var(--font-body); font-size: 0.84rem; padding: 0.4rem 0.9rem; border: 1px solid var(--border); border-radius: 999px; background: var(--bg-card); color: var(--text); outline: none; width: 200px; transition: border-color 0.2s; margin-left: auto; }
+.search-input:focus { border-color: var(--green); }
+
+/* ── Listing cards ────────────────────────────────────────────────────────── */
+.listings-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.1rem; }
+.listing-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; display: flex; flex-direction: column; transition: box-shadow 0.2s; }
+.listing-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+.listing-card.archived { opacity: 0.6; }
+.listing-card.archived:hover { opacity: 0.85; }
+
+.card-photo { position: relative; height: 160px; background: var(--bg-alt); overflow: hidden; flex-shrink: 0; }
+.card-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.card-no-photo { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: var(--text-dim); opacity: 0.3; }
+.card-badges { position: absolute; top: 0.5rem; left: 0.5rem; display: flex; gap: 0.35rem; flex-wrap: wrap; }
+.card-badge { font-size: 0.62rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 999px; letter-spacing: 0.04em; text-transform: uppercase; }
+.badge-type { background: var(--green); color: #fff; }
+.badge-status-live { background: rgba(76,175,130,0.15); color: var(--green); border: 1px solid rgba(76,175,130,0.3); }
+.badge-status-draft { background: rgba(200,154,32,0.15); color: #a07d18; border: 1px solid rgba(200,154,32,0.3); }
+.badge-status-archived { background: rgba(239,83,80,0.12); color: #c0392b; border: 1px solid rgba(239,83,80,0.25); }
+
+.card-body { padding: 1rem; flex: 1; display: flex; flex-direction: column; gap: 0.3rem; }
+.card-price { font-family: var(--font-head); font-size: 1.05rem; font-weight: 700; }
+.card-title { font-size: 0.88rem; font-weight: 600; line-height: 1.35; color: var(--text); }
+.card-location { font-size: 0.75rem; color: var(--text-dim); display: flex; align-items: center; gap: 0.3rem; }
+.card-meta { font-size: 0.72rem; color: var(--text-dim); margin-top: 0.2rem; }
+.card-added { font-size: 0.67rem; color: var(--text-dim); margin-top: auto; padding-top: 0.5rem; }
+
+.card-actions { display: flex; gap: 0.5rem; padding: 0.75rem 1rem; border-top: 1px solid var(--border); background: var(--bg); }
+.action-btn { flex: 1; font-size: 0.75rem; font-family: var(--font-head); font-weight: 700; padding: 0.45rem 0.5rem; border-radius: calc(var(--radius) * 0.6); border: 1px solid var(--border); background: var(--bg-card); color: var(--text); cursor: pointer; text-align: center; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 0.3rem; transition: all 0.15s; }
+.action-btn:hover { border-color: var(--green); color: var(--green); }
+.action-btn.danger:hover { border-color: #ef5350; color: #ef5350; }
+.action-btn.restore:hover { border-color: var(--green); color: var(--green); }
+
+/* ── Empty / Loading states ───────────────────────────────────────────────── */
+.empty-state { text-align: center; padding: 4rem 2rem; color: var(--text-dim); }
+.empty-state-icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.4; }
+.loading-state { text-align: center; padding: 4rem 2rem; color: var(--text-dim); font-size: 0.88rem; }
+.spinner { display: inline-block; width: 28px; height: 28px; border: 3px solid var(--border); border-top-color: var(--green); border-radius: 50%; animation: spin 0.7s linear infinite; margin-bottom: 1rem; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Confirm modal ────────────────────────────────────────────────────────── */
+.modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.55); backdrop-filter: blur(3px); z-index: 9000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+.modal-backdrop.open { opacity: 1; pointer-events: all; }
+.modal-box { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 2rem; width: min(420px, 90vw); text-align: center; }
+.modal-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+.modal-title { font-family: var(--font-head); font-size: 1.15rem; font-weight: 700; margin-bottom: 0.5rem; }
+.modal-sub { font-size: 0.84rem; color: var(--text-dim); margin-bottom: 1.5rem; line-height: 1.5; }
+.modal-actions { display: flex; gap: 0.75rem; justify-content: center; }
+.modal-btn { font-family: var(--font-head); font-size: 0.88rem; font-weight: 700; padding: 0.65rem 1.5rem; border-radius: var(--radius); border: none; cursor: pointer; transition: opacity 0.15s; }
+.modal-btn:hover { opacity: 0.85; }
+.modal-btn.confirm { background: #ef5350; color: #fff; }
+.modal-btn.confirm.restore { background: var(--green); }
+.modal-btn.cancel { background: var(--bg-alt); color: var(--text); border: 1px solid var(--border); }
+
+@media (max-width: 600px) {
+  .listings-grid { grid-template-columns: 1fr; }
+  .search-input { width: 100%; margin-left: 0; }
+  .filters-row { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+<div class="cursor" aria-hidden="true"></div>
+<div class="cursor-ring" aria-hidden="true"></div>
+
+<div id="site-nav"></div>
+
+<div class="admin-wrap">
+
+  <div class="admin-header">
+    <div>
+      <p class="admin-eyebrow">IMALI.BIZ ADMIN</p>
+      <h1 class="admin-title">Manage Listings</h1>
+    </div>
+    <div class="admin-header-right">
+      <span class="user-chip">
+        <i class="bi bi-person-circle"></i>
+        <span id="userDisplayName">—</span>
+      </span>
+      <button class="btn-signout" onclick="signOut()">Sign out</button>
+      <a href="add-listing.html" class="btn-add">
+        <i class="bi bi-plus-lg"></i> Add listing
+      </a>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-row" id="statsRow">
+    <div class="stat-chip">
+      <div class="stat-chip-val" id="statTotal">—</div>
+      <div class="stat-chip-label">Total</div>
+    </div>
+    <div class="stat-chip green">
+      <div class="stat-chip-val" id="statLive">—</div>
+      <div class="stat-chip-label">Live</div>
+    </div>
+    <div class="stat-chip gold">
+      <div class="stat-chip-val" id="statDraft">—</div>
+      <div class="stat-chip-label">Draft</div>
+    </div>
+    <div class="stat-chip red">
+      <div class="stat-chip-val" id="statArchived">—</div>
+      <div class="stat-chip-label">Archived</div>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters-row">
+    <button class="filter-btn active" data-filter="all" onclick="setFilter('all',this)">All</button>
+    <button class="filter-btn" data-filter="live" onclick="setFilter('live',this)">Live</button>
+    <button class="filter-btn" data-filter="draft" onclick="setFilter('draft',this)">Draft</button>
+    <button class="filter-btn" data-filter="archived" onclick="setFilter('archived',this)">Archived</button>
+    <div class="filter-sep"></div>
+    <button class="filter-btn" data-filter="buy-land" onclick="setFilter('buy-land',this)">Land</button>
+    <button class="filter-btn" data-filter="buy-home" onclick="setFilter('buy-home',this)">Property</button>
+    <button class="filter-btn" data-filter="off-plan-buy" onclick="setFilter('off-plan-buy',this)">Off-plan Buy</button>
+    <button class="filter-btn" data-filter="invest-full" onclick="setFilter('invest-full',this)">Full Asset</button>
+    <button class="filter-btn" data-filter="invest-fractional" onclick="setFilter('invest-fractional',this)">Fractional</button>
+    <button class="filter-btn" data-filter="off-plan-invest" onclick="setFilter('off-plan-invest',this)">Off-plan Invest</button>
+    <input class="search-input" type="search" id="searchInput" placeholder="Search titles…" oninput="renderGrid()">
+  </div>
+
+  <!-- Grid -->
+  <div id="listingsGrid">
+    <div class="loading-state">
+      <div class="spinner"></div><br>Loading listings…
+    </div>
+  </div>
+
+</div><!-- /admin-wrap -->
+
+<!-- Confirm modal -->
+<div class="modal-backdrop" id="confirmModal">
+  <div class="modal-box">
+    <div class="modal-icon" id="modalIcon">🗂</div>
+    <div class="modal-title" id="modalTitle">Archive listing?</div>
+    <div class="modal-sub" id="modalSub">This listing will be hidden from the website but can be restored at any time.</div>
+    <div class="modal-actions">
+      <button class="modal-btn cancel" onclick="closeModal()">Cancel</button>
+      <button class="modal-btn confirm" id="modalConfirmBtn" onclick="runModalAction()">Archive</button>
+    </div>
+  </div>
+</div>
+
+<div id="site-footer"></div>
+<script src="../assets/js/core.js" data-root="../"></script>
+<script src="db.js"></script>
+<script>
+// ── Auth check ─────────────────────────────────────────────────────────────────
+(function () {
+  var _user = null;
+  try { _user = JSON.parse(localStorage.getItem('imali_admin_user') || 'null'); } catch (e) {}
+  if (!_user || !_user.username) { window.location.replace('login.html'); return; }
+  document.getElementById('userDisplayName').textContent = _user.display_name || _user.username;
+  listingsDB.ready.then(loadListings);
+})();
+
+function signOut() {
+  localStorage.removeItem('imali_admin_user');
+  window.location.replace('login.html');
+}
+
+// ── Data & state ───────────────────────────────────────────────────────────────
+var _allListings = [];
+var _activeFilter = 'all';
+
+var TYPE_LABELS = {
+  'buy-land':          'Land',
+  'buy-home':          'Property',
+  'off-plan-buy':      'Off-plan Buy',
+  'invest-full':       'Full Asset',
+  'invest-fractional': 'Fractional',
+  'off-plan-invest':   'Off-plan Invest',
+};
+var TYPE_ICONS = {
+  'buy-land':          '🏞',
+  'buy-home':          '🏠',
+  'off-plan-buy':      '🏗',
+  'invest-full':       '🏦',
+  'invest-fractional': '📊',
+  'off-plan-invest':   '📈',
+};
+
+function fmtPrice(rwf) {
+  if (!rwf) return '—';
+  if (rwf >= 1e9) return 'RWF ' + (rwf / 1e9).toFixed(2) + 'B';
+  if (rwf >= 1e6) return 'RWF ' + (rwf / 1e6).toFixed(1) + 'M';
+  if (rwf >= 1e3) return 'RWF ' + Math.round(rwf / 1e3) + 'K';
+  return 'RWF ' + rwf.toLocaleString();
+}
+
+function fmtDate(ts) {
+  if (!ts) return '';
+  var d = ts.toDate ? ts.toDate() : new Date(ts);
+  return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+}
+
+function loadListings() {
+  listingsDB.ready.then(function () {
+    return listingsDB.getAll();
+  }).then(function (listings) {
+    _allListings = listings;
+    updateStats();
+    renderGrid();
+  }).catch(function (err) {
+    document.getElementById('listingsGrid').innerHTML =
+      '<div class="empty-state"><div class="empty-state-icon">⚠</div><p>Could not load listings: ' + err.message + '</p></div>';
+  });
+}
+
+function updateStats() {
+  var live = 0, draft = 0, archived = 0;
+  _allListings.forEach(function (l) {
+    if (l.status === 'live') live++;
+    else if (l.status === 'draft') draft++;
+    else if (l.status === 'archived') archived++;
+  });
+  document.getElementById('statTotal').textContent    = _allListings.length;
+  document.getElementById('statLive').textContent     = live;
+  document.getElementById('statDraft').textContent    = draft;
+  document.getElementById('statArchived').textContent = archived;
+}
+
+function setFilter(filter, btn) {
+  _activeFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(function (b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  renderGrid();
+}
+
+function renderGrid() {
+  var query = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+  var filtered = _allListings.filter(function (l) {
+    // Status / type filter
+    if (_activeFilter === 'live' || _activeFilter === 'draft' || _activeFilter === 'archived') {
+      if (l.status !== _activeFilter) return false;
+    } else if (_activeFilter !== 'all') {
+      if (l.listing_category !== _activeFilter) return false;
+    }
+    // Search
+    if (query) {
+      var haystack = [l.title, l.district, l.sector, l.development_name, l.listing_category].join(' ').toLowerCase();
+      if (!haystack.includes(query)) return false;
+    }
+    return true;
+  });
+
+  var grid = document.getElementById('listingsGrid');
+  if (!filtered.length) {
+    grid.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📋</div><p>No listings match this filter.</p></div>';
+    return;
+  }
+
+  var html = '<div class="listings-grid">';
+  filtered.forEach(function (l) {
+    html += buildCard(l);
+  });
+  html += '</div>';
+  grid.innerHTML = html;
+}
+
+function buildCard(l) {
+  var id = l._docId;
+  var isArchived = l.status === 'archived';
+  var isDraft    = l.status === 'draft';
+
+  var photoHtml = l.cover_photo
+    ? '<img src="' + escHtml(l.cover_photo) + '" alt="" loading="lazy">'
+    : '<div class="card-no-photo">' + (TYPE_ICONS[l.listing_category] || '🏠') + '</div>';
+
+  var statusBadgeClass = isArchived ? 'badge-status-archived' : isDraft ? 'badge-status-draft' : 'badge-status-live';
+  var statusLabel      = isArchived ? 'Archived' : isDraft ? 'Draft' : 'Live';
+  var typeLabel        = TYPE_LABELS[l.listing_category] || l.listing_category || 'Listing';
+
+  var priceVal = l.price_rwf || l.min_invest_rwf || 0;
+  var priceLabel = fmtPrice(priceVal);
+  if (l.listing_category === 'invest-fractional' || l.listing_category === 'off-plan-invest') {
+    if (l.min_invest_rwf) priceLabel = 'From ' + fmtPrice(l.min_invest_rwf);
+  }
+
+  var metaParts = [];
+  if (l.size_sqm) metaParts.push(l.size_sqm.toLocaleString() + ' m²');
+  if (l.bedrooms) metaParts.push(l.bedrooms + ' bed');
+  if (l.floor_area_sqm) metaParts.push(l.floor_area_sqm + ' m² built');
+  if (l.yield_pct || l.projected_yield_pct) metaParts.push((l.yield_pct || l.projected_yield_pct) + '% p.a.');
+
+  var location = [l.sector, l.district].filter(Boolean).join(', ') || '—';
+
+  var archiveBtn = isArchived
+    ? '<button class="action-btn restore" onclick="confirmRestore(\'' + id + '\',\'' + escAttr(l.title) + '\')"><i class="bi bi-arrow-counterclockwise"></i> Restore</button>'
+    : '<button class="action-btn danger" onclick="confirmArchive(\'' + id + '\',\'' + escAttr(l.title) + '\')"><i class="bi bi-archive"></i> Archive</button>';
+
+  return '<div class="listing-card' + (isArchived ? ' archived' : '') + '">' +
+    '<div class="card-photo">' + photoHtml +
+      '<div class="card-badges">' +
+        '<span class="card-badge badge-type">' + escHtml(typeLabel) + '</span>' +
+        '<span class="card-badge ' + statusBadgeClass + '">' + statusLabel + '</span>' +
+      '</div>' +
+    '</div>' +
+    '<div class="card-body">' +
+      '<div class="card-price">' + escHtml(priceLabel) + '</div>' +
+      '<div class="card-title">' + escHtml(l.title || '(no title)') + '</div>' +
+      '<div class="card-location"><i class="bi bi-geo-alt"></i>' + escHtml(location) + '</div>' +
+      (metaParts.length ? '<div class="card-meta">' + escHtml(metaParts.join(' · ')) + '</div>' : '') +
+      '<div class="card-added">Added ' + fmtDate(l.created_at) + (l.added_by ? ' · ' + escHtml(l.added_by) : '') + '</div>' +
+    '</div>' +
+    '<div class="card-actions">' +
+      '<a class="action-btn" href="add-listing.html?edit=' + id + '"><i class="bi bi-pencil"></i> Edit</a>' +
+      archiveBtn +
+    '</div>' +
+  '</div>';
+}
+
+// ── Modal ──────────────────────────────────────────────────────────────────────
+var _pendingAction = null;
+
+function confirmArchive(id, title) {
+  _pendingAction = { type: 'archive', id: id };
+  document.getElementById('modalIcon').textContent = '🗂';
+  document.getElementById('modalTitle').textContent = 'Archive this listing?';
+  document.getElementById('modalSub').textContent = '"' + title + '" will be hidden from the website but stays in the database. You can restore it any time.';
+  document.getElementById('modalConfirmBtn').textContent = 'Archive';
+  document.getElementById('modalConfirmBtn').classList.remove('restore');
+  openModal();
+}
+function confirmRestore(id, title) {
+  _pendingAction = { type: 'restore', id: id };
+  document.getElementById('modalIcon').textContent = '✓';
+  document.getElementById('modalTitle').textContent = 'Restore this listing?';
+  document.getElementById('modalSub').textContent = '"' + title + '" will be set back to Live and visible on the website.';
+  document.getElementById('modalConfirmBtn').textContent = 'Restore';
+  document.getElementById('modalConfirmBtn').classList.add('restore');
+  openModal();
+}
+function openModal() { document.getElementById('confirmModal').classList.add('open'); }
+function closeModal() { document.getElementById('confirmModal').classList.remove('open'); _pendingAction = null; }
+function runModalAction() {
+  if (!_pendingAction) return;
+  var btn = document.getElementById('modalConfirmBtn');
+  btn.disabled = true; btn.textContent = 'Working…';
+  var op = _pendingAction.type === 'archive'
+    ? listingsDB.archive(_pendingAction.id)
+    : listingsDB.restore(_pendingAction.id);
+  op.then(function () {
+    closeModal();
+    btn.disabled = false;
+    return listingsDB.getAll();
+  }).then(function (listings) {
+    _allListings = listings;
+    updateStats();
+    renderGrid();
+  }).catch(function (err) {
+    alert('Error: ' + err.message);
+    btn.disabled = false;
+    btn.textContent = _pendingAction && _pendingAction.type === 'restore' ? 'Restore' : 'Archive';
+  });
+}
+document.getElementById('confirmModal').addEventListener('click', function (e) {
+  if (e.target === this) closeModal();
+});
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape') closeModal();
+});
+
+// ── Helpers ────────────────────────────────────────────────────────────────────
+function escHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function escAttr(str) {
+  if (!str) return '';
+  return String(str).replace(/'/g,"\\'").replace(/"/g,'&quot;');
+}
+
+// ── Boot ───────────────────────────────────────────────────────────────────────
+// (auth check + boot handled by the IIFE above)
+</script>
+</body>
+</html>

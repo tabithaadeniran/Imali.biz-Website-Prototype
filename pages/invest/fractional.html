@@ -45,15 +45,15 @@
     .frac-callout {
       background: rgba(240,90,34,0.06);
       border: 1px solid rgba(240,90,34,0.15);
-      border-radius: var(--radius-lg);
-      padding: 1.25rem 1.5rem;
+      border-radius: var(--radius-md);
+      padding: 0.6rem 1rem;
       display: flex;
-      align-items: flex-start;
-      gap: 1rem;
-      margin-bottom: 2.5rem;
+      align-items: center;
+      gap: 0.65rem;
+      margin-bottom: 1rem;
     }
-    .frac-callout-icon { font-size: 1.4rem; flex-shrink: 0; }
-    .frac-callout p { margin: 0; font-size: 0.875rem; color: var(--text-dim); line-height: 1.6; }
+    .frac-callout-icon { font-size: 1rem; flex-shrink: 0; }
+    .frac-callout p { margin: 0; font-size: 0.78rem; color: var(--text-dim); line-height: 1.5; }
     .frac-callout strong { color: var(--text); }
     .frac-callout a { color: var(--orange); text-decoration: none; }
     .frac-callout a:hover { text-decoration: underline; }
@@ -128,7 +128,7 @@
 </section>
 
 <!-- ── Listings ───────────────────────────────────────────── -->
-<section class="section-pad" style="padding-top:2rem">
+<section class="section-pad" style="padding-top:1rem">
   <div class="container">
 
     <div class="frac-callout reveal">
@@ -136,7 +136,7 @@
       <p><strong>Fractional investors co-own a verified % of the asset.</strong> You earn your proportional share of rental income and capital appreciation. Yields shown are estimated based on comparable market data — not guaranteed. <a href="../../pages/invest/full-asset.html">Want full ownership instead? See full asset deals →</a></p>
     </div>
 
-    <div class="listings-grid" id="listings-grid">
+    <div class="listings-grid" id="listingsGrid">
 
       <!-- Card 1: Commercial Building, Kimisagara -->
       <a href="#" class="project-card reveal"
@@ -379,5 +379,12 @@
 
 <div id="site-footer"></div>
 <script src="../../assets/js/core.js" data-root="../../"></script>
+<script src="../../assets/js/public-db.js"></script>
+<script src="../../assets/js/listings.js"></script>
+<script>
+  window.imaliPublicDB && window.imaliPublicDB.ready.then(function () {
+    window.imaliListings.loadListingsPage('listingsGrid', 'invest-fractional', '../../');
+  });
+</script>
 </body>
 </html>

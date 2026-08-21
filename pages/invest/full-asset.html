@@ -111,15 +111,15 @@
     .invest-explainer {
       background: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 1.25rem 1.5rem;
+      border-radius: var(--radius-md);
+      padding: 0.6rem 1rem;
       display: flex;
-      align-items: flex-start;
-      gap: 1rem;
-      margin-bottom: 2.5rem;
+      align-items: center;
+      gap: 0.65rem;
+      margin-bottom: 1rem;
     }
-    .invest-explainer-icon { font-size: 1.4rem; flex-shrink: 0; }
-    .invest-explainer p { margin: 0; font-size: 0.875rem; color: var(--text-dim); line-height: 1.6; }
+    .invest-explainer-icon { font-size: 1rem; flex-shrink: 0; }
+    .invest-explainer p { margin: 0; font-size: 0.78rem; color: var(--text-dim); line-height: 1.5; }
     .invest-explainer strong { color: var(--text); }
     .invest-explainer a { color: var(--green); text-decoration: none; }
     .invest-explainer a:hover { text-decoration: underline; }
@@ -219,7 +219,7 @@
 </section>
 
 <!-- ── Listings ───────────────────────────────────────────── -->
-<section class="section-pad" style="padding-top:2rem">
+<section class="section-pad" style="padding-top:1rem">
   <div class="container">
 
     <div class="invest-explainer reveal">
@@ -227,7 +227,7 @@
       <p><strong>Full asset deals mean you own the property outright.</strong> Title deed transfers to your name on completion. You earn 100% of rental income and keep all capital appreciation. Minimum entry from RWF 20,000,000 (~$13,578). <a href="../../pages/invest/fractional.html">Prefer a lower entry point? See fractional deals →</a></p>
     </div>
 
-    <div class="listings-grid" id="listings-grid">
+    <div class="listings-grid" id="listingsGrid">
 
       <!-- Card 1: Studio Apartment, Kicukiro -->
       <a href="#" class="prop-card reveal"
@@ -466,6 +466,13 @@ function resetPaywall() {
     s.addEventListener('change', applyFilters);
   });
 })();
+</script>
+<script src="../../assets/js/public-db.js"></script>
+<script src="../../assets/js/listings.js"></script>
+<script>
+  window.imaliPublicDB && window.imaliPublicDB.ready.then(function () {
+    window.imaliListings.loadListingsPage('listingsGrid', 'invest-full', '../../');
+  });
 </script>
 </body>
 </html>

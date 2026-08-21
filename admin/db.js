@@ -119,5 +119,30 @@
         return doc.exists ? doc.data() : null;
       });
     },
+
+    // Admin user profiles — stored in admin_users collection, doc ID = username (lowercase)
+    getAdminUser: function (username) {
+      var id = (username || '').toLowerCase().trim();
+      return _ready.then(function (db) {
+        return db.collection('admin_users').doc(id).get();
+      }).then(function (doc) {
+        return doc.exists ? doc.data() : null;
+      });
+    },
+
+    createAdminUser: function (data) {
+      var id = (data.username || '').toLowerCase().trim();
+      return _ready.then(function (db) {
+        return db.collection('admin_users').doc(id).set(Object.assign({}, data, {
+          created_at: window.firebase.firestore.FieldValue.serverTimestamp(),
+        }));
+      });
+    },
+
+    hasAdminUsers: function () {
+      return _ready.then(function (db) {
+        return db.collection('admin_users').limit(1).get();
+      }).then(function (snap) { return !snap.empty; });
+    },
   };
 })();

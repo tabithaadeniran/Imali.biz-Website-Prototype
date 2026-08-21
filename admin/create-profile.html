@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <script>(function(){var t=localStorage.getItem('imali-theme')||'light';document.documentElement.setAttribute('data-theme',t);})();</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Profile — Imali.biz Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+<style>
+* { box-sizing: border-box; }
+body { min-height: 100vh; display: flex; align-items: flex-start; justify-content: center; background: var(--bg); margin: 0; padding: 3rem 1.5rem 4rem; }
+.cp-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 2.75rem 2.5rem 2.5rem;
+  width: min(480px, 100%);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.07);
+}
+.cp-eyebrow { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.13em; text-transform: uppercase; color: var(--green); margin-bottom: 0.4rem; }
+.cp-title { font-family: var(--font-head), sans-serif; font-size: 1.5rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 0.3rem; color: var(--text); }
+.cp-sub { font-size: 0.84rem; color: var(--text-dim); margin-bottom: 2rem; line-height: 1.5; }
+.setup-notice { background: rgba(76,175,130,0.1); border: 1px solid rgba(76,175,130,0.3); border-radius: 10px; padding: 0.75rem 1rem; font-size: 0.82rem; color: var(--text-dim); margin-bottom: 1.75rem; line-height: 1.5; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.fl { margin-bottom: 1.15rem; }
+.fl label { display: block; font-size: 0.72rem; font-weight: 600; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.35rem; }
+.fl input { width: 100%; padding: 0.72rem 1rem; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-family: var(--font-body), sans-serif; font-size: 0.92rem; outline: none; transition: border-color 0.15s; }
+.fl input:focus { border-color: var(--green); }
+.fl input[readonly] { background: var(--bg-alt); color: var(--text-dim); cursor: default; }
+.fl .hint { font-size: 0.72rem; color: var(--text-dim); margin-top: 0.3rem; }
+.section-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dim); margin-bottom: 0.9rem; margin-top: 1.5rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border); }
+.cp-err { color: #ef5350; font-size: 0.82rem; min-height: 1.2rem; text-align: center; margin-bottom: 0.65rem; }
+.cp-success { display: none; background: rgba(76,175,130,0.12); border: 1px solid rgba(76,175,130,0.4); border-radius: 12px; padding: 1.25rem 1.5rem; text-align: center; margin-bottom: 1.25rem; }
+.cp-success-icon { font-size: 2rem; margin-bottom: 0.4rem; }
+.cp-success-msg { font-family: var(--font-head), sans-serif; font-weight: 700; font-size: 1rem; color: var(--text); margin-bottom: 0.3rem; }
+.cp-success-sub { font-size: 0.82rem; color: var(--text-dim); }
+.cp-btn { width: 100%; padding: 0.82rem; background: var(--green); border: none; border-radius: 10px; font-family: var(--font-head), sans-serif; font-weight: 700; font-size: 0.95rem; color: #fff; cursor: pointer; transition: opacity 0.15s; }
+.cp-btn:hover:not(:disabled) { opacity: 0.87; }
+.cp-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+.cp-back { text-align: center; margin-top: 1.25rem; font-size: 0.8rem; color: var(--text-dim); }
+.cp-back a { color: var(--green); text-decoration: none; }
+@media (max-width: 480px) { .row2 { grid-template-columns: 1fr; gap: 0; } }
+</style>
+</head>
+<body>
+<div class="cp-card">
+  <p class="cp-eyebrow">IMALI.BIZ ADMIN</p>
+  <h1 class="cp-title">Create Profile</h1>
+  <p class="cp-sub">Add a new user who can log in and manage listings on the admin panel.</p>
+
+  <div class="setup-notice" id="setupNotice" style="display:none">
+    <strong>First-time setup</strong> — No admin users exist yet. Create the first account to get started.
+  </div>
+
+  <div id="cpForm">
+    <div class="section-label">Name</div>
+    <div class="row2">
+      <div class="fl">
+        <label for="f_first">First name</label>
+        <input id="f_first" type="text" autocomplete="given-name" placeholder="e.g. Amina">
+      </div>
+      <div class="fl">
+        <label for="f_last">Last name</label>
+        <input id="f_last" type="text" autocomplete="family-name" placeholder="e.g. Uwimana">
+      </div>
+    </div>
+
+    <div class="fl">
+      <label for="f_username">Username</label>
+      <input id="f_username" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="e.g. tabitha">
+      <div class="hint">Used to log in. Lowercase letters and numbers only.</div>
+    </div>
+
+    <div class="section-label">Password</div>
+    <div class="fl">
+      <label for="f_pw">Password</label>
+      <input id="f_pw" type="password" autocomplete="new-password" placeholder="Choose a password">
+    </div>
+    <div class="fl">
+      <label for="f_pw2">Confirm password</label>
+      <input id="f_pw2" type="password" autocomplete="new-password" placeholder="Repeat password">
+    </div>
+
+    <div class="cp-err" id="cpErr"></div>
+    <div class="cp-success" id="cpSuccess">
+      <div class="cp-success-icon">✓</div>
+      <div class="cp-success-msg" id="cpSuccessName"></div>
+      <div class="cp-success-sub">Profile created. They can now log in with their username and password.</div>
+    </div>
+
+    <button class="cp-btn" id="cpBtn">Create profile</button>
+  </div>
+
+  <div class="cp-back" id="cpBack">
+    <a href="manage-listings.html">← Back to Manage Listings</a>
+  </div>
+</div>
+
+<script src="db.js"></script>
+<script>
+(function () {
+  var _loggedIn = false;
+  var _sess = null;
+  try { _sess = JSON.parse(localStorage.getItem('imali_admin_user') || 'null'); } catch (e) {}
+  if (_sess && _sess.username) _loggedIn = true;
+
+  async function sha256(text) {
+    var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+    return Array.from(new Uint8Array(buf)).map(function (b) { return b.toString(16).padStart(2, '0'); }).join('');
+  }
+
+  var fFirst    = document.getElementById('f_first');
+  var fLast     = document.getElementById('f_last');
+  var fUsername = document.getElementById('f_username');
+  var fPw       = document.getElementById('f_pw');
+  var fPw2      = document.getElementById('f_pw2');
+  var btn       = document.getElementById('cpBtn');
+  var errEl     = document.getElementById('cpErr');
+  var successEl = document.getElementById('cpSuccess');
+
+  function setErr(msg) { errEl.textContent = msg || ''; }
+  function setLoading(on) { btn.disabled = on; btn.textContent = on ? 'Creating…' : 'Create profile'; }
+
+  // Auto-suggest username from name
+  function suggestUsername() {
+    if (fUsername.dataset.edited) return;
+    var first = (fFirst.value || '').trim().toLowerCase().replace(/[^a-z0-9]/g, '');
+    fUsername.value = first;
+  }
+  fFirst.addEventListener('input', suggestUsername);
+  fFirst.addEventListener('blur', suggestUsername);
+  fUsername.addEventListener('input', function () { fUsername.dataset.edited = '1'; });
+
+  async function submit() {
+    setErr('');
+    successEl.style.display = 'none';
+
+    var first    = (fFirst.value || '').trim();
+    var last     = (fLast.value || '').trim();
+    var username = (fUsername.value || '').trim().toLowerCase().replace(/[^a-z0-9_.-]/g, '');
+    var pw       = fPw.value || '';
+    var pw2      = fPw2.value || '';
+
+    if (!first)    { setErr('First name is required.'); fFirst.focus(); return; }
+    if (!last)     { setErr('Last name is required.'); fLast.focus(); return; }
+    if (!username) { setErr('Username is required.'); fUsername.focus(); return; }
+    if (username.length < 2) { setErr('Username must be at least 2 characters.'); fUsername.focus(); return; }
+    if (!pw)       { setErr('Password is required.'); fPw.focus(); return; }
+    if (pw.length < 6) { setErr('Password must be at least 6 characters.'); fPw.focus(); return; }
+    if (pw !== pw2) { setErr('Passwords do not match.'); fPw2.focus(); return; }
+
+    setLoading(true);
+    try {
+      var existing = await listingsDB.getAdminUser(username);
+      if (existing) { setErr('That username is already taken.'); setLoading(false); fUsername.focus(); return; }
+
+      var hash     = await sha256(pw);
+      var initials = first.charAt(0).toUpperCase() + '. ' + last;
+      var display  = first + ' ' + last;
+
+      await listingsDB.createAdminUser({
+        username:      username,
+        display_name:  display,
+        initials:      initials,
+        password_hash: hash,
+        role:          'editor',
+        created_by:    (_sess && _sess.username) || 'setup',
+      });
+
+      // Show success
+      document.getElementById('cpSuccessName').textContent = display + ' (' + username + ') created.';
+      successEl.style.display = 'block';
+      fFirst.value = ''; fLast.value = ''; fUsername.value = ''; fPw.value = ''; fPw2.value = '';
+      delete fUsername.dataset.edited;
+      setLoading(false);
+      fFirst.focus();
+    } catch (e) {
+      setErr('Error: ' + (e.message || 'Could not save profile.'));
+      setLoading(false);
+    }
+  }
+
+  btn.addEventListener('click', submit);
+  fPw2.addEventListener('keydown', function (e) { if (e.key === 'Enter') submit(); });
+
+  // Check for users to decide whether to require login or show setup mode
+  listingsDB.ready.then(function () {
+    return listingsDB.hasAdminUsers();
+  }).then(function (hasUsers) {
+    if (!hasUsers) {
+      document.getElementById('setupNotice').style.display = '';
+      document.getElementById('cpBack').style.display = 'none';
+    } else if (!_loggedIn) {
+      // Users exist but not logged in — redirect to login
+      window.location.replace('login.html?next=create-profile.html');
+    }
+  }).catch(function (e) {
+    if (!_loggedIn) window.location.replace('login.html');
+  });
+})();
+</script>
+</body>
+</html>
