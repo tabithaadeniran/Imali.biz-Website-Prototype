@@ -194,13 +194,8 @@ body { min-height: 100vh; display: flex; align-items: flex-start; justify-conten
     if (!hasUsers) {
       document.getElementById('setupNotice').style.display = '';
       document.getElementById('cpBack').style.display = 'none';
-    } else if (!_loggedIn) {
-      // Users exist but not logged in — redirect to login
-      window.location.replace('login.html?next=create-profile.html');
     }
-  }).catch(function (e) {
-    if (!_loggedIn) window.location.replace('login.html');
-  });
+  }).catch(function () {});
 })();
 </script>
 </body>
