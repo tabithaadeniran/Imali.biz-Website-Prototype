@@ -81,6 +81,7 @@
     var allPhotos = (l.photos && l.photos.length) ? l.photos : (photoSrc ? [photoSrc] : []);
     return '<a href="' + escHtml(href) + '" class="prop-card" ' +
         'data-price="' + price + '" data-type="' + escHtml(cat) + '" data-location="' + escHtml((l.district || '').toLowerCase()) + '"' +
+        ' data-listing-id="' + escHtml(l._docId || '') + '"' +
         ' data-photos="' + escHtml(JSON.stringify(allPhotos)) + '">' +
       '<div class="prop-card-photo">' +
         photoHtml +
@@ -306,6 +307,7 @@
       ' data-price="' + (minInvest || fullUnit || 0) + '"' +
       ' data-type="' + escHtml(l.listing_category || '') + '"' +
       ' data-location="' + escHtml((l.district || '').toLowerCase()) + '"' +
+      ' data-listing-id="' + escHtml(l._docId || '') + '"' +
       ' data-photos="' + escHtml(JSON.stringify(allPhotos)) + '">' +
       '<div class="project-card-photo">' +
         (photoSrc ? '<img src="' + escHtml(photoSrc) + '" alt="' + escHtml(l.title) + '" loading="lazy">' : _NO_PHOTO) +
@@ -376,6 +378,7 @@
       ' data-price="' + (l.price_rwf || 0) + '"' +
       ' data-type="' + escHtml(l.listing_category || '') + '"' +
       ' data-location="' + escHtml((l.district || '').toLowerCase()) + '"' +
+      ' data-listing-id="' + escHtml(l._docId || '') + '"' +
       ' data-photos="' + escHtml(JSON.stringify(allPhotosBuy)) + '">' +
       '<div class="project-card-photo">' +
         (photoSrc ? '<img src="' + escHtml(photoSrc) + '" alt="' + escHtml(l.title) + '" loading="lazy">' : _NO_PHOTO) +

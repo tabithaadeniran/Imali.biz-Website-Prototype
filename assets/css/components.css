@@ -1766,6 +1766,7 @@ h2.section-title em {
   flex-wrap: wrap;
 }
 .modal-actions {
+  position: relative;
   display: flex;
   gap: 0.75rem;
   flex-wrap: wrap;
@@ -1773,7 +1774,61 @@ h2.section-title em {
   padding-top: 1.25rem;
   border-top: 1px solid var(--border);
 }
-.modal-actions .btn { flex: 1; justify-content: center; min-width: 120px; text-align: center; }
+.modal-actions .btn { flex: 1; justify-content: center; min-width: 100px; text-align: center; }
+.modal-share-icon-btn {
+  flex-shrink: 0;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+  background: var(--bg);
+  color: var(--text-dim);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+  align-self: center;
+}
+.modal-share-icon-btn:hover {
+  border-color: var(--green);
+  color: var(--green);
+  background: rgba(76,175,130,0.07);
+}
+.share-popover {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 0.5rem);
+  right: 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  padding: 0.4rem;
+  min-width: 160px;
+  z-index: 20;
+  flex-direction: column;
+  gap: 2px;
+}
+.share-popover.open { display: flex; }
+.share-option {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 0.85rem;
+  border-radius: 8px;
+  border: none;
+  background: none;
+  color: var(--text);
+  font-family: var(--font-body), sans-serif;
+  font-size: 0.87rem;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.12s;
+}
+.share-option:hover { background: var(--surface); }
+.share-icon { font-size: 1rem; line-height: 1; }
 @media (max-width: 680px) {
   .listing-modal {
     grid-template-columns: 1fr;

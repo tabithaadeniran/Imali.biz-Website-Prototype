@@ -374,6 +374,12 @@
           '<div class="modal-actions">' +
             '<a href="' + r('auth/register.html') + '" class="btn btn-primary">Enquire now</a>' +
             '<button class="btn btn-outline" onclick="window.imaliAuth.requireLogin(window.location.href)">♡ Save</button>' +
+            '<button class="modal-share-icon-btn" id="lm-share" aria-label="Share listing"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg></button>' +
+            '<div class="share-popover" id="lm-share-popover">' +
+              '<button class="share-option" id="lm-share-copy"><span class="share-icon">🔗</span>Copy link</button>' +
+              '<a class="share-option" id="lm-share-wa" href="#" target="_blank" rel="noopener"><span class="share-icon">💬</span>WhatsApp</a>' +
+              '<a class="share-option" id="lm-share-email" href="#" target="_blank"><span class="share-icon">✉</span>Email</a>' +
+            '</div>' +
           '</div>' +
         '</div>' +
       '</div>';
@@ -427,10 +433,61 @@
       setPhoto(0);
     }
 
+    // ── Share state ──
+    var _shareId = '';
+    var _shareTitle = '';
+
+    function buildShareUrl(id) {
+      var u = new URL(location.href);
+      if (id) u.searchParams.set('listing', id); else u.searchParams.delete('listing');
+      return u.toString();
+    }
+
+    function openSharePopover() {
+      var pop = document.getElementById('lm-share-popover');
+      if (!pop) return;
+      var url = buildShareUrl(_shareId);
+      var text = _shareTitle ? _shareTitle + ' — Imali.biz' : 'Property on Imali.biz';
+      document.getElementById('lm-share-wa').href    = 'https://wa.me/?text=' + encodeURIComponent(text + '\n' + url);
+      document.getElementById('lm-share-email').href = 'mailto:?subject=' + encodeURIComponent(text) + '&body=' + encodeURIComponent(url);
+      pop.classList.toggle('open');
+    }
+
+    document.getElementById('lm-share').addEventListener('click', function (e) {
+      e.stopPropagation();
+      var url = buildShareUrl(_shareId);
+      var text = _shareTitle ? _shareTitle + ' — Imali.biz' : 'Property on Imali.biz';
+      var isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+      if (navigator.share && isMobile) {
+        navigator.share({ title: text, url: url }).catch(function () {});
+      } else {
+        openSharePopover();
+      }
+    });
+
+    document.getElementById('lm-share-copy').addEventListener('click', function () {
+      var url = buildShareUrl(_shareId);
+      navigator.clipboard.writeText(url).then(function () {
+        var btn = document.getElementById('lm-share-copy');
+        btn.querySelector('.share-icon').textContent = '✓';
+        btn.childNodes[1].textContent = 'Copied!';
+        setTimeout(function () {
+          btn.querySelector('.share-icon').textContent = '🔗';
+          btn.childNodes[1].textContent = 'Copy link';
+        }, 2000);
+      }).catch(function () {});
+      document.getElementById('lm-share-popover').classList.remove('open');
+    });
+
     document.getElementById('lm-prev').addEventListener('click', function (e) { e.stopPropagation(); setPhoto(_photoIdx - 1); });
     document.getElementById('lm-next').addEventListener('click', function (e) { e.stopPropagation(); setPhoto(_photoIdx + 1); });
     document.getElementById('lm-close').addEventListener('click', closeModal);
-    overlay.addEventListener('click', function (e) { if (e.target === overlay) closeModal(); });
+    overlay.addEventListener('click', function (e) {
+      if (e.target === overlay) closeModal();
+      // close share popover on click outside it
+      var pop = document.getElementById('lm-share-popover');
+      if (pop && !pop.contains(e.target) && e.target.id !== 'lm-share') pop.classList.remove('open');
+    });
     document.addEventListener('keydown', function (e) {
       if (!overlay.classList.contains('open')) return;
       if (e.key === 'Escape')     closeModal();
@@ -442,17 +499,60 @@
       if (e.target.closest('.prop-card-save')) return;
       var propCard    = e.target.closest('.prop-card');
       var projectCard = e.target.closest('.project-card');
-      if (propCard)    { e.preventDefault(); populateProp(propCard);       openModal(); }
-      if (projectCard) { e.preventDefault(); populateProject(projectCard); openModal(); }
+      if (propCard) {
+        e.preventDefault();
+        _shareId    = propCard.dataset.listingId || '';
+        _shareTitle = (propCard.querySelector('.prop-card-title') || {}).textContent || '';
+        populateProp(propCard);
+        openModal();
+      }
+      if (projectCard) {
+        e.preventDefault();
+        _shareId    = projectCard.dataset.listingId || '';
+        _shareTitle = (projectCard.querySelector('.project-card-name') || {}).textContent || '';
+        populateProject(projectCard);
+        openModal();
+      }
     });
 
     function openModal() {
+      document.getElementById('lm-share-popover').classList.remove('open');
+      // reflect listing in URL for sharing
+      if (_shareId) {
+        var u = new URL(location.href); u.searchParams.set('listing', _shareId);
+        history.replaceState(null, '', u.toString());
+      }
       overlay.classList.add('open');
       document.body.style.overflow = 'hidden';
     }
     function closeModal() {
       overlay.classList.remove('open');
       document.body.style.overflow = '';
+      // remove listing param from URL
+      var u = new URL(location.href); u.searchParams.delete('listing');
+      history.replaceState(null, '', u.toString());
+      _shareId = ''; _shareTitle = '';
+    }
+
+    // ── Auto-open listing from URL param ──
+    function _tryOpenFromUrl() {
+      var id = new URLSearchParams(location.search).get('listing');
+      if (!id) return true; // nothing to do
+      var card = document.querySelector('[data-listing-id="' + id + '"]');
+      if (!card) return false;
+      if (card.classList.contains('prop-card')) {
+        _shareId = id; _shareTitle = (card.querySelector('.prop-card-title') || {}).textContent || '';
+        populateProp(card);
+      } else {
+        _shareId = id; _shareTitle = (card.querySelector('.project-card-name') || {}).textContent || '';
+        populateProject(card);
+      }
+      openModal();
+      return true;
+    }
+    if (new URLSearchParams(location.search).get('listing')) {
+      var _urlPoll = 0;
+      (function poll() { if (!_tryOpenFromUrl() && ++_urlPoll < 20) setTimeout(poll, 300); })();
     }
 
     function locIcon() {
