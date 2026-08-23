@@ -374,11 +374,11 @@
           '<div class="modal-actions">' +
             '<a href="' + r('auth/register.html') + '" class="btn btn-primary">Enquire now</a>' +
             '<button class="btn btn-outline" onclick="window.imaliAuth.requireLogin(window.location.href)">♡ Save</button>' +
-            '<button class="modal-share-icon-btn" id="lm-share" aria-label="Share listing"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg></button>' +
+            '<button class="modal-share-icon-btn" id="lm-share" aria-label="Share listing"><i class="bi bi-share"></i></button>' +
             '<div class="share-popover" id="lm-share-popover">' +
-              '<button class="share-option" id="lm-share-copy"><span class="share-icon">🔗</span>Copy link</button>' +
-              '<a class="share-option" id="lm-share-wa" href="#" target="_blank" rel="noopener"><span class="share-icon">💬</span>WhatsApp</a>' +
-              '<a class="share-option" id="lm-share-email" href="#" target="_blank"><span class="share-icon">✉</span>Email</a>' +
+              '<button class="share-option" id="lm-share-copy"><i class="bi bi-link-45deg share-icon"></i>Copy link</button>' +
+              '<a class="share-option" id="lm-share-wa" href="#" target="_blank" rel="noopener"><i class="bi bi-whatsapp share-icon"></i>WhatsApp</a>' +
+              '<a class="share-option" id="lm-share-email" href="#" target="_blank"><i class="bi bi-envelope share-icon"></i>Email</a>' +
             '</div>' +
           '</div>' +
         '</div>' +
@@ -467,13 +467,14 @@
 
     document.getElementById('lm-share-copy').addEventListener('click', function () {
       var url = buildShareUrl(_shareId);
+      var btn = document.getElementById('lm-share-copy');
       navigator.clipboard.writeText(url).then(function () {
-        var btn = document.getElementById('lm-share-copy');
-        btn.querySelector('.share-icon').textContent = '✓';
-        btn.childNodes[1].textContent = 'Copied!';
+        var icon = btn.querySelector('.share-icon');
+        icon.className = 'bi bi-check2 share-icon';
+        btn.lastChild.textContent = 'Copied!';
         setTimeout(function () {
-          btn.querySelector('.share-icon').textContent = '🔗';
-          btn.childNodes[1].textContent = 'Copy link';
+          icon.className = 'bi bi-link-45deg share-icon';
+          btn.lastChild.textContent = 'Copy link';
         }, 2000);
       }).catch(function () {});
       document.getElementById('lm-share-popover').classList.remove('open');

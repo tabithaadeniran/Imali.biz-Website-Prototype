@@ -1828,7 +1828,7 @@ h2.section-title em {
   transition: background 0.12s;
 }
 .share-option:hover { background: var(--surface); }
-.share-icon { font-size: 1rem; line-height: 1; }
+.share-icon { font-size: 1rem; }
 @media (max-width: 680px) {
   .listing-modal {
     grid-template-columns: 1fr;
