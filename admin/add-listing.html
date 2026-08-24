@@ -481,6 +481,22 @@
       </div>
     </div>
 
+    <!-- Multiple unit types -->
+    <div class="form-card" data-show-for="buy-home">
+      <div class="form-section-title">Unit types</div>
+      <label class="unit-types-toggle-row" for="f_has_unit_types">
+        <input type="checkbox" id="f_has_unit_types" onchange="toggleUnitTypes(this.checked)">
+        <span class="unit-types-toggle-label">This listing has multiple unit types (e.g. Studio, 1-Bed, 2-Bed)</span>
+      </label>
+      <div id="unitTypesSection" style="display:none;margin-top:1rem">
+        <div id="unitTypeRows"></div>
+        <button type="button" class="add-unit-type-btn" onclick="addUnitTypeRow()">
+          <i class="bi bi-plus-circle"></i> Add unit type
+        </button>
+        <p style="font-size:0.75rem;color:var(--text-dim);margin-top:0.75rem;margin-bottom:0">When unit types are enabled, the price field below is auto-set to the lowest unit price.</p>
+      </div>
+    </div>
+
     <!-- Off-plan buy fields -->
     <div class="form-card" data-offplan-for="buy">
       <div class="form-section-title">Off-plan development details</div>
@@ -1365,6 +1381,104 @@ document.addEventListener('keydown', function (e) {
   if (e.key === 'Escape') closeLightbox();
 });
 
+// ── Unit types ─────────────────────────────────────────────────────────────────
+var _hasUnitTypes = false;
+var _utRowCount   = 0;
+
+function toggleUnitTypes(on) {
+  _hasUnitTypes = on;
+  document.getElementById('unitTypesSection').style.display = on ? 'block' : 'none';
+  ['f_bedrooms', 'f_bathrooms', 'f_floor_area'].forEach(function (id) {
+    var el = document.getElementById(id);
+    if (el) el.closest('.field').style.display = on ? 'none' : '';
+  });
+  var priceField = document.getElementById('f_price');
+  if (priceField) {
+    priceField.readOnly = on;
+    if (on) {
+      priceField.removeAttribute('required');
+      if (!document.querySelector('.unit-type-row')) addUnitTypeRow();
+    } else {
+      priceField.setAttribute('required', '');
+      priceField.value = '';
+    }
+  }
+  if (on) syncMinUnitPrice();
+}
+
+function addUnitTypeRow() {
+  _utRowCount++;
+  var idx = _utRowCount;
+  var row = document.createElement('div');
+  row.className = 'unit-type-row';
+  row.id = 'ut-row-' + idx;
+  row.innerHTML =
+    '<div class="ut-row-header">' +
+      '<span class="ut-row-num">Unit type ' + idx + '</span>' +
+      '<button type="button" class="ut-remove-btn" onclick="removeUnitTypeRow(' + idx + ')" aria-label="Remove"><i class="bi bi-x"></i></button>' +
+    '</div>' +
+    '<div class="field-grid">' +
+      '<div class="field"><label class="field-label" for="ut_name_' + idx + '">Name <span class="opt">(e.g. Studio, 1-Bed)</span></label>' +
+        '<input class="field-input" id="ut_name_' + idx + '" type="text" placeholder="Studio"></div>' +
+      '<div class="field"><label class="field-label" for="ut_price_' + idx + '">Price (RWF)</label>' +
+        '<input class="field-input" id="ut_price_' + idx + '" type="number" min="0" placeholder="e.g. 45000000" oninput="syncMinUnitPrice()"></div>' +
+      '<div class="field"><label class="field-label" for="ut_beds_' + idx + '">Bedrooms <span class="opt">(0 = Studio)</span></label>' +
+        '<input class="field-input" id="ut_beds_' + idx + '" type="number" min="0" max="20" placeholder="0"></div>' +
+      '<div class="field"><label class="field-label" for="ut_baths_' + idx + '">Bathrooms</label>' +
+        '<input class="field-input" id="ut_baths_' + idx + '" type="number" min="0" max="20" placeholder="e.g. 1"></div>' +
+      '<div class="field"><label class="field-label" for="ut_area_' + idx + '">Floor area (m²)</label>' +
+        '<input class="field-input" id="ut_area_' + idx + '" type="number" min="0" placeholder="e.g. 45"></div>' +
+      '<div class="field"><label class="field-label" for="ut_avail_' + idx + '">Units available</label>' +
+        '<input class="field-input" id="ut_avail_' + idx + '" type="number" min="0" placeholder="e.g. 8"></div>' +
+      '<div class="field" style="grid-column:1/-1"><label class="field-label" for="ut_notes_' + idx + '">Notes <span class="opt">(optional)</span></label>' +
+        '<textarea class="field-input" id="ut_notes_' + idx + '" rows="2" placeholder="e.g. Corner unit with city views, includes balcony" style="resize:vertical"></textarea></div>' +
+    '</div>';
+  document.getElementById('unitTypeRows').appendChild(row);
+}
+
+function removeUnitTypeRow(idx) {
+  var row = document.getElementById('ut-row-' + idx);
+  if (row) row.remove();
+  syncMinUnitPrice();
+}
+
+function syncMinUnitPrice() {
+  var rows = document.querySelectorAll('.unit-type-row');
+  var min = Infinity;
+  rows.forEach(function (row) {
+    var id = row.id.replace('ut-row-', '');
+    var inp = document.getElementById('ut_price_' + id);
+    if (inp && inp.value) min = Math.min(min, parseFloat(inp.value));
+  });
+  var priceField = document.getElementById('f_price');
+  if (priceField && _hasUnitTypes) priceField.value = isFinite(min) ? min : '';
+}
+
+function collectUnitTypes() {
+  var rows = document.querySelectorAll('.unit-type-row');
+  var result = [];
+  rows.forEach(function (row) {
+    var id = row.id.replace('ut-row-', '');
+    var name  = (document.getElementById('ut_name_'  + id) || {}).value || '';
+    var price = parseFloat((document.getElementById('ut_price_' + id) || {}).value) || 0;
+    var beds  = (document.getElementById('ut_beds_'  + id) || {}).value;
+    var baths = parseFloat((document.getElementById('ut_baths_' + id) || {}).value) || 0;
+    var area  = parseFloat((document.getElementById('ut_area_'  + id) || {}).value) || 0;
+    var avail = parseInt((document.getElementById('ut_avail_'   + id) || {}).value)  || 0;
+    var notes = ((document.getElementById('ut_notes_' + id) || {}).value || '').trim();
+    result.push({
+      name:           name,
+      price_rwf:      price,
+      bedrooms:       beds !== '' ? parseInt(beds) : null,
+      bathrooms:      baths,
+      floor_area_sqm: area,
+      available:      avail,
+      notes:          notes,
+    });
+  });
+  return result;
+}
+
 // ── Form submit ────────────────────────────────────────────────────────────────
 var _editId = null;
 
@@ -1440,6 +1554,7 @@ function submitListing(e) {
     status:               fd.get('status') || 'live',
     notes:                (fd.get('notes') || '').trim(),
     added_by:             (fd.get('added_by') || '').trim(),
+    unit_types:           _hasUnitTypes ? collectUnitTypes() : [],
   };
 
   var btn = document.getElementById('submitBtn');
@@ -1683,6 +1798,36 @@ function submitListing(e) {
     // Price hint
     if (data.price_rwf) {
       document.getElementById('priceHint').textContent = '≈ $' + Math.round(data.price_rwf / 1472).toLocaleString() + ' USD';
+    }
+
+    // Restore unit types
+    if (data.unit_types && data.unit_types.length > 0) {
+      var utCb = document.getElementById('f_has_unit_types');
+      if (utCb) utCb.checked = true;
+      _hasUnitTypes = true;
+      document.getElementById('unitTypesSection').style.display = 'block';
+      ['f_bedrooms', 'f_bathrooms', 'f_floor_area'].forEach(function (fid) {
+        var el = document.getElementById(fid);
+        if (el) el.closest('.field').style.display = 'none';
+      });
+      var pf = document.getElementById('f_price');
+      if (pf) { pf.readOnly = true; pf.removeAttribute('required'); }
+      data.unit_types.forEach(function (ut) {
+        addUnitTypeRow();
+        var rows = document.querySelectorAll('.unit-type-row');
+        var lastRow = rows[rows.length - 1];
+        if (!lastRow) return;
+        var id = lastRow.id.replace('ut-row-', '');
+        var sv = function (sfx, val) { var el = document.getElementById('ut_' + sfx + '_' + id); if (el && val !== null && val !== undefined) el.value = val; };
+        sv('name',  ut.name  || '');
+        sv('price', ut.price_rwf || '');
+        sv('beds',  ut.bedrooms !== null && ut.bedrooms !== undefined ? ut.bedrooms : '');
+        sv('baths', ut.bathrooms   || '');
+        sv('area',  ut.floor_area_sqm || '');
+        sv('avail', ut.available   || '');
+        sv('notes', ut.notes       || '');
+      });
+      syncMinUnitPrice();
     }
   }).catch(function (err) {
     alert('Could not load listing: ' + err.message);

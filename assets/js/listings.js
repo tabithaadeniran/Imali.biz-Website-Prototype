@@ -15,16 +15,26 @@
   var PIN_SVG = '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1a3.5 3.5 0 0 1 3.5 3.5C9.5 8 6 11 6 11S2.5 8 2.5 4.5A3.5 3.5 0 0 1 6 1z" stroke="currentColor" stroke-width="1.2" fill="none"/><circle cx="6" cy="4.5" r="1" fill="currentColor"/></svg>';
 
   // ─── Card builder ─────────────────────────────────────────────────────────
+  function clUrl(url, w) {
+    if (!url || url.indexOf('res.cloudinary.com') === -1) return url;
+    return url.replace('/upload/', '/upload/w_' + w + ',q_auto,f_auto/');
+  }
+
   function buildCard(l, rootPath) {
     rootPath = rootPath || '';
     var cat   = l.listing_category || '';
     var price = l.price_rwf || 0;
+    var unitTypes = (l.unit_types && l.unit_types.length > 1) ? l.unit_types : null;
+    if (unitTypes) {
+      var _minUt = unitTypes.reduce(function (m, ut) { return ut.price_rwf < m.price_rwf ? ut : m; }, unitTypes[0]);
+      price = _minUt.price_rwf || 0;
+    }
     var loc   = [l.sector, l.district].filter(Boolean).join(', ') || l.province || '';
 
     // Photo
     var photoSrc = l.cover_photo || (l.photos && l.photos[0]) || '';
     var photoHtml = photoSrc
-      ? '<img src="' + escHtml(photoSrc) + '" alt="' + escHtml(l.title) + '" loading="lazy">'
+      ? '<img src="' + escHtml(clUrl(photoSrc, 600)) + '" alt="' + escHtml(l.title) + '" loading="lazy">'
       : '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:var(--bg-alt);color:var(--text-faint)"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" opacity="0.35"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg></div>';
 
     // Main badge
@@ -50,9 +60,24 @@
       if (l.zone)         specItems.push('Zone ' + escHtml(l.zone));
     }
     if (cat === 'buy-home') {
-      if (l.bedrooms)       specItems.push(l.bedrooms + ' Beds');
-      if (l.bathrooms)      specItems.push(l.bathrooms + ' Baths');
-      if (l.floor_area_sqm) specItems.push(l.floor_area_sqm + ' m²');
+      if (unitTypes) {
+        var _beds = unitTypes.map(function (ut) { return typeof ut.bedrooms === 'number' ? ut.bedrooms : 0; });
+        var _minB = Math.min.apply(null, _beds), _maxB = Math.max.apply(null, _beds);
+        var _bedsLabel = _minB === _maxB
+          ? (_minB === 0 ? 'Studio' : _minB + (_minB === 1 ? ' Bed' : ' Beds'))
+          : ((_minB === 0 ? 'Studio' : _minB + ' Bed') + '–' + _maxB + ' Bed');
+        specItems.push(_bedsLabel);
+        var _areas = unitTypes.map(function (ut) { return ut.floor_area_sqm || 0; }).filter(Boolean);
+        if (_areas.length) {
+          var _minA = Math.min.apply(null, _areas), _maxA = Math.max.apply(null, _areas);
+          specItems.push(_minA === _maxA ? _minA + ' m²' : _minA + '–' + _maxA + ' m²');
+        }
+        specItems.push(unitTypes.length + ' unit types');
+      } else {
+        if (l.bedrooms)       specItems.push(l.bedrooms + ' Beds');
+        if (l.bathrooms)      specItems.push(l.bathrooms + ' Baths');
+        if (l.floor_area_sqm) specItems.push(l.floor_area_sqm + ' m²');
+      }
     }
     var isInvest = (cat === 'invest' || cat === 'invest-full' || cat === 'invest-fractional');
     if (isInvest) {
@@ -79,17 +104,22 @@
       href = rootPath + 'pages/invest/fractional.html';
 
     var allPhotos = (l.photos && l.photos.length) ? l.photos : (photoSrc ? [photoSrc] : []);
+    var _utJson = unitTypes ? escHtml(JSON.stringify(unitTypes.map(function (ut) {
+      return { name: ut.name || '', price_rwf: ut.price_rwf || 0, price_formatted: fmtRWF(ut.price_rwf || 0),
+               bedrooms: ut.bedrooms, bathrooms: ut.bathrooms, floor_area_sqm: ut.floor_area_sqm, available: ut.available, notes: ut.notes || '' };
+    }))) : '';
     return '<a href="' + escHtml(href) + '" class="prop-card" ' +
         'data-price="' + price + '" data-type="' + escHtml(cat) + '" data-location="' + escHtml((l.district || '').toLowerCase()) + '"' +
         ' data-listing-id="' + escHtml(l._docId || '') + '"' +
-        ' data-photos="' + escHtml(JSON.stringify(allPhotos)) + '">' +
+        ' data-photos="' + escHtml(JSON.stringify(allPhotos)) + '"' +
+        (_utJson ? ' data-unit-types="' + _utJson + '"' : '') + '>' +
       '<div class="prop-card-photo">' +
         photoHtml +
         '<div class="prop-card-badges"><span class="badge ' + badgeColor + '">' + badgeLabel + '</span>' + extraBadges + '</div>' +
         '<button class="prop-card-save" aria-label="Save listing" onclick="event.preventDefault()">♡</button>' +
       '</div>' +
       '<div class="prop-card-body">' +
-        '<div class="prop-card-price">' + fmtRWF(price) + '</div>' +
+        '<div class="prop-card-price">' + (unitTypes ? '<span class="price-from-label">Starting from</span>' : '') + fmtRWF(price) + '</div>' +
         '<div class="prop-card-title">' + escHtml(l.title || '') + '</div>' +
         (loc ? '<div class="prop-card-location">' + PIN_SVG + ' ' + escHtml(loc) + '</div>' : '') +
         (specsHtml ? '<div class="prop-card-specs">' + specsHtml + '</div>' : '') +
@@ -262,7 +292,8 @@
 
   // ─── Off-plan invest project card ─────────────────────────────────────────
   function buildOffPlanCard(l, rootPath) {
-    var photoSrc  = l.cover_photo || (l.photos && l.photos[0]) || '';
+    var _rawPhoto = l.cover_photo || (l.photos && l.photos[0]) || '';
+    var photoSrc  = clUrl(_rawPhoto, 600);
     var loc       = [l.sector, l.district].filter(Boolean).join(', ');
     var yld       = l.projected_yield_pct || l.yield_pct || 0;
     var minInvest = l.min_invest_rwf || 0;
@@ -302,7 +333,7 @@
       ? '<div class="project-fractions"><strong>' + fracAvail + ' investor slots available</strong>' + (minInvest ? ' — from ' + fmtRWF(minInvest) : '') + '</div>'
       : '';
 
-    var allPhotos = (l.photos && l.photos.length) ? l.photos : (photoSrc ? [photoSrc] : []);
+    var allPhotos = (l.photos && l.photos.length) ? l.photos : (_rawPhoto ? [_rawPhoto] : []);
     return '<a href="#" class="project-card"' +
       ' data-price="' + (minInvest || fullUnit || 0) + '"' +
       ' data-type="' + escHtml(l.listing_category || '') + '"' +
@@ -352,16 +383,24 @@
 
   // ─── Off-plan buy project card ─────────────────────────────────────────────
   function buildOffPlanBuyCard(l, rootPath) {
-    var photoSrc  = l.cover_photo || (l.photos && l.photos[0]) || '';
+    var _rawPhoto = l.cover_photo || (l.photos && l.photos[0]) || '';
+    var photoSrc  = clUrl(_rawPhoto, 600);
     var loc       = [l.sector, l.district].filter(Boolean).join(', ');
     var pct       = l.completion_pct || 0;
     var totalU    = l.total_units || 0;
     var availU    = l.units_available || 0;
     var subType   = (l.unit_sub_type || l.property_sub_type || '').replace(/_/g, ' ');
     var subLabel  = subType ? escHtml(subType.charAt(0).toUpperCase() + subType.slice(1)) : '';
+    var unitTypes = (l.unit_types && l.unit_types.length > 1) ? l.unit_types : null;
+    var basePrice = l.price_rwf || 0;
+    if (unitTypes) {
+      var _minUt = unitTypes.reduce(function (m, ut) { return ut.price_rwf < m.price_rwf ? ut : m; }, unitTypes[0]);
+      basePrice = _minUt.price_rwf || 0;
+    }
 
     var metaRows = '';
-    metaRows += '<div><div class="project-meta-label">Starting from</div><div class="project-meta-val">' + fmtRWF(l.price_rwf || 0) + '</div></div>';
+    metaRows += '<div><div class="project-meta-label">Starting from</div><div class="project-meta-val">' + fmtRWF(basePrice) + '</div></div>';
+    if (unitTypes) metaRows += '<div><div class="project-meta-label">Unit types</div><div class="project-meta-val">' + unitTypes.length + ' types</div></div>';
     if (l.completion_date) metaRows += '<div><div class="project-meta-label">Handover</div><div class="project-meta-val">' + escHtml(l.completion_date) + '</div></div>';
     if (totalU > 0)        metaRows += '<div><div class="project-meta-label">Units available</div><div class="project-meta-val">' + availU + ' of ' + totalU + '</div></div>';
     if (l.developer)       metaRows += '<div><div class="project-meta-label">Developer</div><div class="project-meta-val">' + escHtml(l.developer) + '</div></div>';
@@ -373,13 +412,18 @@
         '</div>'
       : '';
 
-    var allPhotosBuy = (l.photos && l.photos.length) ? l.photos : (photoSrc ? [photoSrc] : []);
+    var allPhotosBuy = (l.photos && l.photos.length) ? l.photos : (_rawPhoto ? [_rawPhoto] : []);
+    var _utJsonBuy = unitTypes ? escHtml(JSON.stringify(unitTypes.map(function (ut) {
+      return { name: ut.name || '', price_rwf: ut.price_rwf || 0, price_formatted: fmtRWF(ut.price_rwf || 0),
+               bedrooms: ut.bedrooms, bathrooms: ut.bathrooms, floor_area_sqm: ut.floor_area_sqm, available: ut.available, notes: ut.notes || '' };
+    }))) : '';
     return '<a href="#" class="project-card"' +
-      ' data-price="' + (l.price_rwf || 0) + '"' +
+      ' data-price="' + basePrice + '"' +
       ' data-type="' + escHtml(l.listing_category || '') + '"' +
       ' data-location="' + escHtml((l.district || '').toLowerCase()) + '"' +
       ' data-listing-id="' + escHtml(l._docId || '') + '"' +
-      ' data-photos="' + escHtml(JSON.stringify(allPhotosBuy)) + '">' +
+      ' data-photos="' + escHtml(JSON.stringify(allPhotosBuy)) + '"' +
+      (_utJsonBuy ? ' data-unit-types="' + _utJsonBuy + '"' : '') + '>' +
       '<div class="project-card-photo">' +
         (photoSrc ? '<img src="' + escHtml(photoSrc) + '" alt="' + escHtml(l.title) + '" loading="lazy">' : _NO_PHOTO) +
         '<div class="project-card-badges">' +

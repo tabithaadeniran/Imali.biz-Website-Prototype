@@ -351,6 +351,11 @@
   };
 
   /* ─── Property listing modal ──────────────────────── */
+  function cloudUrl(url, w) {
+    if (!url || url.indexOf('res.cloudinary.com') === -1) return url;
+    return url.replace('/upload/', '/upload/w_' + w + ',q_auto,f_auto/');
+  }
+
   function setupListingModal() {
     var overlay = document.createElement('div');
     overlay.className = 'listing-modal-overlay';
@@ -363,7 +368,7 @@
         '<div class="modal-photo-col" id="lm-photo-col">' +
           '<img id="lm-img" src="" alt="">' +
           '<div class="modal-photo-badges" id="lm-badges"></div>' +
-          '<button class="modal-close" id="lm-close" aria-label="Close">✕</button>' +
+          '<button class="gallery-fullscreen-btn" id="lm-fullscreen" aria-label="View fullscreen"><i class="bi bi-arrows-fullscreen"></i></button>' +
           '<button class="gallery-nav-btn gallery-prev" id="lm-prev" aria-label="Previous photo">&#8249;</button>' +
           '<button class="gallery-nav-btn gallery-next" id="lm-next" aria-label="Next photo">&#8250;</button>' +
           '<div class="gallery-counter" id="lm-counter"></div>' +
@@ -382,8 +387,21 @@
             '</div>' +
           '</div>' +
         '</div>' +
+        '<button class="modal-close" id="lm-close" aria-label="Close">✕</button>' +
       '</div>';
     document.body.appendChild(overlay);
+
+    // ── Fullscreen overlay ──
+    var fsOverlay = document.createElement('div');
+    fsOverlay.className = 'gallery-fs-overlay';
+    fsOverlay.id = 'gallery-fs';
+    fsOverlay.innerHTML =
+      '<button class="gallery-fs-close" id="fs-close" aria-label="Close fullscreen">✕</button>' +
+      '<button class="gallery-fs-nav gallery-fs-prev" id="fs-prev" aria-label="Previous">&#8249;</button>' +
+      '<button class="gallery-fs-nav gallery-fs-next" id="fs-next" aria-label="Next">&#8250;</button>' +
+      '<img class="gallery-fs-img" id="fs-img" src="" alt="">' +
+      '<div class="gallery-fs-counter" id="fs-counter"></div>';
+    document.body.appendChild(fsOverlay);
 
     // ── Gallery state ──
     var _photos = [];
@@ -392,10 +410,11 @@
     function setPhoto(idx) {
       if (!_photos.length) return;
       _photoIdx = Math.max(0, Math.min(_photos.length - 1, idx));
-      document.getElementById('lm-img').src = _photos[_photoIdx];
+      document.getElementById('lm-img').src = cloudUrl(_photos[_photoIdx], 1200);
       var show = _photos.length > 1;
       document.getElementById('lm-prev').style.display    = show ? '' : 'none';
       document.getElementById('lm-next').style.display    = show ? '' : 'none';
+      document.getElementById('lm-fullscreen').style.display = _photos.length ? '' : 'none';
       document.getElementById('lm-counter').style.display = 'none';
       // update filmstrip active thumb
       var strip = document.getElementById('lm-strip');
@@ -412,7 +431,7 @@
       } catch (e) {}
       var fallbackImg = card.querySelector('img');
       if (!_photos.length && fallbackImg && fallbackImg.src) _photos = [fallbackImg.src];
-      // build filmstrip
+      // build filmstrip with small thumbnails
       var strip = document.getElementById('lm-strip');
       strip.innerHTML = '';
       if (_photos.length > 1) {
@@ -421,7 +440,7 @@
           btn.className = 'gallery-strip-thumb' + (i === 0 ? ' active' : '');
           btn.setAttribute('aria-label', 'Photo ' + (i + 1));
           var thumb = document.createElement('img');
-          thumb.src = src; thumb.alt = '';
+          thumb.src = cloudUrl(src, 120); thumb.alt = '';
           btn.appendChild(thumb);
           btn.addEventListener('click', function (e) { e.stopPropagation(); setPhoto(i); });
           strip.appendChild(btn);
@@ -432,6 +451,35 @@
       }
       setPhoto(0);
     }
+
+    // ── Fullscreen controls ──
+    function openFullscreen() {
+      if (!_photos.length) return;
+      var fsImg = document.getElementById('fs-img');
+      fsImg.src = cloudUrl(_photos[_photoIdx], 2400);
+      document.getElementById('fs-counter').textContent = _photos.length > 1 ? (_photoIdx + 1) + ' / ' + _photos.length : '';
+      document.getElementById('fs-prev').style.display = _photos.length > 1 ? '' : 'none';
+      document.getElementById('fs-next').style.display = _photos.length > 1 ? '' : 'none';
+      fsOverlay.classList.add('open');
+    }
+    function closeFullscreen() { fsOverlay.classList.remove('open'); }
+    function fsSetPhoto(idx) {
+      _photoIdx = Math.max(0, Math.min(_photos.length - 1, idx));
+      setPhoto(_photoIdx);
+      document.getElementById('fs-img').src = cloudUrl(_photos[_photoIdx], 2400);
+      document.getElementById('fs-counter').textContent = _photos.length > 1 ? (_photoIdx + 1) + ' / ' + _photos.length : '';
+    }
+    document.getElementById('lm-fullscreen').addEventListener('click', function (e) { e.stopPropagation(); openFullscreen(); });
+    document.getElementById('fs-close').addEventListener('click', closeFullscreen);
+    document.getElementById('fs-prev').addEventListener('click', function (e) { e.stopPropagation(); fsSetPhoto(_photoIdx - 1); });
+    document.getElementById('fs-next').addEventListener('click', function (e) { e.stopPropagation(); fsSetPhoto(_photoIdx + 1); });
+    fsOverlay.addEventListener('click', function (e) { if (e.target === fsOverlay || e.target.id === 'fs-img') closeFullscreen(); });
+    document.addEventListener('keydown', function (e) {
+      if (!fsOverlay.classList.contains('open')) return;
+      if (e.key === 'Escape')     closeFullscreen();
+      if (e.key === 'ArrowLeft')  fsSetPhoto(_photoIdx - 1);
+      if (e.key === 'ArrowRight') fsSetPhoto(_photoIdx + 1);
+    });
 
     // ── Share state ──
     var _shareId = '';
@@ -560,6 +608,44 @@
       return '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>';
     }
 
+    function _esc(s) {
+      return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+    function buildUnitTypeTabsHtml(types) {
+      var h = '<div class="unit-type-tabs">';
+      types.forEach(function (ut, i) {
+        h += '<button class="unit-type-tab' + (i === 0 ? ' active' : '') + '" data-ut-idx="' + i + '">' + _esc(ut.name || '') + '</button>';
+      });
+      return h + '</div>';
+    }
+    function buildUnitSpecsHtml(ut) {
+      var specs = [];
+      if (typeof ut.bedrooms === 'number') specs.push(ut.bedrooms === 0 ? 'Studio' : (ut.bedrooms + (ut.bedrooms === 1 ? ' Bed' : ' Beds')));
+      if (ut.bathrooms) specs.push(ut.bathrooms + (ut.bathrooms === 1 ? ' Bath' : ' Baths'));
+      if (ut.floor_area_sqm) specs.push(ut.floor_area_sqm + ' m²');
+      if (ut.available !== undefined && ut.available !== null) specs.push(ut.available + ' available');
+      var h = '';
+      if (specs.length) {
+        h += '<div class="modal-divider"></div><div class="modal-specs">';
+        specs.forEach(function (s) { h += '<span class="modal-spec">' + s + '</span>'; });
+        h += '</div>';
+      }
+      if (ut.notes) h += '<div class="modal-unit-notes">' + _esc(ut.notes) + '</div>';
+      return h;
+    }
+    function wireUnitTabs(unitTypes, getSpecsHtml) {
+      var tabs = document.querySelectorAll('#lm-content .unit-type-tab');
+      var specsDiv = document.getElementById('lm-unit-specs');
+      tabs.forEach(function (tab) {
+        tab.addEventListener('click', function () {
+          tabs.forEach(function (t) { t.classList.remove('active'); });
+          tab.classList.add('active');
+          var ut = unitTypes[parseInt(tab.dataset.utIdx, 10)];
+          if (specsDiv) specsDiv.innerHTML = getSpecsHtml(ut);
+        });
+      });
+    }
+
     function populateProp(card) {
       initGallery(card);
       var img    = card.querySelector('.prop-card-photo img');
@@ -574,16 +660,28 @@
       var specs   = card.querySelectorAll('.prop-card-specs .prop-spec');
       var yieldEl = card.querySelector('.invest-yield-val');
       var trusts  = card.querySelectorAll('.trust-pill');
+      var unitTypes = null;
+      try { if (card.dataset.unitTypes) unitTypes = JSON.parse(card.dataset.unitTypes); } catch (e) {}
 
       var h = '';
-      if (price)  h += '<div class="modal-price">'     + price.textContent.trim() + '</div>';
-      if (usd)    h += '<div class="modal-price-usd">' + usd.textContent.trim()   + '</div>';
+      if (unitTypes && unitTypes.length > 1) {
+        var minUt = unitTypes.reduce(function (m, ut) { return ut.price_rwf < m.price_rwf ? ut : m; }, unitTypes[0]);
+        h += '<div class="modal-price-from">Starting from</div><div class="modal-price">' + (minUt.price_formatted || '') + '</div>';
+      } else {
+        if (price)  h += '<div class="modal-price">'     + price.textContent.trim() + '</div>';
+        if (usd)    h += '<div class="modal-price-usd">' + usd.textContent.trim()   + '</div>';
+      }
       if (title)  h += '<div class="modal-name">'      + title.textContent.trim() + '</div>';
       if (loc)    h += '<div class="modal-location">'  + locIcon() + loc.textContent.trim() + '</div>';
-      if (specs.length) {
-        h += '<div class="modal-divider"></div><div class="modal-specs">';
-        specs.forEach(function (s) { h += '<span class="modal-spec">' + s.textContent.trim() + '</span>'; });
-        h += '</div>';
+      if (unitTypes && unitTypes.length > 1) {
+        h += buildUnitTypeTabsHtml(unitTypes);
+        h += '<div id="lm-unit-specs">' + buildUnitSpecsHtml(unitTypes[0]) + '</div>';
+      } else {
+        if (specs.length) {
+          h += '<div class="modal-divider"></div><div class="modal-specs">';
+          specs.forEach(function (s) { h += '<span class="modal-spec">' + s.textContent.trim() + '</span>'; });
+          h += '</div>';
+        }
       }
       if (yieldEl) {
         h += '<div class="modal-yield"><span class="modal-yield-label">Estimated rental yield</span><span class="modal-yield-val">' + yieldEl.textContent.trim() + '</span></div>';
@@ -596,6 +694,13 @@
         h += '</div>';
       }
       document.getElementById('lm-content').innerHTML = h;
+      if (unitTypes && unitTypes.length > 1) {
+        wireUnitTabs(unitTypes, function (ut) {
+          var priceEl = document.querySelector('#lm-content .modal-price');
+          if (priceEl && ut.price_formatted) priceEl.textContent = ut.price_formatted;
+          return buildUnitSpecsHtml(ut);
+        });
+      }
     }
 
     function populateProject(card) {
@@ -615,6 +720,8 @@
       var fracFrom   = card.querySelector('.frac-from-val');
       var fracTotal  = card.querySelector('.frac-total-val');
       var trusts     = card.querySelectorAll('.trust-pill');
+      var unitTypes  = null;
+      try { if (card.dataset.unitTypes) unitTypes = JSON.parse(card.dataset.unitTypes); } catch (e) {}
 
       var h = '';
 
@@ -624,6 +731,12 @@
       }
       if (nameEl) h += '<div class="modal-name">'     + nameEl.textContent.trim() + '</div>';
       if (locEl)  h += '<div class="modal-location">' + locIcon() + locEl.textContent.trim() + '</div>';
+
+      if (unitTypes && unitTypes.length > 1) {
+        h += buildUnitTypeTabsHtml(unitTypes);
+        var firstUt = unitTypes[0];
+        h += '<div id="lm-unit-specs"><div class="modal-price-from">Price</div><div class="modal-price">' + (firstUt.price_formatted || '') + '</div>' + buildUnitSpecsHtml(firstUt) + '</div>';
+      }
 
       if (roiEl) {
         h += '<div class="modal-divider"></div>';
@@ -644,7 +757,10 @@
         metaItems.forEach(function (item) {
           var lbl = item.querySelector('.project-meta-label');
           var val = item.querySelector('.project-meta-val');
-          if (lbl && val) h += '<div><div class="modal-meta-label">' + lbl.textContent.trim() + '</div><div class="modal-meta-val">' + val.textContent.trim() + '</div></div>';
+          if (lbl && val) {
+            if (unitTypes && unitTypes.length > 1 && lbl.textContent.trim() === 'Starting from') return;
+            h += '<div><div class="modal-meta-label">' + lbl.textContent.trim() + '</div><div class="modal-meta-val">' + val.textContent.trim() + '</div></div>';
+          }
         });
         h += '</div>';
       }
@@ -661,6 +777,11 @@
         h += '</div>';
       }
       document.getElementById('lm-content').innerHTML = h;
+      if (unitTypes && unitTypes.length > 1) {
+        wireUnitTabs(unitTypes, function (ut) {
+          return '<div class="modal-price-from">Price</div><div class="modal-price">' + (ut.price_formatted || '') + '</div>' + buildUnitSpecsHtml(ut);
+        });
+      }
     }
   }
 
